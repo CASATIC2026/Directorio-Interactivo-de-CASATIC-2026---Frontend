@@ -1,0 +1,113 @@
+body {
+  font-family: Arial, sans-serif;
+  /* Mantenemos tus colores institucionales con el nuevo gradiente */
+  background: linear-gradient(135deg, #000079, #000079, #005ab5, #2894fe);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Cambiado a min-height por si el form es largo */
+  margin: 0;
+}
+/* image */
+.login-logo {
+  width: 200px; /* Ajusta este valor a tu gusto */
+  height: auto;  /* Esto mantiene la proporción y evita que se estire */
+  display: block; /* Ayuda a centrarla */
+  margin: 0 auto 20px; /* Centra la imagen y le da espacio abajo */
+  cursor: pointer; /* Indica al usuario que es clickable */
+  transition: transform 0.3s ease;
+}
+
+  /* Efecto opcional: que el logo se agrande un poquito al pasar el mouse */
+ .login-logo:hover {
+  transform: scale(1.05);
+}
+
+
+/* Contenedor del Registro - Un poco más ancho para comodidad */
+.register-container {
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  width: 350px; /* Un poco más ancho que el login */
+}
+
+/* Logo con tus efectos de escala */
+.register-logo {
+  width: 180px; 
+  height: auto;
+  display: block;
+  margin: 0 auto 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.register-logo:hover {
+  transform: scale(1.05);
+}
+
+/* Título */
+.register-container h2 {
+  text-align: center;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.register-container p {
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+/* Campos de entrada: adaptados para texto, email y password */
+.register-container input {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0; /* Un poco menos de margen para que quepan más campos */
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+.register-container input:focus {
+  border-color: #4a90e2;
+  outline: none;
+}
+
+/* Botón de Registro */
+.register-container button {
+  width: 100%;
+  padding: 12px;
+  background-color: #4a90e2;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
+
+.register-container button:hover {
+  background-color: #357ab8;
+}
+
+/* Enlaces extra */
+.register-container .extra-links {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.register-container .extra-links a {
+  color: #4a90e2;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.register-container .extra-links a:hover {
+  text-decoration: underline;
+}

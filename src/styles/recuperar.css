@@ -1,0 +1,99 @@
+body {
+  font-family: Arial, sans-serif;
+  /* El gradiente azul oscuro que elegiste para el registro */
+  background: linear-gradient(135deg, #000079, #000079, #005ab5, #2894fe);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+/* Contenedor de recuperación */
+.recovery-container {
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  width: 320px; /* Tamaño intermedio entre login y registro */
+  text-align: center;
+}
+
+/* Logo con el efecto de escala que ya te gusta */
+.recovery-logo {
+  width: 180px; 
+  height: auto;
+  display: block;
+  margin: 0 auto 15px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.recovery-logo:hover {
+  transform: scale(1.05);
+}
+
+/* Textos informativos */
+.recovery-container h2 {
+  margin-bottom: 10px;
+  color: #333;
+  font-size: 22px;
+}
+
+.recovery-container p {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 25px;
+  line-height: 1.4;
+}
+
+/* Campo de correo */
+.recovery-container input[type="email"] {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+.recovery-container input[type="email"]:focus {
+  border-color: #4a90e2;
+  outline: none;
+}
+
+/* Botón de acción */
+.recovery-container button {
+  width: 100%;
+  padding: 12px;
+  background-color: #4a90e2;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.recovery-container button:hover {
+  background-color: #357ab8;
+}
+
+/* Enlace para volver atrás */
+.recovery-container .extra-links {
+  margin-top: 20px;
+}
+
+.recovery-container .extra-links a {
+  color: #4a90e2;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.recovery-container .extra-links a:hover {
+  text-decoration: underline;
+}
+

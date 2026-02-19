@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, blue 0%, #0b80ee 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .contact-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            padding: 40px 30px;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 32px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .contact-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            padding: 18px 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .contact-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-color: #667eea;
+        }
+
+        .icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 22px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .whatsapp { background: #25D366; }
+        .facebook { background: #1877F2; }
+        .instagram { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+        .phone { background: #34b7f1; }
+        .email { background: #ea4335; }
+        .telegram { background: #0088cc; }
+        .twitter { background: #1DA1F2; }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact-name {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 4px;
+            color: #333;
+        }
+
+        .contact-detail {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .arrow {
+            font-size: 20px;
+            color: #999;
+            margin-left: 10px;
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #0066cc 0%, #004a94 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        .btn-back:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 102, 204, 0.3);
+        }
+
+        .btn-back:active {
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 600px) {
+            .contact-container {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 26px;
+            }
+
+            .logo {
+                width: 32px;
+                height: 32px;
+            }
+
+            .contact-item {
+                padding: 15px;
+            }
+
+            .icon {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="contact-container">
+        <div class="header">
+            <h1>
+                <img src="../src/img/logo.png" alt="Logo" class="logo">
+                Contáctanos
+            </h1>
+            <p>Nos puedes contactar en nuestras diferentes redes sociales</p>
+        </div>
+
+        <div class="contact-list">
+            <!-- WhatsApp -->
+            <a href="https://wa.me/5491234567890" class="contact-item" target="_blank">
+                <img src="/src/img/whasap.png" alt="whapsapp" class="icon whatsapp">
+                <div class="contact-info">
+                    <div class="contact-name">WhatsApp</div>
+                    <div class="contact-detail">+503 7777-7777</div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <!-- Teléfono -->
+            <a href="tel:+5491123456789" class="contact-item">
+                <img src="/src/img/telefono.gif" alt="Teléfono" class="icon phone">
+                <div class="contact-info">
+                    <div class="contact-name">Teléfono</div>
+                    <div class="contact-detail">+503 2222-2222</div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <!-- Email -->
+            <a href="/cdn-cgi/l/email-protection#9ffcf0f1ebfefcebf0dffaf5faf2eff3f0b1fcf0f2" class="contact-item">
+               <img src="/src/img/correo.webp" alt="Email" class="icon email">
+                <div class="contact-info">
+                    <div class="contact-name">Email</div>
+                    <div class="contact-detail"><span class="__cf_email__" data-cfemail="2b4844455f4a485f446b4e414e465b474405484446">[email&#160;protected]</span></div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <!-- Facebook -->
+            <a href="https://facebook.com/casatic" class="contact-item" target="_blank">
+               <img src="/src/img/logo_de_facebook.png" alt="Facebook" class="icon facebook">
+                <div class="contact-info">
+                    <div class="contact-name">Facebook</div>
+                    <div class="contact-detail">@casatic</div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <!-- Instagram -->
+            <a href="https://instagram.com/casatic.sv" class="contact-item" target="_blank">
+                    <img src="/src/img/instagram.png" alt="instagram" class="icon instagram">
+                    <div class="contact-info">
+                    <div class="contact-name">Instagram</div>
+                    <div class="contact-detail">@casatic.sv</div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <!-- Telegram -->
+            <a href="https://t.me/casatic" class="contact-item" target="_blank">
+                <img src="/src/img/telegram.png" alt="Telegram" class="icon telegram">
+                <div class="contact-info">
+                    <div class="contact-name">Telegram</div>
+                    <div class="contact-detail">@casatic</div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <!-- Twitter/X -->
+            <a href="https://twitter.com/casatic" class="contact-item" target="_blank">
+                <img src="/src/img/X-Logo.jpg" alt="Twitter/X" class="icon twitter">
+                <div class="contact-info">
+                    <div class="contact-name">Twitter / X</div>
+                    <div class="contact-detail">@casatic</div>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+        </div>
+        <a href="/index.html" class="btn-back">
+             Volver al Directorio Interactivo <img src="https://images.emojiterra.com/google/android-12l/512px/1f448.png" alt="Flecha izquierda" style="width: 20px; height: 20px; margin-left: 8px;">
+        </a>
+    </div>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body>
+</html>

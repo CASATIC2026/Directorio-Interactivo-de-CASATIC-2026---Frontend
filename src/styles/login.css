@@ -1,0 +1,240 @@
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #000079, #000079, #005ab5, #2894fe);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+/* Contenedor del login - Reducido el padding de 40px a 30px */
+.login-container {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  width: 300px;
+}
+
+/* Logo - Reducido el margen inferior */
+.login-logo {
+  width: 180px; 
+  height: auto;
+  display: block;
+  margin: 0 auto 10px; 
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.login-logo:hover {
+  transform: scale(1.05);
+}
+
+/* Título - Reducido el margen inferior */
+.login-container h2 {
+  text-align: center;
+  margin-bottom: 15px;
+  margin-top: 0;
+  color: #333;
+}
+
+/* ICONOS E INPUTS */
+.input-group {
+  position: relative;
+  width: 100%;
+  margin: 8px 0; /* Espacio entre campos reducido de 15px a 8px */
+}
+
+.input-group i {
+  position: absolute;
+  left: 12px; /* Un poco más alejado del borde para balance */
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;
+  font-size: 16px;
+  pointer-events: none;
+  transition: color 0.3s ease;
+}
+
+.input-group input {
+  width: 100%;
+  /* 10px arriba/abajo, 40px a la izquierda para el icono */
+  padding: 10px 15px 10px 40px !important; 
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 15px;
+  transition: border-color 0.3s;
+}
+
+.input-group input:focus {
+  border-color: #4a90e2;
+  outline: none;
+}
+
+.input-group input:focus + i {
+  color: #4a90e2;
+}
+
+/* RECORDARME - Ajustado el margen */
+.remember-me {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 10px 0; /* Reducido de 15px a 10px */
+}
+
+.remember-me label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 13px; /* Un pelín más pequeño para que se vea compacto */
+  color: #555;
+  transition: color 0.3s ease;
+  user-select: none;
+}
+
+.remember-me input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  margin-right: 8px;
+  background-color: #fff;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.remember-me input[type="checkbox"]:checked {
+  background-color: #4a90e2;
+  border-color: #4a90e2;
+}
+
+.remember-me input[type="checkbox"]:checked::after {
+  content: '✔';
+  position: absolute;
+  color: white;
+  font-size: 10px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* BOTÓN INGRESAR */
+.login-container button {
+  width: 100%;
+  padding: 10px; /* Reducido de 12px a 10px */
+  background-color: #4a90e2;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 5px;
+}
+
+.login-container button:hover {
+  background-color: #357ab8;
+}
+
+/* ENLACES EXTRA - Más juntos */
+.login-container .extra-links {
+  text-align: center;
+  margin-top: 12px;
+  line-height: 1.4;
+}
+
+.login-container .extra-links a {
+  color: #4a90e2;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.login-container .extra-links a:hover {
+  text-decoration: underline;
+}
+
+/* IDIOMAS */
+/* Contenedor principal del idioma */
+.language-picker {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+/* El botón circular/ovalado */
+.lang-btn {
+    background: rgba(255, 255, 255, 0.15); /* Efecto transparente */
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 25px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.lang-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+/* El menú que aparece */
+.lang-dropdown {
+    position: absolute;
+    top: 110%;
+    right: 0;
+    background: white;
+    border-radius: 8px;
+    width: 160px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    display: none; /* Oculto por defecto */
+    overflow: hidden;
+    animation: fadeIn 0.3s ease;
+}
+
+.lang-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.lang-dropdown a img {
+    width: 18px;
+    height: auto;
+}
+
+.lang-dropdown a:hover {
+    background: #f0f7ff;
+    color: #4a90e2;
+}
+
+/* Mostrar al pasar el mouse */
+.language-picker:hover .lang-dropdown {
+    display: block;
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

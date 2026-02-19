@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Principal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+        h1 { color: #4a90e2; }
+        #aviso {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff;
+            border: 2px solid #4a90e2;
+            border-radius: 5px;
+            display: none;
+            text-align: center;
+        }
+        #aviso a {
+            color: #4a90e2;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        #aviso a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>¡Has iniciado sesión con éxito!</h1>
+    <div id="aviso">
+        Serás redirigido al Directorio Interactivo en <span id="contador">2</span> segundos...<br><br>
+        O haz clic <a href="../index.html">aquí</a> para ir ahora.
+    </div>
+
+    <script>
+        let segundos = 2;
+        
+        // Mostrar el aviso después de 0.5 segundos
+        setTimeout(() => {
+            document.getElementById('aviso').style.display = 'block';
+            
+            // Actualizar el contador cada segundo
+            const intervalo = setInterval(() => {
+                segundos--;
+                document.getElementById('contador').textContent = segundos;
+                
+                if (segundos === 0) {
+                    clearInterval(intervalo);
+                    // Redirigir después de 2 segundos
+                    window.location.href = '../index.html';
+                }
+            }, 1000);
+        }, 500);
+    </script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+# Directorio-Interactivo-de-CASATIC-2026---Frontend

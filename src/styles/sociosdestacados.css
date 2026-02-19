@@ -1,0 +1,461 @@
+/* ============================================
+   TECHSOLUTIONS SV - Stylesheet
+   Responsive Design for Desktop & Mobile
+   ============================================ */
+
+/* ===== RESET Y VARIABLES ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary: #0066cc;
+  --primary-hover: #0052a3;
+  --secondary: #2c3e50;
+  --background-light: #f8f9fa;
+  --text-main: #ffffff;
+  --text-light: #345c80;
+  --white: #ffffff;
+  --border-color: #e0e0e0;
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+  --transition: all 0.3s ease;
+}
+
+/* ===== ESTILOS GLOBALES ===== */
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.6;
+  color: var(--text-main);
+  background-color: var(--background-light);
+}
+
+/* ===== NAVEGACIÓN ===== */
+.navbar {
+  background-color: var(--white);
+  padding: 1rem 2rem;
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-right: auto;
+}
+
+/* Logo imagen */
+.nav-logo {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+  transition: var(--transition);
+}
+
+.nav-logo:hover {
+  transform: scale(1.05);
+}
+
+/* Brand text */
+.nav-brand {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--primary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: var(--transition);
+}
+
+.nav-brand:hover {
+  color: var(--primary-hover);
+  transform: scale(1.02);
+}
+
+.nav-brand span {
+  color: var(--secondary);
+}
+
+.nav-brand i {
+  font-size: 1.5rem;
+}
+
+/* ===== HEADER ===== */
+header {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+  color: var(--white);
+  padding: 4rem 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xKSIvPjwvc3ZnPg==');
+  opacity: 0.3;
+}
+
+header h1 {
+  position: relative;
+  z-index: 1;
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* ===== MAIN CONTENT ===== */
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* ===== SECCIONES ===== */
+section {
+  background-color: var(--white);
+  border-radius: 12px;
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+  transition: var(--transition);
+}
+
+section:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-3px);
+}
+
+section h2 {
+  color: var(--secondary);
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 3px solid var(--primary);
+  position: relative;
+}
+
+section h2::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background-color: var(--primary-hover);
+}
+
+/* ===== INFORMACIÓN DE LA EMPRESA ===== */
+.company-info p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--text-light);
+  text-align: justify;
+}
+
+/* ===== SERVICIOS ===== */
+.services ul {
+  list-style: none;
+  display: grid;
+  gap: 1rem;
+}
+
+.services li {
+  background: linear-gradient(135deg, #e6f0fa 0%, #f0f7ff 100%);
+  padding: 1.25rem 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid var(--primary);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--secondary);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  padding-left: 3rem; /* Espacio para el icono */
+}
+
+.services li::before {
+  content: '✓';
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  background-color: var(--primary);
+  color: var(--white);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  transition: var(--transition);
+}
+
+.services li:hover {
+  transform: translateX(10px);
+  box-shadow: var(--shadow-md);
+  background: linear-gradient(135deg, #d4e7f7 0%, #e6f0fa 100%);
+}
+
+.services li:hover::before {
+  transform: translateY(-50%) scale(1.1);
+  background-color: var(--primary-hover);
+}
+
+/* ===== CONTACTO ===== */
+.contact p {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-light);
+}
+
+.contact ul {
+  list-style: none;
+  display: grid;
+  gap: 1rem;
+}
+
+.contact li {
+  font-size: 1.05rem;
+  padding: 0.75rem 1rem;
+  background-color: var(--background-light);
+  border-radius: 6px;
+  border-left: 3px solid var(--primary);
+}
+
+.contact a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.contact a:hover {
+  color: var(--primary-hover);
+  text-decoration: underline;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Tablets (768px - 1024px) */
+@media screen and (max-width: 1024px) {
+  :root {
+    font-size: 15px;
+  }
+
+  main {
+    padding: 1.5rem 1rem;
+  }
+
+  section {
+    padding: 2rem;
+  }
+
+  header h1 {
+    font-size: 2.2rem;
+  }
+}
+
+/* Mobile Landscape & Portrait (up to 768px) */
+@media screen and (max-width: 768px) {
+  :root {
+    font-size: 14px;
+  }
+
+  .navbar {
+    padding: 0.75rem 1rem;
+  }
+
+  .nav-logo {
+    height: 40px;
+  }
+
+  .nav-brand {
+    font-size: 1.2rem;
+  }
+
+  .nav-brand i {
+    font-size: 1.2rem;
+  }
+
+  header {
+    padding: 3rem 1.5rem;
+  }
+
+  header h1 {
+    font-size: 1.8rem;
+    line-height: 1.3;
+  }
+
+  main {
+    padding: 1rem 0.75rem;
+  }
+
+  section {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+  }
+
+  section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .company-info p {
+    font-size: 1rem;
+    text-align: left;
+  }
+
+  .services li {
+    padding: 1rem 1rem 1rem 2.5rem;
+    font-size: 0.95rem;
+  }
+
+  .services li::before {
+    width: 25px;
+    height: 25px;
+    font-size: 1rem;
+    left: 0.5rem;
+  }
+
+  .services li:hover {
+    transform: translateX(5px);
+  }
+
+  .contact p,
+  .contact li {
+    font-size: 0.95rem;
+  }
+}
+
+/* Small Mobile (up to 480px) */
+@media screen and (max-width: 480px) {
+  :root {
+    font-size: 13px;
+  }
+
+  .navbar {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .nav-left {
+    gap: 0.5rem;
+  }
+
+  .nav-logo {
+    height: 35px;
+  }
+
+  .nav-brand {
+    font-size: 1rem;
+  }
+
+  .nav-brand i {
+    font-size: 1rem;
+  }
+
+  header {
+    padding: 2rem 1rem;
+  }
+
+  header h1 {
+    font-size: 1.5rem;
+  }
+
+  section {
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  section h2 {
+    font-size: 1.3rem;
+  }
+
+  .services li {
+    padding: 0.875rem 0.875rem 0.875rem 2rem;
+  }
+
+  .services li::before {
+    width: 22px;
+    height: 22px;
+    font-size: 0.9rem;
+    left: 0.4rem;
+  }
+
+  .services li:hover {
+    transform: translateX(3px);
+  }
+}
+
+/* ===== ANIMACIONES ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+section {
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* ===== ACCESIBILIDAD ===== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ===== IMPRESIÓN ===== */
+@media print {
+  .navbar {
+    display: none;
+  }
+
+  header {
+    background: var(--secondary);
+    color: var(--white);
+    padding: 2rem;
+  }
+
+  section {
+    page-break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid var(--border-color);
+  }
+}

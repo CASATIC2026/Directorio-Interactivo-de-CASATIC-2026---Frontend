@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #f4f6f9;
+}
+
+/* ===== HEADER AZUL ===== */
+.header {
+    background: linear-gradient(135deg, #2f5ed7, #3f7bff);
+    color: white;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.header h1 {
+    font-size: 40px;
+    font-weight: 700;
+}
+
+.header p {
+    margin-top: 15px;
+    font-size: 18px;
+    opacity: 0.9;
+}
+
+/* ===== CONTENEDOR PRINCIPAL ===== */
+.container {
+    display: flex;
+    justify-content: center;
+    margin-top: -40px;
+    padding: 20px;
+}
+
+/* ===== TARJETA FORMULARIO ===== */
+.card {
+    background: white;
+    width: 600px;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.card h2 {
+    margin-bottom: 25px;
+    font-weight: 600;
+}
+
+/* ===== INPUTS ===== */
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+input:focus, textarea:focus {
+    border-color: #3f7bff;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(63,123,255,0.15);
+}
+
+textarea {
+    resize: none;
+    height: 120px;
+}
+
+/* ===== BOTÓN ===== */
+button {
+    background-color: #3f7bff;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #2f5ed7;
+}
+.btn-volver {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.btn-volver:hover {
+    background-color: darkred;
+}
+
+</style>
+<body>
+    <div class="header">
+    <h1>Contactanos</h1>
+    <p>¿Tienes un proyecto en mente? Completa el formulario a continuación.</p>
+</div>
+
+<div class="container">
+    <div class="card">
+        <h2>Enviar una Consulta</h2>
+
+        <div class="form-group">
+            <label>Tu Nombre</label>
+            <input type="text" placeholder="John Doe">
+        </div>
+
+        <div class="form-group">
+            <label>Nombre de la Empresa</label>
+            <input type="text" placeholder="Tu Empresa S.A.">
+        </div>
+
+        <div class="form-group">
+            <label>Asunto</label>
+            <input type="text" placeholder="Oportunidad de alianza...">
+        </div>
+
+        <div class="form-group">
+            <label>Mensaje</label>
+            <textarea placeholder="Cuéntanos qué estás buscando..."></textarea>
+        </div>
+
+        <button>Enviar Mensaje</button>
+        <a href="../index.html"><button class="btn-volver">Volver al Directorio</button></a>
+    </div>
+</div>
+
+</body>
+</html>
