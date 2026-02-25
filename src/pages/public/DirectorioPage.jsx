@@ -66,7 +66,7 @@ export default function DirectorioPage() {
             Directorio de Socios
           </h1>
           <p className="text-casatic-200 text-lg max-w-xl animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-            Encuentra empresas de tecnología por especialidad, servicio o nombre.
+            Encuentra empresas de tecnología por especialidad, servicio o nombre
           </p>
         </div>
       </div>
@@ -82,7 +82,7 @@ export default function DirectorioPage() {
             <Search size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-surface-400" />
             <input
               type="text"
-              placeholder="Buscar por nombre, descripción, tecnología..."
+              placeholder="Buscar por nombre, descripción, tecnología... etc"
               value={query}
               onChange={(e) => { setQuery(e.target.value); setPage(1); }}
               className="input-field pl-10"
