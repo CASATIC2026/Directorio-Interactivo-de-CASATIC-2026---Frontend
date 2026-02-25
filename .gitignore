@@ -1,3 +1,1 @@
-﻿node_modules/
-dist/
-.env
+﻿VITE_API_URL=/api
