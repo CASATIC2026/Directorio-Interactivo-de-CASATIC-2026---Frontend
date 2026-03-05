@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, ArrowLeft, CheckCircle } from 'lucide-react';
 
-export default function ForgotPasswordPage() {
+export default function ForgotPasswordSocios() {
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -10,7 +10,7 @@ export default function ForgotPasswordPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    // TODO: integrar endpoint de recuperación de contraseña para administradores
+    // TODO: integrar endpoint de recuperación de contraseña para socios
     await new Promise((r) => setTimeout(r, 1000));
     setSent(true);
     setLoading(false);
@@ -35,7 +35,7 @@ export default function ForgotPasswordPage() {
           RECUPERAR CONTRASEÑA
         </h2>
         <p className="text-center text-xs text-gray-400 mb-8">
-          Ingresa tu correo de administrador y te enviaremos las instrucciones.
+          Ingresa tu correo y te enviaremos las instrucciones.
         </p>
 
         {sent ? (
@@ -83,7 +83,7 @@ export default function ForgotPasswordPage() {
         </div>
 
         <Link
-          to="/admin/login"
+          to="/login-socios"
           className="w-full py-2.5 bg-white border-2 border-[#0A0A0A] text-[#0A0A0A] text-sm font-bold rounded-lg flex items-center justify-center gap-2 hover:bg-[#0A0A0A] hover:text-white transition-all duration-300 group"
         >
           <ArrowLeft size={18} className="group-hover:scale-110 transition-transform" />
