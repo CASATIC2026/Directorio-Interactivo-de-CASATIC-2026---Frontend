@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import lunaLogo from '../../img/lunalogo.png';
+import logo from '../../img/logo.png';
 import { Link } from 'react-router-dom';
 import { Mail, ArrowLeft, CheckCircle } from 'lucide-react';
 
@@ -27,8 +29,8 @@ export default function ForgotPasswordPage() {
 
       <div className="bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] p-8 w-[350px]">
         <div className="flex flex-col items-center mb-6 gap-2">
-          <img src="/src/img/lunalogo.png" alt="LunaLogo" className="w-[140px]" />
-          <img src="/src/img/logo.png" alt="Logo" className="w-[170px]" />
+          <img src={lunaLogo} alt="LunaLogo" className="w-[140px]" />
+          <img src={logo} alt="Logo" className="w-[170px]" />
         </div>
 
         <h2 className="text-center text-xl font-bold text-[#0A0A0A] mb-2 tracking-widest">

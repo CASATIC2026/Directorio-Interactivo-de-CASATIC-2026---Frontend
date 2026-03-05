@@ -1,4 +1,6 @@
 import { useState, useRef } from 'react';
+import lunaLogo from '../../img/lunalogo.png';
+import logo from '../../img/logo.png';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { LogIn, User, Lock, Home, Globe } from 'lucide-react';
@@ -101,12 +103,12 @@ export default function LoginPageSocios() {
         {/* Logos */}
         <div className="flex flex-col items-center mb-6 gap-2">
           <img
-            src="/src/img/lunalogo.png"
+            src={lunaLogo}
             alt="LunaLogo"
             className="w-[140px] cursor-pointer hover:opacity-80 transition duration-300"
           />
           <img
-            src="/src/img/logo.png"
+            src={logo}
             alt="Logo"
             className="w-[170px] cursor-pointer hover:opacity-80 transition duration-300"
           />
