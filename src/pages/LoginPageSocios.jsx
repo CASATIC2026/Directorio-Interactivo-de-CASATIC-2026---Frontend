@@ -159,7 +159,7 @@ export default function LoginPage() {
             <label className="flex items-center text-xs text-[#0A0A0A]/60 cursor-pointer select-none font-medium">
               <input type="checkbox" className="mr-2 accent-[#0E3877] w-4 h-4" /> {t.remember_me}
             </label>
-            <Link to="/admin/forgot-password" size={14} className="text-[11px] text-[#0C9EC6] hover:text-[#0E3877] font-bold">
+            <Link to="/admin/forgot-passwordsocios" size={14} className="text-[11px] text-[#0C9EC6] hover:text-[#0E3877] font-bold">
               {t.forgot_pass}
             </Link>
           </div>
