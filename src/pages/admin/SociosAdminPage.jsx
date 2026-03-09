@@ -3,173 +3,213 @@ import { Link } from 'react-router-dom';
 import api from '../../api/client';
 import {
   Building2, Plus, Edit, Trash2, ToggleLeft, ToggleRight,
-  AlertTriangle, Search, Filter
+  AlertTriangle, Search, Filter, RefreshCw
 } from 'lucide-react';
+
+function TableSkeleton() {
+  return (
+    <div className="bg-white rounded-3xl p-6 animate-pulse shadow-sm">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <div key={i} className="flex gap-4 mb-4">
+          <div className="h-12 bg-gray-100 rounded-xl flex-1" />
+          <div className="h-12 bg-gray-100 rounded-xl w-32" />
+          <div className="h-12 bg-gray-100 rounded-xl w-20" />
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default function SociosAdminPage() {
   const [socios, setSocios] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
-  const [confirmDelete, setConfirmDelete] = useState(null);
-  const [error, setError] = useState('');
 
-  const fetchSocios = () => {
+  const loadSocios = () => {
     setLoading(true);
     api.get('/socios')
-      .then((r) => setSocios(r.data))
-      .catch(() => setError('No se pudieron cargar los socios.'))
+      .then((res) => setSocios(res.data))
       .finally(() => setLoading(false));
   };
 
-  useEffect(() => { fetchSocios(); }, []);
+  useEffect(loadSocios, []);
 
-  const toggleHabilitado = async (socio) => {
-    try {
-      await api.patch(`/socios/${socio.id}/habilitar`, { habilitado: !socio.habilitado });
-      fetchSocios();
-    } catch {
-      setError('Error al cambiar el estado del socio.');
-    }
+  const toggleHabilitado = async (id) => {
+    await api.patch(`/socios/${id}/toggle-habilitado`);
+    loadSocios();
   };
 
-  const deleteSocio = async (id) => {
-    try {
-      await api.delete(`/socios/${id}`);
-      setConfirmDelete(null);
-      fetchSocios();
-    } catch {
-      setError('Error al eliminar el socio.');
-    }
+  const cambiarEstado = async (id, estado) => {
+    await api.patch(`/socios/${id}/estado-financiero?estado=${estado}`);
+    loadSocios();
+  };
+
+  const eliminar = async (id) => {
+    if (!confirm('¿Está seguro de eliminar este socio?')) return;
+    await api.delete(`/socios/${id}`);
+    loadSocios();
   };
 
   const filtered = socios.filter((s) =>
-    s.nombreEmpresa?.toLowerCase().includes(search.toLowerCase())
+    s.nombreEmpresa.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
-    <div className="p-6">
-      <div className="flex items-center justify-between mb-6">
+    <div className="min-h-screen bg-[#0E3877] p-4 sm:p-8 font-['Roboto'] font-normal text-white">
+      <style>
+        {`@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');`}
+      </style>
+
+      {/* ── Header ────────────────────────────────────── */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-[#0A0A0A] flex items-center gap-2">
-            <Building2 size={26} className="text-[#0E3877]" /> Socios
+          <h1 className="text-3xl font-bold flex items-center gap-3 tracking-tight text-white">
+            <Building2 size={32} className="text-[#0C9EC6]" />
+            Gestión de Socios
           </h1>
-          <p className="text-gray-400 text-sm mt-1">Gestión de empresas socias</p>
+          <p className="text-white/60 text-sm mt-1 font-normal">{socios.length} empresas registradas</p>
         </div>
-        <Link
-          to="/admin/socios/nuevo"
-          className="bg-[#0E3877] hover:bg-[#0C9EC6] text-white text-sm font-bold px-4 py-2 rounded-lg flex items-center gap-2 transition"
+        <Link 
+          to="/admin/socios/nuevo" 
+          className="flex items-center gap-2 px-6 py-3 bg-[#0C9EC6] hover:bg-white hover:text-[#0E3877] text-white rounded-xl font-bold transition-all duration-300 shadow-lg active:scale-95"
         >
-          <Plus size={16} /> Nuevo Socio
+          <Plus size={20} /> Nuevo Socio
         </Link>
       </div>
 
-      {error && (
-        <div className="mb-4 flex items-center gap-2 text-red-500 text-sm bg-red-50 p-3 rounded-lg border border-red-100">
-          <AlertTriangle size={16} /> {error}
+      {/* ── Search Bar ────────────────────────────────── */}
+      <div className="bg-white rounded-2xl p-2 mb-6 flex items-center gap-3 shadow-xl border border-white/10">
+        <div className="flex items-center flex-1 px-4">
+          <Search size={20} className="text-[#0C9EC6]" />
+          <input
+            type="text"
+            placeholder="Buscar por nombre de empresa..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full p-3 bg-transparent text-[#0A0A0A] placeholder-gray-400 outline-none text-base"
+          />
         </div>
-      )}
-
-      {/* Búsqueda */}
-      <div className="relative mb-4">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-        <input
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Buscar empresa..."
-          className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#0C9EC6]"
-        />
+        <div className="hidden sm:flex items-center gap-2 px-6 border-l border-gray-100 text-gray-400 text-xs font-bold uppercase tracking-widest">
+          {filtered.length} Resultados
+        </div>
       </div>
 
+      {/* ── Table Container ───────────────────────────── */}
       {loading ? (
-        <div className="flex justify-center py-16">
-          <div className="w-10 h-10 border-4 border-[#0E3877]/20 border-t-[#0E3877] rounded-full animate-spin" />
+        <TableSkeleton />
+      ) : filtered.length === 0 ? (
+        <div className="bg-white/5 border border-white/10 rounded-3xl py-20 text-center">
+          <Building2 size={48} className="mx-auto mb-4 text-white/20" />
+          <h3 className="text-xl font-bold">Sin coincidencias</h3>
         </div>
       ) : (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-          <table className="w-full text-sm">
-            <thead className="bg-gray-50 text-gray-500 uppercase text-xs tracking-wider">
-              <tr>
-                <th className="px-4 py-3 text-left">Empresa</th>
-                <th className="px-4 py-3 text-left hidden md:table-cell">Estado Financiero</th>
-                <th className="px-4 py-3 text-center">Habilitado</th>
-                <th className="px-4 py-3 text-center">Acciones</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-50">
-              {filtered.length === 0 ? (
-                <tr>
-                  <td colSpan={4} className="text-center py-10 text-gray-400">
-                    <Filter size={32} className="mx-auto mb-2 opacity-30" />
-                    Sin resultados
-                  </td>
+        <div className="bg-white rounded-3xl overflow-hidden shadow-2xl border border-gray-100">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-gray-50 text-[#0E3877] uppercase text-[11px] tracking-[0.2em] font-bold border-b border-gray-100">
+                  <th className="px-6 py-5">Empresa</th>
+                  <th className="px-6 py-5 text-center">Slug</th>
+                  <th className="px-6 py-5 text-center">Situación</th>
+                  <th className="px-6 py-5 text-center">Estado</th>
+                  <th className="px-6 py-5 text-center">Acciones</th>
                 </tr>
-              ) : (
-                filtered.map((s) => (
-                  <tr key={s.id} className="hover:bg-gray-50 transition">
-                    <td className="px-4 py-3 font-medium text-[#0A0A0A]">{s.nombreEmpresa}</td>
-                    <td className="px-4 py-3 hidden md:table-cell">
-                      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                        s.estadoFinanciero === 'AlDia' ? 'bg-green-50 text-green-700'
-                        : s.estadoFinanciero === 'EnMora' ? 'bg-yellow-50 text-yellow-700'
-                        : 'bg-red-50 text-red-700'
-                      }`}>
-                        {s.estadoFinanciero}
+              </thead>
+              <tbody className="divide-y divide-gray-50">
+                {filtered.map((socio) => (
+                  <tr key={socio.id} className="hover:bg-blue-50/30 transition-colors group">
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 bg-white border border-gray-100 rounded-xl flex items-center justify-center overflow-hidden shadow-sm shrink-0">
+                          {socio.logoUrl ? (
+                            <img
+                              src={socio.logoUrl}
+                              alt={socio.nombreEmpresa}
+                              className="w-full h-full object-contain p-1"
+                              onError={(e) => {
+                                e.target.style.display = 'none';
+                                e.target.nextSibling.style.display = 'flex';
+                              }}
+                            />
+                          ) : null}
+                          <div className={socio.logoUrl ? "hidden" : "flex"} style={{ display: socio.logoUrl ? 'none' : 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', fontWeight: 'bold', color: '#0C9EC6', fontSize: '1.25rem' }}>
+                            {socio.nombreEmpresa?.charAt(0)?.toUpperCase()}
+                          </div>
+                        </div>
+                        <span className="font-normal text-[#0C9EC6] tracking-tight">
+                          {socio.nombreEmpresa}
+                        </span>
+                      </div>
+                    </td>
+                    
+                    <td className="px-6 py-4 text-center">
+                      <span className="font-mono text-xs text-gray-400 bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-100">
+                        /{socio.slug}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-center">
-                      <button onClick={() => toggleHabilitado(s)} title="Toggle habilitado">
-                        {s.habilitado
-                          ? <ToggleRight size={22} className="text-green-500 mx-auto" />
-                          : <ToggleLeft size={22} className="text-gray-300 mx-auto" />}
-                      </button>
+
+                    <td className="px-6 py-4 text-center">
+                      {socio.estadoFinanciero === 'AlDia' ? (
+                        <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase bg-emerald-100 text-emerald-700 border border-emerald-200">
+                          Al Día
+                        </span>
+                      ) : (
+                        <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase bg-amber-100 text-amber-700 border border-amber-200 inline-flex items-center gap-1">
+                          <AlertTriangle size={10} /> En Mora
+                        </span>
+                      )}
                     </td>
-                    <td className="px-4 py-3 text-center">
+
+                    <td className="px-6 py-4 text-center">
                       <div className="flex items-center justify-center gap-2">
-                        <Link to={`/admin/socios/${s.id}`} title="Editar">
-                          <Edit size={16} className="text-[#0C9EC6] hover:text-[#0E3877] transition" />
+                        <button
+                          onClick={() => toggleHabilitado(socio.id)}
+                          className="transition-transform active:scale-90"
+                        >
+                          {socio.habilitado ? (
+                            <ToggleRight size={32} className="text-[#0C9EC6]" />
+                          ) : (
+                            <ToggleLeft size={32} className="text-gray-300" />
+                          )}
+                        </button>
+                        <button
+                          onClick={() => cambiarEstado(socio.id, socio.estadoFinanciero === 'AlDia' ? 'EnMora' : 'AlDia')}
+                          className="p-2 rounded-xl text-[#0C9EC6] hover:bg-[#0C9EC6]/10 transition-all"
+                          title="Cambiar estado financiero"
+                        >
+                          <RefreshCw size={14} />
+                        </button>
+                      </div>
+                    </td>
+
+                    <td className="px-6 py-4 text-center">
+                      <div className="flex items-center justify-center gap-2">
+                        <Link
+                          to={`/admin/socios/${socio.id}`}
+                          className="p-2.5 rounded-xl text-[#0E3877] hover:bg-[#0E3877] hover:text-white transition-all border border-gray-100 shadow-sm bg-white"
+                        >
+                          <Edit size={18} />
                         </Link>
-                        <button onClick={() => setConfirmDelete(s)} title="Eliminar">
-                          <Trash2 size={16} className="text-red-400 hover:text-red-600 transition" />
+                        <button
+                          onClick={() => eliminar(socio.id)}
+                          className="p-2.5 rounded-xl text-red-400 hover:bg-red-50 hover:text-red-500 transition-all"
+                        >
+                          <Trash2 size={18} />
                         </button>
                       </div>
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      )}
-
-      {/* Modal confirmación eliminar */}
-      {confirmDelete && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl p-6 w-80 shadow-2xl">
-            <div className="flex items-center gap-3 mb-4">
-              <AlertTriangle size={28} className="text-red-500" />
-              <h2 className="text-lg font-bold text-[#0A0A0A]">¿Eliminar socio?</h2>
-            </div>
-            <p className="text-sm text-gray-500 mb-6">
-              Se eliminará <strong>{confirmDelete.nombreEmpresa}</strong>. Esta acción no se puede deshacer.
-            </p>
-            <div className="flex gap-3">
-              <button
-                onClick={() => setConfirmDelete(null)}
-                className="flex-1 py-2 border-2 border-gray-200 rounded-lg text-sm font-semibold hover:bg-gray-50 transition"
-              >
-                Cancelar
-              </button>
-              <button
-                onClick={() => deleteSocio(confirmDelete.id)}
-                className="flex-1 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-bold transition"
-              >
-                Eliminar
-              </button>
-            </div>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       )}
+
+      {/* ── Footer ────────────────────────────────────── */}
+      <p className="mt-10 text-center text-white/30 text-[10px] uppercase tracking-[0.4em] font-bold">
+        CASATIC • Panel Administrativo © 2026
+      </p>
     </div>
   );
 }

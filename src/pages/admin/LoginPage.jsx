@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
-import lunaLogo from '../../img/lunalogo.png';
 import logo from '../../img/logo.png';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { LogIn, User, Lock, Home, Globe } from 'lucide-react';
+import { LogIn, User, Lock, Home, Globe, Eye, EyeOff } from 'lucide-react';
+
+
 
 const translations = {
   es: {
@@ -38,6 +39,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
   const { login, loading } = useAuth();
   const navigate = useNavigate();
 
@@ -112,16 +114,11 @@ export default function LoginPage() {
       {/* Tarjeta de login */}
       <div className="bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] p-8 w-[350px]">
         
-        {/* Logos Verticales */}
+        {/* Logo */}
         <div className="flex flex-col items-center mb-6 gap-2">
           <img
-            src={lunaLogo} 
-            alt="LunaLogo"
-            className="w-[140px] cursor-pointer hover:opacity-80 transition duration-300"
-          />
-          <img
-            src={logo} 
-            alt="Logo"
+            src={logo}
+            alt="Logo CASATIC"
             className="w-[170px] cursor-pointer hover:opacity-80 transition duration-300"
           />
         </div>
@@ -148,13 +145,22 @@ export default function LoginPage() {
           <div className="relative mb-3">
             <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-[#0E3877]" size={18} />
             <input
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full pl-10 pr-3 py-2.5 border-2 border-gray-100 rounded-lg focus:border-[#0C9EC6] focus:outline-none transition-all placeholder:text-gray-400 text-[#0A0A0A] font-medium"
+              className="w-full pl-10 pr-10 py-2.5 border-2 border-gray-100 rounded-lg focus:border-[#0C9EC6] focus:outline-none transition-all placeholder:text-gray-400 text-[#0A0A0A] font-medium"
               placeholder={t.pass_placeholder}
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword((v) => !v)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#0E3877] transition-colors"
+              tabIndex={-1}
+              aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+            >
+              {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+            </button>
           </div>
 
           <div className="flex items-center justify-between mb-8">

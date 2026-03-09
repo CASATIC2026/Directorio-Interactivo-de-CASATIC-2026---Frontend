@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { Building2, Search, Home, Menu, X, ChevronRight } from 'lucide-react';
+import { Search, Home, Menu, X, ChevronRight, Grid3X3, Mail, HelpCircle } from 'lucide-react';
+import colorLogo from '../../img/Full Color v2@4x.png';
+import reverseLogo from '../../img/Reverse - v2@4x.png';
 
 export default function PublicLayout() {
   const [scrolled, setScrolled] = useState(false);
@@ -18,6 +20,9 @@ export default function PublicLayout() {
   const navLinks = [
     { to: '/', label: 'Inicio', icon: Home },
     { to: '/directorio', label: 'Directorio', icon: Search },
+    { to: '/categorias', label: 'Categorías', icon: Grid3X3 },
+    { to: '/contacto', label: 'Contacto', icon: Mail },
+    { to: '/faq', label: 'FAQ', icon: HelpCircle },
   ];
 
   const isActive = (path) =>
@@ -35,25 +40,13 @@ export default function PublicLayout() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <Link to="/" className="flex items-center gap-2.5 group">
-              <div className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-300 ${
-                scrolled
-                  ? 'bg-casatic-600 shadow-lg shadow-casatic-600/25'
-                  : 'bg-white/20 backdrop-blur-sm'
-              }`}>
-                <Building2 size={20} className="text-white" />
-              </div>
-              <div className="flex flex-col">
-                <span className={`text-lg font-bold leading-tight tracking-tight transition-colors duration-300 ${
-                  scrolled ? 'text-surface-900' : 'text-white'
-                }`}>
-                  CASATIC
-                </span>
-                <span className={`text-[10px] font-medium uppercase tracking-widest leading-none transition-colors duration-300 ${
-                  scrolled ? 'text-surface-400' : 'text-white/60'
-                }`}>
-                  Directorio 2026
-                </span>
+            <Link to="/" className="flex items-center group">
+              <div className="h-10 flex items-center">
+                <img
+                  src={scrolled ? colorLogo : reverseLogo}
+                  alt="CASATIC"
+                  className="h-full w-auto object-contain transition-all duration-300"
+                />
               </div>
             </Link>
 
@@ -136,8 +129,8 @@ export default function PublicLayout() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
               <div className="flex items-center gap-2.5 mb-4">
-                <div className="w-9 h-9 bg-casatic-600 rounded-xl flex items-center justify-center">
-                  <Building2 size={20} className="text-white" />
+                <div className="h-9 flex items-center">
+                  <img src={reverseLogo} alt="CASATIC" className="h-full w-auto object-contain" />
                 </div>
                 <div>
                   <p className="font-bold text-white">CASATIC</p>
@@ -145,7 +138,7 @@ export default function PublicLayout() {
                 </div>
               </div>
               <p className="text-sm leading-relaxed text-surface-500">
-                Cámara de Tecnologías de Información y Comunicación de Honduras.
+                Cámara de Tecnologías de Información y Comunicación de El Salvador.
                 Conectando empresas líderes en tecnología.
               </p>
             </div>
@@ -161,7 +154,7 @@ export default function PublicLayout() {
               <h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">Contacto</h4>
               <ul className="space-y-2 text-sm">
                 <li>info@casatic.org</li>
-                <li>Tegucigalpa, Honduras</li>
+                <li>San Salvador, El Salvador</li>
               </ul>
             </div>
           </div>

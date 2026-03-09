@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../../api/client';
+import { useDebounce } from '../../hooks/useDebounce';
 import {
   Search, SlidersHorizontal, Building2, ChevronLeft, ChevronRight,
   ArrowRight, MapPin, X
@@ -32,9 +33,15 @@ export default function DirectorioPage() {
   const [totalPages, setTotalPages] = useState(1);
   const [query, setQuery] = useState('');
   const [especialidad, setEspecialidad] = useState('');
+  const [servicio, setServicio] = useState('');
   const [especialidades, setEspecialidades] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showMore, setShowMore] = useState(false);
   const pageSize = 12;
+
+  // Debounce: espera 400ms tras dejar de escribir antes de consultar la API
+  const debouncedQuery = useDebounce(query);
+  const debouncedServicio = useDebounce(servicio);
 
   useEffect(() => {
     api.get('/directorio/especialidades').then((res) => setEspecialidades(res.data)).catch(() => {});
@@ -43,17 +50,18 @@ export default function DirectorioPage() {
   useEffect(() => {
     setLoading(true);
     const params = { page, pageSize };
-    if (query) params.query = query;
+    if (debouncedQuery) params.query = debouncedQuery;
     if (especialidad) params.especialidad = especialidad;
+    if (debouncedServicio) params.servicio = debouncedServicio;
     api.get('/directorio', { params })
       .then((res) => { setSocios(res.data.items); setTotal(res.data.total); setTotalPages(res.data.totalPages); })
       .catch(() => setSocios([]))
       .finally(() => setLoading(false));
-  }, [page, query, especialidad]);
+  }, [page, debouncedQuery, especialidad, debouncedServicio]);
 
   const handleSearch = (e) => { e.preventDefault(); setPage(1); };
-  const clearFilters = () => { setQuery(''); setEspecialidad(''); setPage(1); };
-  const hasFilters = query || especialidad;
+  const clearFilters = () => { setQuery(''); setEspecialidad(''); setServicio(''); setPage(1); };
+  const hasFilters = query || especialidad || servicio;
 
   return (
     <div className="bg-mesh min-h-screen">
@@ -88,7 +96,7 @@ export default function DirectorioPage() {
               className="input-field pl-10"
             />
           </div>
-          <div className="relative min-w-[220px]">
+          <div className="relative min-w-[200px]">
             <SlidersHorizontal size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-surface-400" />
             <select
               value={especialidad}
@@ -100,6 +108,16 @@ export default function DirectorioPage() {
                 <option key={esp} value={esp}>{esp}</option>
               ))}
             </select>
+          </div>
+          {/* Filtro por servicio */}
+          <div className="relative min-w-[180px]">
+            <input
+              type="text"
+              placeholder="Filtrar por servicio…"
+              value={servicio}
+              onChange={(e) => { setServicio(e.target.value); setPage(1); }}
+              className="input-field"
+            />
           </div>
           {hasFilters && (
             <button type="button" onClick={clearFilters} className="btn-ghost btn-sm text-surface-500">
@@ -118,9 +136,10 @@ export default function DirectorioPage() {
             )}
           </p>
           {hasFilters && !loading && (
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               {query && <span className="badge-primary">&ldquo;{query}&rdquo;</span>}
               {especialidad && <span className="badge-primary">{especialidad}</span>}
+              {servicio && <span className="badge-primary">Servicio: {servicio}</span>}
             </div>
           )}
         </div>

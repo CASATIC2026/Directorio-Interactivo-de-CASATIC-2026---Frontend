@@ -65,10 +65,10 @@ label {
   margin-bottom: 0.2rem;
 }
 
-input,
-select,
-textarea,
-button {
+/* Scoped only to legacy pages that don't use Tailwind inputs */
+.form-card input,
+.form-card select,
+.form-card textarea {
   width: 100%;
   border-radius: 6px;
   border: 1px solid #d1d5db;
@@ -77,22 +77,21 @@ button {
   font-family: inherit;
 }
 
-button {
+.form-card button[type="submit"] {
+  width: 100%;
+  border-radius: 6px;
+  border: none;
+  padding: 0.6rem;
+  margin-bottom: 0.7rem;
+  font-family: inherit;
   background: #2563eb;
   color: #ffffff;
-  border: none;
   cursor: pointer;
 }
 
-button:disabled {
+.form-card button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
-}
-
-.btn-secondary {
-  background: #6b7280;
-  width: auto;
-  padding: 0.45rem 0.7rem;
 }
 
 .grid-cards {
@@ -132,4 +131,14 @@ button:disabled {
 .alert.success {
   background: #dcfce7;
   color: #166534;
+}
+
+/* ── Responsive helpers for legacy layout ── */
+@media (max-width: 640px) {
+  .grid-cards {
+    grid-template-columns: 1fr;
+  }
+  .grid-four {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }

@@ -3,232 +3,338 @@ import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../api/client';
 import {
   Save, ArrowLeft, Building2, Globe, Phone, MapPin,
-  Tag, Briefcase, Image, Share2, AlertCircle, Loader2
+  Tag, Briefcase, Image, Share2, AlertCircle, Loader2,
+  Facebook, Linkedin, Twitter, Instagram, Youtube
 } from 'lucide-react';
 
 export default function SocioFormPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const isEditing = Boolean(id);
+  const isEdit = Boolean(id);
 
   const [form, setForm] = useState({
     nombreEmpresa: '',
     slug: '',
     descripcion: '',
+    especialidades: '',
+    servicios: '',
     telefono: '',
     direccion: '',
     logoUrl: '',
     marcasRepresenta: '',
-    especialidades: '',
-    servicios: '',
-    redesSociales: '{}',
+    // Redes sociales — campos individuales
+    rsWebsite: '',
+    rsFacebook: '',
+    rsLinkedin: '',
+    rsTwitter: '',
+    rsInstagram: '',
+    rsYoutube: '',
   });
-  const [loading, setLoading] = useState(isEditing);
+  const [error, setError] = useState(null);
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState('');
+  const [loadingData, setLoadingData] = useState(isEdit);
 
   useEffect(() => {
-    if (!isEditing) return;
-    api.get(`/socios/${id}`)
-      .then((r) => {
-        const s = r.data;
+    if (isEdit) {
+      api.get(`/socios/${id}`).then((res) => {
+        const s = res.data;
         setForm({
-          nombreEmpresa: s.nombreEmpresa || '',
-          slug: s.slug || '',
-          descripcion: s.descripcion || '',
+          nombreEmpresa: s.nombreEmpresa,
+          slug: s.slug,
+          descripcion: s.descripcion,
+          especialidades: (s.especialidades || []).join(', '),
+          servicios: (s.servicios || []).join(', '),
           telefono: s.telefono || '',
           direccion: s.direccion || '',
           logoUrl: s.logoUrl || '',
           marcasRepresenta: s.marcasRepresenta || '',
-          especialidades: (s.especialidades || []).join(', '),
-          servicios: (s.servicios || []).join(', '),
-          redesSociales: s.redesSociales || '{}',
+          // Parsear redesSociales JSON a campos individuales
+          ...(() => {
+            let rs = {};
+            try { rs = typeof s.redesSociales === 'string' ? JSON.parse(s.redesSociales) : (s.redesSociales || {}); } catch {}
+            return {
+              rsWebsite: rs.website || '',
+              rsFacebook: rs.facebook || '',
+              rsLinkedin: rs.linkedin || '',
+              rsTwitter: rs.twitter || '',
+              rsInstagram: rs.instagram || '',
+              rsYoutube: rs.youtube || '',
+            };
+          })(),
         });
-      })
-      .catch(() => setError('No se pudo cargar el socio.'))
-      .finally(() => setLoading(false));
-  }, [id, isEditing]);
+      }).finally(() => setLoadingData(false));
+    }
+  }, [id]);
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (field) => (e) =>
+    setForm({ ...form, [field]: e.target.value });
+
+  const autoSlug = () => {
+    const slug = form.nombreEmpresa
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+    setForm({ ...form, slug });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError(null);
     setSaving(true);
+
+    const redesSociales = JSON.stringify(      Object.fromEntries(
+        Object.entries({
+          website: form.rsWebsite,
+          facebook: form.rsFacebook,
+          linkedin: form.rsLinkedin,
+          twitter: form.rsTwitter,
+          instagram: form.rsInstagram,
+          youtube: form.rsYoutube,
+        }).filter(([, v]) => v.trim() !== '')
+      )
+    );
+
     const payload = {
-      ...form,
+      nombreEmpresa: form.nombreEmpresa,
+      slug: form.slug,
+      descripcion: form.descripcion,
+      telefono: form.telefono,
+      direccion: form.direccion,
+      logoUrl: form.logoUrl,
+      redesSociales,
       especialidades: form.especialidades.split(',').map((s) => s.trim()).filter(Boolean),
       servicios: form.servicios.split(',').map((s) => s.trim()).filter(Boolean),
     };
+
     try {
-      if (isEditing) {
+      if (isEdit) {
         await api.put(`/socios/${id}`, payload);
       } else {
         await api.post('/socios', payload);
       }
       navigate('/admin/socios');
     } catch (err) {
-      setError(err.response?.data?.message || 'Error al guardar el socio.');
+      setError(err.response?.data?.message || 'Error al guardar');
     } finally {
       setSaving(false);
     }
   };
 
-  if (loading) {
+  if (loadingData) {
     return (
-      <div className="flex justify-center items-center py-20">
-        <div className="w-10 h-10 border-4 border-[#0E3877]/20 border-t-[#0E3877] rounded-full animate-spin" />
+      <div className="min-h-screen bg-[#0E3877] p-8 animate-pulse">
+        <div className="max-w-3xl mx-auto space-y-6">
+          <div className="h-10 bg-white/10 rounded-xl w-48" />
+          <div className="h-[500px] bg-white rounded-3xl" />
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="p-6 max-w-2xl mx-auto">
-      <div className="flex items-center gap-3 mb-6">
-        <button onClick={() => navigate('/admin/socios')} className="p-2 hover:bg-gray-100 rounded-lg transition">
-          <ArrowLeft size={20} className="text-gray-500" />
-        </button>
-        <div>
-          <h1 className="text-2xl font-bold text-[#0A0A0A] flex items-center gap-2">
-            <Building2 size={24} className="text-[#0E3877]" />
-            {isEditing ? 'Editar Socio' : 'Nuevo Socio'}
-          </h1>
+    <div className="min-h-screen bg-[#0E3877] p-4 sm:p-8 font-['Roboto'] font-normal text-white">
+      <style>
+        {`@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');`}
+      </style>
+
+      <div className="max-w-4xl mx-auto">
+        {/* ── Header ────────────────────────────────────── */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-8">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => navigate(-1)}
+              className="p-2 hover:bg-white/10 rounded-xl transition-colors"
+            >
+              <ArrowLeft size={24} />
+            </button>
+            <div>
+              <h1 className="text-3xl font-bold tracking-tight flex items-center gap-3">
+                <Building2 size={32} className="text-[#0C9EC6]" />
+                {isEdit ? 'Editar Socio' : 'Nuevo Socio'}
+              </h1>
+              <p className="text-white/60 text-sm mt-1">Configuración del perfil corporativo</p>
+            </div>
+          </div>
         </div>
+
+        {/* ── Formulario (Fondo Blanco) ─────────────────── */}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="bg-white rounded-3xl shadow-2xl p-6 sm:p-10 text-[#0A0A0A] border border-white/10">
+            
+            {/* Sección: Información General */}
+            <div className="mb-10">
+              <h3 className="text-[#0E3877] font-bold uppercase text-xs tracking-widest flex items-center gap-2 mb-6">
+                <Tag size={16} className="text-[#0C9EC6]" /> Información General
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="relative">
+                  <label className="block text-[11px] font-bold text-gray-400 uppercase mb-2 ml-1">Nombre Empresa *</label>
+                  <input
+                    type="text" required value={form.nombreEmpresa}
+                    onChange={handleChange('nombreEmpresa')}
+                    onBlur={!isEdit ? autoSlug : undefined}
+                    className="w-full px-4 py-3 border-2 border-gray-100 rounded-xl focus:border-[#0C9EC6] focus:outline-none transition-all font-normal"
+                    placeholder="Ej. Tech Solutions"
+                  />
+                </div>
+                <div className="relative">
+                  <label className="block text-[11px] font-bold text-gray-400 uppercase mb-2 ml-1 flex items-center gap-1">
+                    <Globe size={12} /> Slug (URL) *
+                  </label>
+                  <input
+                    type="text" required value={form.slug}
+                    onChange={handleChange('slug')}
+                    className="w-full px-4 py-3 border-2 border-gray-100 rounded-xl focus:border-[#0C9EC6] focus:outline-none transition-all font-mono text-sm bg-gray-50"
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-[11px] font-bold text-gray-400 uppercase mb-2 ml-1">Descripción</label>
+                  <textarea
+                    rows={3} value={form.descripcion}
+                    onChange={handleChange('descripcion')}
+                    className="w-full px-4 py-3 border-2 border-gray-100 rounded-xl focus:border-[#0C9EC6] focus:outline-none transition-all font-normal resize-none"
+                    placeholder="Breve reseña de la organización..."
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Sección: Especialidades */}
+            <div className="mb-10">
+              <h3 className="text-[#0E3877] font-bold uppercase text-xs tracking-widest flex items-center gap-2 mb-6">
+                <Briefcase size={16} className="text-[#0C9EC6]" /> Capacidades Técnicas
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-[11px] font-bold text-gray-400 uppercase mb-2 ml-1">Especialidades</label>
+                  <input
+                    type="text" value={form.especialidades}
+                    onChange={handleChange('especialidades')}
+                    className="w-full px-4 py-3 border-2 border-gray-100 rounded-xl focus:border-[#0C9EC6] focus:outline-none transition-all font-normal"
+                    placeholder="IA, Cloud, Ciberseguridad..."
+                  />
+                </div>
+                <div>
+                  <label className="block text-[11px] font-bold text-gray-400 uppercase mb-2 ml-1">Servicios</label>
+                  <input
+                    type="text" value={form.servicios}
+                    onChange={handleChange('servicios')}
+                    className="w-full px-4 py-3 border-2 border-gray-100 rounded-xl focus:border-[#0C9EC6] focus:outline-none transition-all font-normal"
+                    placeholder="Desarrollo Web, Consultoría..."
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Sección: Contacto y Media */}
+            <div className="mb-6">
+              <h3 className="text-[#0E3877] font-bold uppercase text-xs tracking-widest flex items-center gap-2 mb-6">
+                <Phone size={16} className="text-[#0C9EC6]" /> Contacto y Presencia Digital
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="relative">
+                  <Phone className="absolute left-3 top-[38px] text-[#0C9EC6]" size={18} />
+                  <label className="block text-[11px] font-bold text-gray-400 uppercase mb-2 ml-1">Teléfono</label>
+                  <input type="text" value={form.telefono} onChange={handleChange('telefono')}
+                    className="w-full pl-10 pr-4 py-3 border-2 border-gray-100 rounded-xl focus:border-[#0C9EC6] focus:outline-none transition-all font-normal" 
+                    placeholder="+503 2222-0000" />
+                </div>
+                <div className="relative">
+                  <MapPin className="absolute left-3 top-[38px] text-[#0C9EC6]" size={18} />
+                  <label className="block text-[11px] font-bold text-gray-400 uppercase mb-2 ml-1">Dirección</label>
+                  <input type="text" value={form.direccion} onChange={handleChange('direccion')}
+                    className="w-full pl-10 pr-4 py-3 border-2 border-gray-100 rounded-xl focus:border-[#0C9EC6] focus:outline-none transition-all font-normal" 
+                    placeholder="San Salvador, El Salvador" />
+                </div>
+                <div className="md:col-span-2 relative">
+                  <Image className="absolute left-3 top-[38px] text-[#0C9EC6]" size={18} />
+                  <label className="block text-[11px] font-bold text-gray-400 uppercase mb-2 ml-1">URL Logo Corporativo</label>
+                  <input type="text" value={form.logoUrl} onChange={handleChange('logoUrl')}
+                    className="w-full pl-10 pr-4 py-3 border-2 border-gray-100 rounded-xl focus:border-[#0C9EC6] focus:outline-none transition-all font-normal" 
+                    placeholder="https://midominio.com/logo.png" />
+                </div>
+              </div>
+            </div>
+
+            {/* Sección: Redes Sociales */}
+            <div className="mb-6">
+              <h3 className="text-[#0E3877] font-bold uppercase text-xs tracking-widest flex items-center gap-2 mb-6">
+                <Share2 size={16} className="text-[#0C9EC6]" /> Redes Sociales y Presencia Web
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="relative">
+                  <Globe size={16} className="absolute left-3 top-[38px] text-[#0C9EC6]" />
+                  <label className="block text-[11px] font-bold text-gray-400 uppercase mb-2 ml-1">Sitio Web</label>
+                  <input type="url" value={form.rsWebsite} onChange={handleChange('rsWebsite')}
+                    className="w-full pl-10 pr-4 py-3 border-2 border-gray-100 rounded-xl focus:border-[#0C9EC6] focus:outline-none transition-all font-normal"
+                    placeholder="https://miempresa.com" />
+                </div>
+                <div className="relative">
+                  <Facebook size={16} className="absolute left-3 top-[38px] text-[#1877F2]" />
+                  <label className="block text-[11px] font-bold text-gray-400 uppercase mb-2 ml-1">Facebook</label>
+                  <input type="url" value={form.rsFacebook} onChange={handleChange('rsFacebook')}
+                    className="w-full pl-10 pr-4 py-3 border-2 border-gray-100 rounded-xl focus:border-[#0C9EC6] focus:outline-none transition-all font-normal"
+                    placeholder="https://facebook.com/miempresa" />
+                </div>
+                <div className="relative">
+                  <Linkedin size={16} className="absolute left-3 top-[38px] text-[#0A66C2]" />
+                  <label className="block text-[11px] font-bold text-gray-400 uppercase mb-2 ml-1">LinkedIn</label>
+                  <input type="url" value={form.rsLinkedin} onChange={handleChange('rsLinkedin')}
+                    className="w-full pl-10 pr-4 py-3 border-2 border-gray-100 rounded-xl focus:border-[#0C9EC6] focus:outline-none transition-all font-normal"
+                    placeholder="https://linkedin.com/company/miempresa" />
+                </div>
+                <div className="relative">
+                  <Twitter size={16} className="absolute left-3 top-[38px] text-[#1DA1F2]" />
+                  <label className="block text-[11px] font-bold text-gray-400 uppercase mb-2 ml-1">Twitter / X</label>
+                  <input type="url" value={form.rsTwitter} onChange={handleChange('rsTwitter')}
+                    className="w-full pl-10 pr-4 py-3 border-2 border-gray-100 rounded-xl focus:border-[#0C9EC6] focus:outline-none transition-all font-normal"
+                    placeholder="https://twitter.com/miempresa" />
+                </div>
+                <div className="relative">
+                  <Instagram size={16} className="absolute left-3 top-[38px] text-[#E1306C]" />
+                  <label className="block text-[11px] font-bold text-gray-400 uppercase mb-2 ml-1">Instagram</label>
+                  <input type="url" value={form.rsInstagram} onChange={handleChange('rsInstagram')}
+                    className="w-full pl-10 pr-4 py-3 border-2 border-gray-100 rounded-xl focus:border-[#0C9EC6] focus:outline-none transition-all font-normal"
+                    placeholder="https://instagram.com/miempresa" />
+                </div>
+                <div className="relative">
+                  <Youtube size={16} className="absolute left-3 top-[38px] text-[#FF0000]" />
+                  <label className="block text-[11px] font-bold text-gray-400 uppercase mb-2 ml-1">YouTube</label>
+                  <input type="url" value={form.rsYoutube} onChange={handleChange('rsYoutube')}
+                    className="w-full pl-10 pr-4 py-3 border-2 border-gray-100 rounded-xl focus:border-[#0C9EC6] focus:outline-none transition-all font-normal"
+                    placeholder="https://youtube.com/@miempresa" />
+                </div>
+              </div>
+            </div>
+
+            {error && (
+              <div className="bg-red-50 text-red-500 text-sm p-4 rounded-xl border border-red-100 flex items-center gap-3 mb-6 animate-shake font-normal">
+                <AlertCircle size={20} /> {error}
+              </div>
+            )}
+
+            {/* Acciones del formulario */}
+            <div className="flex flex-col sm:flex-row items-center gap-4 pt-4 border-t border-gray-100">
+              <button
+                type="submit" disabled={saving}
+                className="w-full sm:w-auto px-10 py-4 bg-[#0C9EC6] hover:bg-[#0E3877] text-white font-bold rounded-2xl transition-all shadow-lg shadow-[#0C9EC6]/20 flex items-center justify-center gap-2 active:scale-95 disabled:opacity-70"
+              >
+                {saving ? <Loader2 size={20} className="animate-spin" /> : <Save size={20} />}
+                {saving ? 'Procesando...' : 'Guardar Socio'}
+              </button>
+              <button
+                type="button"
+                onClick={() => navigate('/admin/socios')}
+                className="w-full sm:w-auto px-10 py-4 bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold rounded-2xl transition-all active:scale-95"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
-
-      {error && (
-        <div className="mb-4 flex items-center gap-2 text-red-500 text-sm bg-red-50 p-3 rounded-lg border border-red-100">
-          <AlertCircle size={16} /> {error}
-        </div>
-      )}
-
-      <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 space-y-4">
-        {/* Nombre */}
-        <div>
-          <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wider">
-            Nombre de Empresa *
-          </label>
-          <div className="relative">
-            <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 text-[#0E3877]" size={16} />
-            <input name="nombreEmpresa" required value={form.nombreEmpresa} onChange={handleChange}
-              className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#0C9EC6]"
-              placeholder="Ej: TechCorp S.R.L." />
-          </div>
-        </div>
-
-        {/* Slug */}
-        <div>
-          <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wider">
-            Slug <span className="text-gray-300">(auto-generado si se deja vacío)</span>
-          </label>
-          <input name="slug" value={form.slug} onChange={handleChange}
-            className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#0C9EC6]"
-            placeholder="techcorp-srl" />
-        </div>
-
-        {/* Descripción */}
-        <div>
-          <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wider">
-            Descripción <span className="text-gray-300">(máx. 150 palabras)</span>
-          </label>
-          <textarea name="descripcion" value={form.descripcion} onChange={handleChange} rows={3}
-            className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#0C9EC6] resize-none"
-            placeholder="Descripción de la empresa..." />
-        </div>
-
-        {/* Teléfono & Dirección */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wider">Teléfono</label>
-            <div className="relative">
-              <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-[#0E3877]" size={14} />
-              <input name="telefono" value={form.telefono} onChange={handleChange}
-                className="w-full pl-8 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#0C9EC6]"
-                placeholder="+591..." />
-            </div>
-          </div>
-          <div>
-            <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wider">Dirección</label>
-            <div className="relative">
-              <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-[#0E3877]" size={14} />
-              <input name="direccion" value={form.direccion} onChange={handleChange}
-                className="w-full pl-8 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#0C9EC6]"
-                placeholder="Av. ..." />
-            </div>
-          </div>
-        </div>
-
-        {/* Logo URL */}
-        <div>
-          <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wider">Logo URL</label>
-          <div className="relative">
-            <Image className="absolute left-3 top-1/2 -translate-y-1/2 text-[#0E3877]" size={14} />
-            <input name="logoUrl" value={form.logoUrl} onChange={handleChange}
-              className="w-full pl-8 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#0C9EC6]"
-              placeholder="https://..." />
-          </div>
-        </div>
-
-        {/* Especialidades */}
-        <div>
-          <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wider">
-            Especialidades <span className="text-gray-300">(separadas por coma)</span>
-          </label>
-          <div className="relative">
-            <Tag className="absolute left-3 top-1/2 -translate-y-1/2 text-[#0E3877]" size={14} />
-            <input name="especialidades" value={form.especialidades} onChange={handleChange}
-              className="w-full pl-8 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#0C9EC6]"
-              placeholder="Software, IoT, Ciberseguridad" />
-          </div>
-        </div>
-
-        {/* Servicios */}
-        <div>
-          <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wider">
-            Servicios <span className="text-gray-300">(separados por coma)</span>
-          </label>
-          <div className="relative">
-            <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 text-[#0E3877]" size={14} />
-            <input name="servicios" value={form.servicios} onChange={handleChange}
-              className="w-full pl-8 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#0C9EC6]"
-              placeholder="Consultoría, Desarrollo, Soporte" />
-          </div>
-        </div>
-
-        {/* Marcas */}
-        <div>
-          <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wider">
-            Marcas que representa <span className="text-gray-300">(máx. 50 palabras)</span>
-          </label>
-          <input name="marcasRepresenta" value={form.marcasRepresenta} onChange={handleChange}
-            className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#0C9EC6]"
-            placeholder="Cisco, Microsoft..." />
-        </div>
-
-        {/* Redes Sociales */}
-        <div>
-          <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wider flex items-center gap-1">
-            <Share2 size={12} /> Redes Sociales <span className="text-gray-300">(JSON)</span>
-          </label>
-          <textarea name="redesSociales" value={form.redesSociales} onChange={handleChange} rows={2}
-            className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm font-mono focus:outline-none focus:border-[#0C9EC6] resize-none"
-            placeholder='{"linkedin":"https://...","facebook":"https://..."}' />
-        </div>
-
-        <div className="flex gap-3 pt-2">
-          <button type="button" onClick={() => navigate('/admin/socios')}
-            className="flex-1 py-2.5 border-2 border-gray-200 text-gray-600 rounded-lg text-sm font-semibold hover:bg-gray-50 transition">
-            Cancelar
-          </button>
-          <button type="submit" disabled={saving}
-            className="flex-1 py-2.5 bg-[#0E3877] hover:bg-[#0C9EC6] text-white rounded-lg text-sm font-bold flex items-center justify-center gap-2 transition active:scale-95">
-            {saving
-              ? <Loader2 size={18} className="animate-spin" />
-              : <><Save size={16} /> {isEditing ? 'Guardar cambios' : 'Crear socio'}</>}
-          </button>
-        </div>
-      </form>
     </div>
   );
 }
-

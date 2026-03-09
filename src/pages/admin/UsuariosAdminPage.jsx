@@ -2,239 +2,232 @@ import { useState, useEffect } from 'react';
 import api from '../../api/client';
 import {
   Users, Plus, ToggleLeft, ToggleRight, Trash2, UserPlus,
-  AlertCircle, X, ChevronDown
+  AlertCircle, X, ChevronDown, Building2, Mail, Shield
 } from 'lucide-react';
+
+function TableSkeleton() {
+  return (
+    <div className="bg-white rounded-2xl p-6 animate-pulse shadow-sm font-['Roboto']">
+      {Array.from({ length: 4 }).map((_, i) => (
+        <div key={i} className="flex gap-4 mb-4">
+          <div className="h-12 bg-gray-100 rounded-xl flex-1" />
+          <div className="h-12 bg-gray-100 rounded-xl w-24" />
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default function UsuariosAdminPage() {
   const [usuarios, setUsuarios] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [showModal, setShowModal] = useState(false);
-  const [confirmDelete, setConfirmDelete] = useState(null);
   const [socios, setSocios] = useState([]);
-  const [newUser, setNewUser] = useState({ email: '', rol: 'Usuario', socioId: '' });
-  const [saving, setSaving] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [showForm, setShowForm] = useState(false);
+  const [form, setForm] = useState({ email: '', rol: 'Socio', socioId: '' });
+  const [error, setError] = useState(null);
 
-  const fetchUsuarios = () => {
+  const loadData = () => {
     setLoading(true);
-    api.get('/usuarios')
-      .then((r) => setUsuarios(r.data))
-      .catch(() => setError('No se pudieron cargar los usuarios.'))
+    Promise.all([api.get('/usuarios'), api.get('/socios')])
+      .then(([uRes, sRes]) => {
+        setUsuarios(uRes.data);
+        setSocios(sRes.data);
+      })
       .finally(() => setLoading(false));
   };
 
-  useEffect(() => {
-    fetchUsuarios();
-    api.get('/socios').then((r) => setSocios(r.data)).catch(() => {});
-  }, []);
+  useEffect(loadData, []);
 
-  const toggleActivo = async (u) => {
-    try {
-      await api.patch(`/usuarios/${u.id}/activo`, { activo: !u.activo });
-      fetchUsuarios();
-    } catch {
-      setError('Error al cambiar el estado del usuario.');
-    }
+  const toggleActivo = async (id) => {
+    await api.patch(`/usuarios/${id}/toggle-activo`);
+    loadData();
   };
 
-  const deleteUsuario = async (id) => {
-    try {
-      await api.delete(`/usuarios/${id}`);
-      setConfirmDelete(null);
-      fetchUsuarios();
-    } catch {
-      setError('Error al eliminar el usuario.');
-    }
+  const eliminar = async (id) => {
+    if (!confirm('¿Eliminar este usuario?')) return;
+    await api.delete(`/usuarios/${id}`);
+    loadData();
   };
 
   const handleCreate = async (e) => {
     e.preventDefault();
-    setSaving(true);
-    setError('');
+    setError(null);
     try {
       await api.post('/usuarios', {
-        email: newUser.email,
-        rol: newUser.rol,
-        socioId: newUser.socioId || null,
+        email: form.email,
+        rol: form.rol,
+        socioId: form.socioId || null,
       });
-      setShowModal(false);
-      setNewUser({ email: '', rol: 'Usuario', socioId: '' });
-      fetchUsuarios();
+      setShowForm(false);
+      setForm({ email: '', rol: 'Socio', socioId: '' });
+      loadData();
     } catch (err) {
-      setError(err.response?.data?.message || 'Error al crear el usuario.');
-    } finally {
-      setSaving(false);
+      setError(err.response?.data?.message || 'Error al crear usuario');
     }
   };
 
   return (
-    <div className="p-6">
-      <div className="flex items-center justify-between mb-6">
+    <div className="min-h-screen bg-[#0E3877] p-4 sm:p-8 font-['Roboto'] font-normal text-white">
+      <style>
+        {`@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');`}
+      </style>
+
+      {/* ── Header ────────────────────────────────────── */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-[#0A0A0A] flex items-center gap-2">
-            <Users size={26} className="text-[#0E3877]" /> Usuarios
+          <h1 className="text-3xl font-bold flex items-center gap-3 tracking-tight">
+            <Users size={32} className="text-[#0C9EC6]" />
+            Gestión de Usuarios
           </h1>
-          <p className="text-gray-400 text-sm mt-1">Gestión de accesos al sistema</p>
+          <p className="text-white/60 text-sm mt-1 font-normal">{usuarios.length} usuarios registrados</p>
         </div>
-        <button
-          onClick={() => setShowModal(true)}
-          className="bg-[#0E3877] hover:bg-[#0C9EC6] text-white text-sm font-bold px-4 py-2 rounded-lg flex items-center gap-2 transition"
+        <button 
+          onClick={() => setShowForm(!showForm)} 
+          className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all duration-300 shadow-lg active:scale-95 ${
+            showForm ? 'bg-[#0A0A0A] text-white' : 'bg-[#0C9EC6] hover:bg-white hover:text-[#0E3877] text-white'
+          }`}
         >
-          <UserPlus size={16} /> Nuevo Usuario
+          {showForm ? <X size={20} /> : <Plus size={20} />}
+          {showForm ? 'Cancelar' : 'Nuevo Usuario'}
         </button>
       </div>
 
-      {error && (
-        <div className="mb-4 flex items-center gap-2 text-red-500 text-sm bg-red-50 p-3 rounded-lg border border-red-100">
-          <AlertCircle size={16} /> {error}
-          <button onClick={() => setError('')} className="ml-auto"><X size={14} /></button>
+      {/* ── Formulario (Fondo Blanco) ─────────────────── */}
+      {showForm && (
+        <div className="bg-white rounded-2xl shadow-xl p-8 mb-8 max-w-4xl mx-auto animate-fade-in-down text-[#0A0A0A]">
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-12 h-12 bg-[#0C9EC6]/10 rounded-xl flex items-center justify-center">
+              <UserPlus size={24} className="text-[#0C9EC6]" />
+            </div>
+            <div>
+              <h3 className="text-xl font-bold tracking-tight text-[#0E3877]">Crear Nuevo Acceso</h3>
+              <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">Pass inicial: Socio123!</p>
+            </div>
+          </div>
+
+          <form onSubmit={handleCreate} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-[#0C9EC6]" size={18} />
+                <input
+                  type="email" required placeholder="Email del usuario"
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  className="w-full pl-10 pr-3 py-3 border-2 border-gray-100 rounded-xl focus:border-[#0C9EC6] focus:outline-none transition-all text-gray-700 font-normal"
+                />
+              </div>
+
+              <div className="relative">
+                <Shield className="absolute left-3 top-1/2 -translate-y-1/2 text-[#0C9EC6]" size={18} />
+                <select
+                  value={form.rol}
+                  onChange={(e) => setForm({ ...form, rol: e.target.value })}
+                  className="w-full pl-10 pr-10 py-3 border-2 border-gray-100 rounded-xl focus:border-[#0C9EC6] appearance-none bg-white text-gray-700 font-normal"
+                >
+                  <option value="Socio">Rol: Socio</option>
+                  <option value="Admin">Rol: Administrador</option>
+                </select>
+                <ChevronDown size={18} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+              </div>
+
+              <div className="relative">
+                <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 text-[#0C9EC6]" size={18} />
+                <select
+                  value={form.socioId}
+                  onChange={(e) => setForm({ ...form, socioId: e.target.value })}
+                  className="w-full pl-10 pr-10 py-3 border-2 border-gray-100 rounded-xl focus:border-[#0C9EC6] appearance-none bg-white text-gray-700 font-normal"
+                >
+                  <option value="">Sin empresa asociada</option>
+                  {socios.map((s) => (
+                    <option key={s.id} value={s.id}>{s.nombreEmpresa}</option>
+                  ))}
+                </select>
+                <ChevronDown size={18} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+              </div>
+            </div>
+
+            {error && (
+              <div className="bg-red-50 text-red-500 text-sm p-3 rounded-xl border border-red-100 flex items-center gap-2 font-normal">
+                <AlertCircle size={18} /> {error}
+              </div>
+            )}
+
+            <button type="submit" className="w-full md:w-auto px-8 py-3 bg-[#0C9EC6] hover:bg-[#0E3877] text-white font-bold rounded-xl transition-all shadow-lg active:scale-95">
+              Confirmar Registro
+            </button>
+          </form>
         </div>
       )}
 
+      {/* ── Tabla Principal (Fondo Blanco) ──────────────── */}
       {loading ? (
-        <div className="flex justify-center py-16">
-          <div className="w-10 h-10 border-4 border-[#0E3877]/20 border-t-[#0E3877] rounded-full animate-spin" />
-        </div>
+        <TableSkeleton />
       ) : (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-          <table className="w-full text-sm">
-            <thead className="bg-gray-50 text-gray-500 uppercase text-xs tracking-wider">
-              <tr>
-                <th className="px-4 py-3 text-left">Email</th>
-                <th className="px-4 py-3 text-left hidden md:table-cell">Rol</th>
-                <th className="px-4 py-3 text-left hidden lg:table-cell">Empresa</th>
-                <th className="px-4 py-3 text-center">Activo</th>
-                <th className="px-4 py-3 text-center">Acciones</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-50">
-              {usuarios.length === 0 ? (
-                <tr>
-                  <td colSpan={5} className="text-center py-10 text-gray-400">Sin usuarios registrados</td>
+        <div className="bg-white rounded-3xl overflow-hidden shadow-2xl border border-gray-100">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-gray-50 text-[#0E3877] uppercase text-[11px] tracking-[0.2em] font-bold border-b border-gray-100">
+                  <th className="px-6 py-5">Usuario</th>
+                  <th className="px-6 py-5">Nivel de Acceso</th>
+                  <th className="px-6 py-5">Organización</th>
+                  <th className="px-6 py-5 text-center">Estado Pass</th>
+                  <th className="px-6 py-5 text-center">Activo</th>
+                  <th className="px-6 py-5 text-center">Acciones</th>
                 </tr>
-              ) : (
-                usuarios.map((u) => (
-                  <tr key={u.id} className="hover:bg-gray-50 transition">
-                    <td className="px-4 py-3 font-medium text-[#0A0A0A]">{u.email}</td>
-                    <td className="px-4 py-3 hidden md:table-cell">
-                      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                        u.rol === 'Admin' ? 'bg-purple-50 text-purple-700' : 'bg-blue-50 text-blue-700'
+              </thead>
+              <tbody className="divide-y divide-gray-50">
+                {usuarios.map((u) => (
+                  <tr key={u.id} className="hover:bg-blue-50/30 transition-colors group">
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-[#0C9EC6] rounded-xl flex items-center justify-center font-bold text-white shadow-md">
+                          {u.email?.charAt(0)?.toUpperCase()}
+                        </div>
+                        <span className="font-normal text-[#0C9EC6] tracking-tight">{u.email}</span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                        u.rol === 'Admin' ? 'bg-purple-100 text-purple-600' : 'bg-blue-100 text-[#0E3877]'
                       }`}>
                         {u.rol}
                       </span>
                     </td>
-                    <td className="px-4 py-3 hidden lg:table-cell text-gray-500">{u.nombreEmpresa || '—'}</td>
-                    <td className="px-4 py-3 text-center">
-                      <button onClick={() => toggleActivo(u)}>
-                        {u.activo
-                          ? <ToggleRight size={22} className="text-green-500 mx-auto" />
-                          : <ToggleLeft size={22} className="text-gray-300 mx-auto" />}
+                    <td className="px-6 py-4 text-gray-400 italic text-sm font-normal">
+                      {u.nombreEmpresa || '—'}
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      {u.primerLogin ? (
+                        <span className="text-[10px] bg-amber-100 text-amber-600 px-2 py-1 rounded-md font-bold uppercase">Pendiente</span>
+                      ) : (
+                        <span className="text-[10px] bg-emerald-100 text-emerald-600 px-2 py-1 rounded-md font-bold uppercase">Segura</span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <button
+                        onClick={() => toggleActivo(u.id)}
+                        className="transition-transform active:scale-90"
+                      >
+                        {u.activo ? (
+                          <ToggleRight size={32} className="text-[#0C9EC6] mx-auto" />
+                        ) : (
+                          <ToggleLeft size={32} className="text-gray-300 mx-auto" />
+                        )}
                       </button>
                     </td>
-                    <td className="px-4 py-3 text-center">
-                      <button onClick={() => setConfirmDelete(u)}>
-                        <Trash2 size={16} className="text-red-400 hover:text-red-600 transition mx-auto" />
+                    <td className="px-6 py-4 text-center">
+                      <button
+                        onClick={() => eliminar(u.id)}
+                        className="p-2.5 rounded-xl text-red-400 hover:bg-red-50 hover:text-red-500 transition-all"
+                      >
+                        <Trash2 size={18} />
                       </button>
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      )}
-
-      {/* Modal nuevo usuario */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl p-6 w-96 shadow-2xl">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-bold text-[#0A0A0A] flex items-center gap-2">
-                <UserPlus size={20} className="text-[#0E3877]" /> Nuevo Usuario
-              </h2>
-              <button onClick={() => setShowModal(false)} className="text-gray-400 hover:text-gray-600">
-                <X size={20} />
-              </button>
-            </div>
-            <p className="text-xs text-gray-400 mb-4">La contraseña genérica será <strong>Socio123!</strong> — el usuario deberá cambiarla en su primer login.</p>
-
-            <form onSubmit={handleCreate} className="space-y-4">
-              <div>
-                <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wider">Email *</label>
-                <input type="email" required value={newUser.email}
-                  onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-                  className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#0C9EC6]"
-                  placeholder="usuario@empresa.com" />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wider">Rol</label>
-                <div className="relative">
-                  <select value={newUser.rol} onChange={(e) => setNewUser({ ...newUser, rol: e.target.value })}
-                    className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#0C9EC6] appearance-none">
-                    <option value="Usuario">Usuario (Socio)</option>
-                    <option value="Admin">Admin</option>
-                  </select>
-                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
-                </div>
-              </div>
-              {newUser.rol === 'Usuario' && (
-                <div>
-                  <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wider">Empresa Asociada</label>
-                  <div className="relative">
-                    <select value={newUser.socioId} onChange={(e) => setNewUser({ ...newUser, socioId: e.target.value })}
-                      className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#0C9EC6] appearance-none">
-                      <option value="">— Sin empresa —</option>
-                      {socios.map((s) => (
-                        <option key={s.id} value={s.id}>{s.nombreEmpresa}</option>
-                      ))}
-                    </select>
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
-                  </div>
-                </div>
-              )}
-
-              {error && (
-                <div className="text-red-500 text-xs bg-red-50 p-2 rounded-lg border border-red-100 flex items-center gap-2">
-                  <AlertCircle size={12} /> {error}
-                </div>
-              )}
-
-              <div className="flex gap-3 pt-1">
-                <button type="button" onClick={() => setShowModal(false)}
-                  className="flex-1 py-2.5 border-2 border-gray-200 rounded-lg text-sm font-semibold hover:bg-gray-50 transition">
-                  Cancelar
-                </button>
-                <button type="submit" disabled={saving}
-                  className="flex-1 py-2.5 bg-[#0E3877] hover:bg-[#0C9EC6] text-white rounded-lg text-sm font-bold flex items-center justify-center gap-2 transition">
-                  {saving ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : 'Crear'}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* Modal confirmar eliminar */}
-      {confirmDelete && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl p-6 w-80 shadow-2xl">
-            <div className="flex items-center gap-3 mb-4">
-              <Trash2 size={28} className="text-red-500" />
-              <h2 className="text-lg font-bold">¿Eliminar usuario?</h2>
-            </div>
-            <p className="text-sm text-gray-500 mb-6">
-              Se eliminará <strong>{confirmDelete.email}</strong>. Esta acción no se puede deshacer.
-            </p>
-            <div className="flex gap-3">
-              <button onClick={() => setConfirmDelete(null)}
-                className="flex-1 py-2 border-2 border-gray-200 rounded-lg text-sm font-semibold hover:bg-gray-50 transition">
-                Cancelar
-              </button>
-              <button onClick={() => deleteUsuario(confirmDelete.id)}
-                className="flex-1 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-bold transition">
-                Eliminar
-              </button>
-            </div>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       )}

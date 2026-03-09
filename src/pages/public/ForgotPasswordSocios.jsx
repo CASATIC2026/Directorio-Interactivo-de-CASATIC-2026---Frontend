@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import lunaLogo from '../../img/lunalogo.png';
 import logo from '../../img/logo.png';
 import { Link } from 'react-router-dom';
 import { Mail, ArrowLeft, CheckCircle } from 'lucide-react';
@@ -20,16 +19,15 @@ export default function ForgotPasswordSocios() {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center bg-[#0E3877]"
+      className="min-h-screen flex items-center justify-center bg-[#0E3877] px-4 sm:px-6"
       style={{ fontFamily: "'Roboto', sans-serif", fontWeight: 500 }}
     >
       <style>
         {`@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');`}
       </style>
 
-      <div className="bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] p-8 w-[350px]">
-        <div className="flex flex-col items-center mb-6 gap-2">
-          <img src={lunaLogo} alt="LunaLogo" className="w-[140px]" />
+      <div className="bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] p-6 sm:p-8 w-full max-w-[380px]">
+        <div className="flex flex-col items-center mb-6">
           <img src={logo} alt="Logo" className="w-[170px]" />
         </div>
 
