@@ -110,17 +110,17 @@ export default function PresentacionPage() {
       </div>
 
       {/* SLIDER */}
-<section className="py-16 bg-slate-50">
+<section className="py-16 bg-slate-50 bg-blue-800">
 
   <div className="max-w-6xl mx-auto px-4 text-center">
 
     {/* Título */}
-    <h2 className="text-3xl font-bold text-slate-800 mb-2">
+    <h2 className="text-3xl md:text-4xl font-bold text-white mb-2 tracking-tight">
      Alianzas internacionales
     </h2>
 
-    <p className="text-slate-500 mb-10">
-      Organizaciones y aliados que apoyan el desarrollo tecnológico
+    <p className="text-1x1 md:text-1x1 font-bold text-white mb-2 tracking-tight">
+      Organizaciones y aliados que apoyan el desarrollo tecnológico, brindan 
     </p>
 
     {/* Slider o proveedores del area */}
@@ -133,7 +133,7 @@ export default function PresentacionPage() {
           target="_blank"
           rel="noopener noreferrer"
           className={`absolute transition-opacity duration-1000 ${
-            index === currentSlide ? "opacity-100" : "opacity-0"
+            index === currentSlide ? "opacity-1000" : "opacity-0"
           }`}
         >
           <img
