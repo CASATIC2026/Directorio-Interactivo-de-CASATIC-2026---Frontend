@@ -7,25 +7,25 @@ ANTES DE EMPEZAR:
   - Haber clonado el repositorio
 
 ======================================================
-  PARTE 1 — ACTUALIZAR DOCKER (primera vez o si hay cambios)
+  PARTE 1 — ELIMINAR CONTENEDORES VIEJOS Y CREAR LOS CORRECTOS
 ======================================================
 
-  Si tus contenedores tienen nombres distintos (ej: "backend", "casatic2", etc.)
-  ejecutá estos pasos para sincronizarlos con el equipo:
+  Ejecutar estos comandos EN ORDEN en PowerShell:
 
-  PASO 1 — Bajar los cambios del repo:
-     cd casatic-directorio
+  1) Detener TODOS los contenedores que estén corriendo:
+     docker stop $(docker ps -aq)
+
+  2) Eliminar TODOS los contenedores:
+     docker rm $(docker ps -aq)
+
+  3) Bajar los últimos cambios del repo:
      git pull origin main
 
-  PASO 2 — Detener y eliminar contenedores viejos:
-     docker compose down
-     docker rm backend casatic2_api casatic2_frontend casatic2 2>$null
-
-  PASO 3 — Levantar con la configuración correcta:
+  4) Ir a la carpeta del proyecto y levantar los contenedores correctos:
      cd casatic-directorio
      docker compose up -d --build
 
-  PASO 4 — Verificar que los 4 contenedores estén corriendo:
+  5) Verificar que los 4 contenedores estén corriendo:
      docker ps
 
   Deberías ver EXACTAMENTE estos nombres:
@@ -33,6 +33,8 @@ ANTES DE EMPEZAR:
      casatic-api       → Puerto 5000  (Backend .NET)
      casatic-frontend  → Puerto 80    (Frontend React)
      pgadmin           → Puerto 5050  (pgAdmin)
+
+  ⚠ IMPORTANTE: NO uses "docker compose down -v" porque eso borra los datos.
 
 
 ======================================================
