@@ -12,6 +12,7 @@ const CategoriasPage     = lazy(() => import('./pages/public/CategoriasPage'));
 const MicroSitioPage     = lazy(() => import('./pages/public/SocioDetallePage'));
 const LoginPageSocios    = lazy(() => import('./pages/public/LoginPageSocios'));
 const ForgotPasswordSociosPage = lazy(() => import('./pages/public/ForgotPasswordSocios'));
+const PresentacionPage     = lazy(() => import('./pages/public/PresentacionPage'));
 
 const LoginPage          = lazy(() => import('./pages/admin/LoginPage'));
 const ForgotPasswordPage = lazy(() => import('./pages/admin/ForgotPasswordPage'));
@@ -21,6 +22,7 @@ const SociosAdminPage    = lazy(() => import('./pages/admin/SociosAdminPage'));
 const UsuariosAdminPage  = lazy(() => import('./pages/admin/UsuariosAdminPage'));
 const SocioFormPage      = lazy(() => import('./pages/admin/SocioFormPage'));
 const FormulariosAdminPage = lazy(() => import('./pages/admin/FormulariosAdminPage'));
+
 
 /** Spinner de transición mientras carga el chunk */
 function PageLoader() {
@@ -45,6 +47,7 @@ export default function App() {
         <Route element={<PublicLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/directorio" element={<DirectorioPage />} />
+          <Route path="/presentacion" element={<PresentacionPage />} />
           <Route path="/categorias" element={<CategoriasPage />} />
           <Route path="/contacto" element={<ContactoPage />} />
           <Route path="/faq" element={<FAQPage />} />
