@@ -120,7 +120,8 @@ export default function CategoriasPage() {
           </p>
         </div>
       </div>
-
+<br/>
+<br/>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 relative z-10">
         {/* ── Buscador ────────────────────────────────── */}
         <div className="card-base p-4 mb-8 flex items-center gap-3">
