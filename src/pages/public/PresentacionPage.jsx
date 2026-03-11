@@ -116,14 +116,14 @@ export default function PresentacionPage() {
 
     {/* Título */}
     <h2 className="text-3xl font-bold text-slate-800 mb-2">
-      Nuestros Proveedores
+     Alianzas internacionales
     </h2>
 
     <p className="text-slate-500 mb-10">
       Organizaciones y aliados que apoyan el desarrollo tecnológico
     </p>
 
-    {/* Slider */}
+    {/* Slider o proveedores del area */}
     <div className="relative h-[300px] bg-white rounded-2xl shadow-lg overflow-hidden flex items-center justify-center">
 
       {slides.map((slide, index) => (
