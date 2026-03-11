@@ -1,16 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../api/client';
 import {
   Save, ArrowLeft, Building2, Globe, Phone, MapPin,
   Tag, Briefcase, Image, Share2, AlertCircle, Loader2,
-  Facebook, Linkedin, Twitter, Instagram, Youtube
+  Facebook, Linkedin, Twitter, Instagram, Youtube, Mail, Upload
 } from 'lucide-react';
 
 export default function SocioFormPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const isEdit = Boolean(id);
+  const fileInputRef = useRef(null);
 
   const [form, setForm] = useState({
     nombreEmpresa: '',
@@ -21,6 +22,7 @@ export default function SocioFormPage() {
     telefono: '',
     direccion: '',
     logoUrl: '',
+    emailContacto: '',
     marcasRepresenta: '',
     // Redes sociales — campos individuales
     rsWebsite: '',
@@ -33,6 +35,8 @@ export default function SocioFormPage() {
   const [error, setError] = useState(null);
   const [saving, setSaving] = useState(false);
   const [loadingData, setLoadingData] = useState(isEdit);
+  const [uploadingLogo, setUploadingLogo] = useState(false);
+  const [uploadError, setUploadError] = useState(null);
 
   useEffect(() => {
     if (isEdit) {
@@ -48,6 +52,7 @@ export default function SocioFormPage() {
           direccion: s.direccion || '',
           logoUrl: s.logoUrl || '',
           marcasRepresenta: s.marcasRepresenta || '',
+          emailContacto: s.emailContacto || '',
           // Parsear redesSociales JSON a campos individuales
           ...(() => {
             let rs = {};
@@ -68,6 +73,26 @@ export default function SocioFormPage() {
 
   const handleChange = (field) => (e) =>
     setForm({ ...form, [field]: e.target.value });
+
+  const handleLogoUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingLogo(true);
+    setUploadError(null);
+    const fd = new FormData();
+    fd.append('file', file);
+    try {
+      const res = await api.post('/upload/logo', fd, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      setForm((prev) => ({ ...prev, logoUrl: res.data.url }));
+    } catch (err) {
+      setUploadError(err.response?.data?.message || 'Error al subir la imagen');
+    } finally {
+      setUploadingLogo(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
 
   const autoSlug = () => {
     const slug = form.nombreEmpresa
@@ -103,6 +128,7 @@ export default function SocioFormPage() {
       telefono: form.telefono,
       direccion: form.direccion,
       logoUrl: form.logoUrl,
+      emailContacto: form.emailContacto,
       redesSociales,
       especialidades: form.especialidades.split(',').map((s) => s.trim()).filter(Boolean),
       servicios: form.servicios.split(',').map((s) => s.trim()).filter(Boolean),
@@ -249,11 +275,66 @@ export default function SocioFormPage() {
                     placeholder="San Salvador, El Salvador" />
                 </div>
                 <div className="md:col-span-2 relative">
-                  <Image className="absolute left-3 top-[38px] text-[#0C9EC6]" size={18} />
-                  <label className="block text-[11px] font-bold text-gray-400 uppercase mb-2 ml-1">URL Logo Corporativo</label>
-                  <input type="text" value={form.logoUrl} onChange={handleChange('logoUrl')}
+                  <Mail className="absolute left-3 top-[38px] text-[#0C9EC6]" size={18} />
+                  <label className="block text-[11px] font-bold text-gray-400 uppercase mb-2 ml-1">
+                    Email de Contacto
+                    <span className="ml-2 text-[#0C9EC6] normal-case font-normal">— se recibirán los formularios enviados por clientes</span>
+                  </label>
+                  <input type="email" value={form.emailContacto} onChange={handleChange('emailContacto')}
                     className="w-full pl-10 pr-4 py-3 border-2 border-gray-100 rounded-xl focus:border-[#0C9EC6] focus:outline-none transition-all font-normal" 
-                    placeholder="https://midominio.com/logo.png" />
+                    placeholder="contacto@miempresa.com" />
+                </div>
+                {/* Logo: URL o subida de archivo */}
+                <div className="md:col-span-2">
+                  <label className="block text-[11px] font-bold text-gray-400 uppercase mb-2 ml-1 flex items-center gap-1">
+                    <Image size={12} /> Logo Corporativo
+                  </label>
+                  <div className="flex gap-3 items-start">
+                    <div className="relative flex-1">
+                      <Image className="absolute left-3 top-3.5 text-[#0C9EC6]" size={18} />
+                      <input type="text" value={form.logoUrl} onChange={handleChange('logoUrl')}
+                        className="w-full pl-10 pr-4 py-3 border-2 border-gray-100 rounded-xl focus:border-[#0C9EC6] focus:outline-none transition-all font-normal" 
+                        placeholder="https://midominio.com/logo.png" />
+                    </div>
+                    {/* Botón subir imagen */}
+                    <div className="flex flex-col items-center gap-1">
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/jpeg,image/png,image/gif,image/webp"
+                        className="hidden"
+                        onChange={handleLogoUpload}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={uploadingLogo}
+                        className="flex items-center gap-2 px-4 py-3 bg-[#0E3877] hover:bg-[#0C9EC6] text-white text-sm font-bold rounded-xl transition-all disabled:opacity-60 whitespace-nowrap"
+                      >
+                        {uploadingLogo
+                          ? <Loader2 size={16} className="animate-spin" />
+                          : <Upload size={16} />}
+                        {uploadingLogo ? 'Subiendo...' : 'Subir imagen'}
+                      </button>
+                      <span className="text-[10px] text-gray-400">JPG, PNG, WebP · máx 5MB</span>
+                    </div>
+                  </div>
+                  {uploadError && (
+                    <p className="mt-2 text-xs text-red-500 flex items-center gap-1">
+                      <AlertCircle size={12} /> {uploadError}
+                    </p>
+                  )}
+                  {form.logoUrl && (
+                    <div className="mt-3 flex items-center gap-3">
+                      <img
+                        src={form.logoUrl}
+                        alt="Preview logo"
+                        className="h-14 w-14 object-contain rounded-xl border border-gray-100 bg-gray-50 p-1"
+                        onError={(e) => { e.target.style.display = 'none'; }}
+                      />
+                      <span className="text-xs text-gray-400 break-all">{form.logoUrl}</span>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
