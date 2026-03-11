@@ -1,0 +1,87 @@
+======================================================
+  GUÍA: RESTAURAR BASE DE DATOS - CASATIC DIRECTORIO
+======================================================
+
+ANTES DE EMPEZAR:
+  - Tener Docker Desktop instalado y corriendo
+  - Haber clonado el repositorio
+
+------------------------------------------------------
+PASO 1 — BAJAR LOS CAMBIOS DEL REPO
+------------------------------------------------------
+
+  git pull origin main
+
+
+------------------------------------------------------
+PASO 2 — LEVANTAR LOS CONTENEDORES (si no están corriendo)
+------------------------------------------------------
+
+  cd casatic-directorio
+  docker compose up -d
+
+
+------------------------------------------------------
+PASO 3 — RESTAURAR EL BACKUP DE LA BD
+------------------------------------------------------
+
+  Ejecutar estos 3 comandos en orden:
+
+  1) Borrar la BD anterior:
+     docker exec casatic-db psql -U casatic -c "DROP DATABASE IF EXISTS casatic_directorio"
+
+  2) Crear la BD limpia:
+     docker exec casatic-db psql -U casatic -c "CREATE DATABASE casatic_directorio"
+
+  3) Restaurar el backup:
+     Get-Content backup.sql | docker exec -i casatic-db psql -U casatic -d casatic_directorio
+
+
+------------------------------------------------------
+PASO 4 — REINICIAR LA API
+------------------------------------------------------
+
+  docker restart casatic-api
+
+
+------------------------------------------------------
+VERIFICAR QUE TODO FUNCIONA
+------------------------------------------------------
+
+  Frontend:  http://localhost
+  API:       http://localhost:5000/swagger
+  pgAdmin:   http://localhost:5050
+
+  Credenciales panel admin:
+    Email:      admin@casatic.org
+    Contraseña: Admin123!
+
+  Credenciales pgAdmin:
+    Email:      admin@casatic.org
+    Contraseña: Admin123!
+
+  Credenciales PostgreSQL (dentro de pgAdmin):
+    Host:       casatic-db
+    Puerto:     5432
+    Usuario:    casatic
+    Contraseña: casatic2026
+    Base:       casatic_directorio
+
+
+------------------------------------------------------
+CÓMO ACTUALIZAR EL BACKUP (solo el responsable)
+------------------------------------------------------
+
+  Cuando haya cambios nuevos en la BD, ejecutar:
+
+  1) Generar backup actualizado:
+     docker exec casatic-db pg_dump -U casatic casatic_directorio > backup.sql
+
+  2) Commitear y pushear:
+     git add backup.sql
+     git commit -m "chore: actualizar backup BD - [fecha]"
+     git push origin main
+
+  Los demás compañeros repiten desde el PASO 1.
+
+======================================================
