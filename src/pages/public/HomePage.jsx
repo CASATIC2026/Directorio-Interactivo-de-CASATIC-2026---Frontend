@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../../api/client';
+import icono1 from '../public/img/busquedainteligente.png'
+import icono2 from '../public/img/gestionsegura.png'
+import icono3 from '../public/img/visibili.png'
 import {
   Search, Building2, Globe, ShieldCheck, ArrowRight, Users, BarChart3
 } from 'lucide-react';
@@ -11,18 +14,23 @@ const features = [
     title: 'Búsqueda Avanzada',
     desc: 'Encuentra socios por especialidad, sector o nombre con filtros potentes.',
     color: 'bg-casatic-50 text-casatic-600',
+    img2:icono1,
+    link:"/categorias"
   },
   {
     icon: Globe,
     title: 'Información Completa',
     desc: 'Perfiles detallados con sitios web, contactos y descripciones.',
     color: 'bg-accent-50 text-accent-600',
+    img2:icono3,
+    link:"/directorio"
   },
   {
     icon: ShieldCheck,
     title: 'Datos Verificados',
     desc: 'Información confiable y actualizada de socios registrados.',
     color: 'bg-purple-50 text-purple-600',
+    img2:icono2,
   },
 ];
 
@@ -127,34 +135,65 @@ export default function HomePage() {
       </section>
 
       {/* ── Features ────────────────────────────────────── */}
-      <section className="py-16 sm:py-20 lg:py-24 bg-surface-50">
+      {/* ── cuadricula de caracteristicas ───────────────────────────────── */}
+      <section className="py-20 bg-gradient-to-br from-[rgb(254, 255, 255)] to-[#1e3a8a] ">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl sm:text-3xl font-bold text-surface-900 tracking-tight">
-              Todo lo que necesitas en un lugar
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-surface-900 tracking-tight mb-4">
+              Todo lo que necesitas en un
+              <span className="text-#1e3a8a text-gradient"> solo lugar</span>
             </h2>
-            <p className="text-surface-500 mt-3 max-w-xl mx-auto text-sm sm:text-base">
-              Diseñado para conectar el ecosistema tecnológico de El Salvador de forma eficiente.
+            <p className="bg-black/2 inline-block text-lg text-surface-0 px-4 py-2 rounded-lg">
+              Una plataforma moderna para conectar empresas de tecnología con quienes necesitan sus servicios.
             </p>
           </div>
+          {/*--------------------cuadro de menus de casatic --------------*/}
+     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 stagger-children">
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
-            {features.map((f, i) => (
-              <div
-                key={f.title}
-                className="card-base p-6 hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-300 animate-fade-in-up"
-                style={{ animationDelay: `${i * 0.1}s` }}
-              >
-                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-4 ${f.color}`}>
-                  <f.icon size={22} />
-                </div>
-                <h3 className="font-semibold text-surface-900 mb-2">{f.title}</h3>
-                <p className="text-sm text-surface-500 leading-relaxed">{f.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Imagen si existe */}
+     {features.map((f, i) => (
+  <div key={i} className="group card-interactive p-6 text-center">
+
+    {f.img && (
+      <img
+        src={f.img}
+        alt={f.title}
+        className="w-40 mx-auto mb-4"
+      />
+    )}
+
+    {f.img2 && (
+      <img
+        src={f.img2}
+        alt={f.title}
+        className="w-40 mx-auto mb-4"
+      />
+    )}
+
+    <h3 className="font-bold text-lg mb-2">
+      {f.title}
+    </h3>
+
+    <p className="text-sm text-surface-600 mb-4">
+      {f.desc}
+    </p>
+
+    {f.link && (
+      <a
+     href={f.link}
+     target="_black"
+     rel="noopener noreferrer"
+     className="text-blue-600 font-semibold"
+      >
+        Ver más
+      </a>
+    )}
+
+  </div>
+))}
+  </div>
+  </div>
+  </section>
 
       {/* ── CTA ─────────────────────────────────────────── */}
       <section className="py-16 sm:py-20 bg-white border-t border-surface-100">

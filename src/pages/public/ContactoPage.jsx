@@ -39,8 +39,8 @@ export default function ContactoPage() {
             Estamos aquí para ayudarle. Envíenos su consulta y le responderemos a la brevedad.
           </p>
         </div>
-      </div>
-
+      </div><br/>
+<br/>
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
