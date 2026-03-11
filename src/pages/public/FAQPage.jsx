@@ -132,6 +132,8 @@ export default function FAQPage() {
           </p>
         </div>
       </div>
+      <br/>
+      <br/>
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 relative z-10">
         {/* ── Buscador ────────────────────────────────── */}

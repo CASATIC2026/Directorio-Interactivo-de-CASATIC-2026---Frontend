@@ -4,7 +4,6 @@ import api from '../../api/client';
 import icono1 from '../public/img/busquedainteligente.png'
 import icono2 from '../public/img/gestionsegura.png'
 import icono3 from '../public/img/visibili.png'
-import icono4 from '../public/img/conexionempresarial.png'
 import {
   Search, Building2, Globe, ShieldCheck, ArrowRight, Users, BarChart3
 } from 'lucide-react';
@@ -197,45 +196,36 @@ export default function HomePage() {
   </section>
 
       {/* ── CTA ─────────────────────────────────────────── */}
- {/* ── CTA ─────────────────────────────────────────── */}
-<section
-  className="relative py-20 bg-cover bg-center"
-  style={{ backgroundImage: `url(${icono4})` }}
->
-
-  {/* Capa oscura encima de la imagen */}
-  <div className="absolute inset-0 bg-black/50"></div>
-
-  <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div className="bg-gradient-to-br from-casatic-150/180 to-casatic-800/80 backdrop-blur-md rounded-3xl p-8 sm:p-12 lg:p-16 text-center overflow-hidden">
-
-      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4 tracking-tight">
-        ¿Listo para conectar?
-      </h2>
-
-      <p className="text-casatic-200 text-base sm:text-lg mb-8 max-w-xl mx-auto">
-        Accede al directorio completo y descubre oportunidades de colaboración con la red CASATIC.
-      </p>
-
-      <div className="flex flex-col sm:flex-row gap-3 justify-center">
-        <Link
-          to="/directorio"
-          className="btn btn-lg bg-white text-casatic-700 hover:bg-casatic-50 font-bold shadow-xl"
-        >
-          Ver Directorio <ArrowRight size={18} />
-        </Link>
-
-        <Link
-          to="/login-socios"
-          className="btn btn-lg bg-white/10 text-white border border-white/30 hover:bg-white/20"
-        >
-          Soy Socio
-        </Link>
-      </div>
-
-    </div>
-  </div>
-</section>
+      <section className="py-16 sm:py-20 bg-white border-t border-surface-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-gradient-to-br from-casatic-600 to-casatic-800 rounded-3xl p-8 sm:p-12 lg:p-16 text-center relative overflow-hidden">
+            <div className="absolute inset-0 bg-grid opacity-10 pointer-events-none" />
+            <div className="absolute -top-24 -right-24 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="relative">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4 tracking-tight">
+                ¿Listo para conectar?
+              </h2>
+              <p className="text-casatic-200 text-base sm:text-lg mb-8 max-w-xl mx-auto">
+                Accede al directorio completo y descubre oportunidades de colaboración con la red CASATIC.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <Link
+                  to="/directorio"
+                  className="btn btn-lg bg-white text-casatic-700 hover:bg-casatic-50 font-bold shadow-xl"
+                >
+                  Ver Directorio <ArrowRight size={18} />
+                </Link>
+                <Link
+                  to="/login-socios"
+                  className="btn btn-lg bg-white/10 text-white border border-white/30 hover:bg-white/20"
+                >
+                  Soy Socio
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
