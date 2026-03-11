@@ -134,7 +134,7 @@ export default function PublicLayout() {
                   <img src={reverseLogo} alt="CASATIC" className="h-full w-auto object-contain" />
                 </div>
                 <div>
-                  
+                  <p className="font-bold text-white">CASATIC</p>
                   <p className="text-xs text-surface-500">Directorio Interactivo 2026</p>
                 </div>
               </div>
