@@ -1,0 +1,66 @@
+# ══════════════════════════════════════════════════════════════
+# docker-compose.yml — Directorio Interactivo CASATIC 2026
+# Levanta: PostgreSQL + API .NET + Frontend + pgAdmin
+# ══════════════════════════════════════════════════════════════
+services:
+  # ── PostgreSQL ──────────────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    container_name: casatic-db
+    environment:
+      POSTGRES_USER: casatic
+      POSTGRES_PASSWORD: casatic2026
+      POSTGRES_DB: casatic_directorio
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U casatic -d casatic_directorio"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ── pgAdmin ─────────────────────────────────────────────
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@casatic.org
+      PGADMIN_DEFAULT_PASSWORD: Admin123!
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+
+  # ── Backend API (.NET) ──────────────────────────────────
+  api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: casatic-api
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Database=casatic_directorio;Username=casatic;Password=casatic2026"
+      Jwt__Key: "CASATIC-2026-Docker-SecretKey-Cambiame-En-Produccion-!@#"
+      Jwt__Issuer: "CasaticDirectorio"
+      Jwt__Audience: "CasaticDirectorioClients"
+    ports:
+      - "5000:5000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # ── Frontend React (Nginx) ──────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: casatic-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+
+volumes:
+  pgdata:
