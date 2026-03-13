@@ -75,7 +75,7 @@ export default function PublicLayout() {
                 to="/admin/login"
                 className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
                   scrolled
-                    ? 'bg-casatic-600 text-white hover:bg-casatic-700 shadow-sm shadow-casatic-600/25'
+                    ? 'bg-[#0e3877] text-white hover:bg-[#0c9ec6] shadow-sm shadow-[#0e3877]/25'
                     : 'bg-white/15 text-white hover:bg-white/25 backdrop-blur-sm'
                 }`}
               >

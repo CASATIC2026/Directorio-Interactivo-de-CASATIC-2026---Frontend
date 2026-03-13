@@ -4,27 +4,32 @@ export default {
   theme: {
     extend: {
       colors: {
+        // ── Brandbook CASATIC ─────────────────────────────────
+        // Base 01: #0b0b35  Base 02: #0e3877
+        // Complementario 01: #0c9ec6  Complementario 02: #3df0d8
+        // Neutro: #0a0a0a
         casatic: {
-          50:  '#eef4ff',
-          100: '#dae6ff',
-          200: '#bdd4ff',
-          300: '#90b8ff',
-          400: '#5c92ff',
-          500: '#3670fc',
-          600: '#1e50f2',
-          700: '#163cde',
-          800: '#1833b4',
-          900: '#1a308e',
-          950: '#131f56',
+          50:  '#e6f7fb',
+          100: '#c5eaf4',
+          200: '#86d3ec',
+          300: '#3bb6de',
+          400: '#1db5d8',
+          500: '#0c9ec6',   // Complementario 01 — cyan
+          600: '#0b87ae',   // intermedio
+          700: '#0e3877',   // Base 02 — azul principal
+          800: '#0b2a5a',
+          900: '#0b0b35',   // Base 01 — azul oscuro
+          950: '#07071e',
         },
+        // Complementario 02 — menta/turquesa
         accent: {
-          50:  '#ecfdf5',
-          100: '#d1fae5',
-          200: '#a7f3d0',
-          300: '#6ee7b7',
-          400: '#34d399',
-          500: '#10b981',
-          600: '#059669',
+          50:  '#f0fdfb',
+          100: '#ccfbf5',
+          200: '#99f6ec',
+          300: '#5feee1',
+          400: '#3df0d8',   // Complementario 02 — menta
+          500: '#14cebb',
+          600: '#0aab9b',
         },
         surface: {
           50:  '#f8fafc',
@@ -36,8 +41,8 @@ export default {
           600: '#475569',
           700: '#334155',
           800: '#1e293b',
-          900: '#0f172a',
-          950: '#020617',
+          900: '#0b0b35',   // Base 01 — footer y fondos oscuros
+          950: '#0b0b35',   // Base 01 — sidebar
         },
       },
       fontFamily: {
