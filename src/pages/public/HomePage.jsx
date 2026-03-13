@@ -150,7 +150,7 @@ export default function HomePage() {
             </p>
           </div>
           {/*--------------------cuadro de menus de casatic --------------*/}
-     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 stagger-children">
+     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 stagger-children max-w-4xl mx-auto">
 
       {/* Imagen si existe */}
      {features.map((f, i) => (
