@@ -182,10 +182,10 @@ const visibleSlides = slides.slice(
     { img:imagen50, link:"http://www.aseinfo.com.sv/index.html"},
     { img:imagen51, link:"https://ariaslaw.com/"},
     { img:imagen52, link:"http://www.applaudostudios.com/"},
-    { img:imagen53, link:""},
-    { img:imagen53, link:""},
-    { img:imagen53, link:""},
-    { img:imagen53, link:""},
+    { img:imagen53, link:"http://www.aeegle.com/"},
+    { img:imagen54, link:"http://www.ayssa.net/"},
+    { img:imagen55, link:"https://www.aracaristudios.com/"},
+    { img:imagen56, link:""},
 
 
   ];
