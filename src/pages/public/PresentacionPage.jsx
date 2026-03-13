@@ -28,7 +28,44 @@ import imagen17 from './img/socios e inversionistas/pbs.png';
 import imagen18 from './img/socios e inversionistas/OIP.webp';
 import imagen19 from './img/socios e inversionistas/microsoft.png'
 import imagen20 from './img/socios e inversionistas/localiza.png';
-import imagen21 from './img/socios e inversionistas/legalitica.png'
+import imagen21 from './img/socios e inversionistas/legalitica.png';
+import imagen22 from './img/socios e inversionistas/la tecno universidad tecnologica.png';
+import imagen23 from './img/socios e inversionistas/la red movil mas tigo.png';
+import imagen24 from './img/socios e inversionistas/korinver.png';
+import imagen25 from './img/socios e inversionistas/ja junior.png';
+import imagen26 from './img/socios e inversionistas/itconsulting.png';
+import imagen27 from './img/socios e inversionistas/it project.png';
+import imagen28 from './img/socios e inversionistas/integra sap.png';
+import imagen29 from './img/socios e inversionistas/innboxinnivation box.png';
+import imagen30 from './img/socios e inversionistas/inevrsion es torrres.png';
+import imagen31 from './img/socios e inversionistas/idigitalstudio.png';
+import imagen32 from './img/socios e inversionistas/i-estrategias.png';
+import imagen33 from './img/socios e inversionistas/gigauno.png';
+import imagen34 from './img/socios e inversionistas/gd grupo.png';
+import imagen35 from './img/socios e inversionistas/esfe agape.png';
+import imagen36 from './img/socios e inversionistas/esen.png';
+import imagen37 from './img/socios e inversionistas/eon_logo.png';
+import imagen38 from './img/socios e inversionistas/elaniin tech compay.png';
+import imagen39 from './img/socios e inversionistas/ejje.png';
+import imagen40 from './img/socios e inversionistas/datum.png';
+import imagen41 from './img/socios e inversionistas/data guard.png';
+import imagen42 from './img/socios e inversionistas/creativa consultores.png';
+import imagen43 from './img/socios e inversionistas/consisa.png';
+import imagen44 from './img/socios e inversionistas/cass.png';
+import imagen45 from './img/socios e inversionistas/casatic.png';
+import imagen46 from './img/socios e inversionistas/bluenet.png';
+import imagen47 from './img/socios e inversionistas/bit frameworks.png';
+import imagen48 from './img/socios e inversionistas/bird consultores.png';
+import imagen49 from './img/socios e inversionistas/asociasion conexion.png';
+import imagen50 from './img/socios e inversionistas/aseinfo.png';
+import imagen51 from './img/socios e inversionistas/arias-logo-240x180.png';
+import imagen52 from './img/socios e inversionistas/aplaudo.png';
+import imagen53 from './img/socios e inversionistas/aeegle.png';
+import imagen54 from './img/socios e inversionistas/administracion y sistemas.png';
+import imagen55 from './img/socios e inversionistas/acari.png';
+import imagen56 from './img/socios e inversionistas/2tijobs.png'
+
+
 
 export default function PresentacionPage() {
 
@@ -113,6 +150,42 @@ const visibleSlides = slides.slice(
     { img:imagen19, link:"https://www.microsoft.com/es-sv/"},
     { img:imagen20, link:"http://localiza.com.sv/"},
     { img:imagen21, link:"https://legalitika.com/"},
+    { img:imagen22 , link:"https://www.utec.edu.sv/"},
+    { img:imagen23, link:"https://www.tigo.com.sv/"},
+    { img:imagen24, link:"https://www.korinver.com/"},
+    { img:imagen25, link:"https://jaelsalvador.org/"},
+    { img:imagen26, link:"http://www.itconsultinglatam.com/"},
+    { img:imagen27, link:"https://www.itproject41.com/"},
+    { img:imagen28, link:"https://integrasap.com/sap"},
+    { img:imagen29, link:"http://www.innbox.sv/"},
+    { img:imagen30, link:"https://torres.legal/"},
+    { img:imagen31, link:"https://idigitalstudios.com/"},
+    { img:imagen32, link:"https://i-strategies.tech/"},
+    { img:imagen33, link:"https://giga.uno/"},
+    { img:imagen34, link:"http://www.grupogd.com.sv/"},
+    { img:imagen35, link:"http://www.esfe.agape.edu.sv/"},
+    { img:imagen36, link:"https://www.esen.edu.sv/"},
+    { img:imagen37, link:"https://eonconsultant.com/"},
+    { img:imagen38, link:"https://www.elaniin.com/"},
+    { img:imagen39, link:"https://www.ejje.com/"},
+    { img:imagen40, link:"https://www.datumredsoft.com/"},
+    { img:imagen41, link:"http://www.dataguard.com.sv/"},
+
+    { img:imagen42, link:"https://creativaconsultores.com/"},
+    { img:imagen43, link:"http://www.consisa.com/"},
+    { img:imagen44, link:"http://www.ca2s.com/?lang=en"},
+    { img:imagen45, link:"https://casatic.org/"},
+    { img:imagen46, link:"http://www.blue.net.gt/"},
+    { img:imagen47, link:"https://www.bitframeworks.com/"},
+    { img:imagen48, link:"http://bird.com.sv/"},
+    { img:imagen49, link:"http://www.conexion.sv/"},
+    { img:imagen50, link:"http://www.aseinfo.com.sv/index.html"},
+    { img:imagen51, link:"https://ariaslaw.com/"},
+    { img:imagen52, link:"http://www.applaudostudios.com/"},
+    { img:imagen53, link:""},
+    { img:imagen53, link:""},
+    { img:imagen53, link:""},
+    { img:imagen53, link:""},
 
 
   ];
