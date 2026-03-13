@@ -3,7 +3,7 @@ import { Outlet, Link, Navigate, useNavigate, useLocation } from 'react-router-d
 import { useAuth } from '../../context/AuthContext';
 import {
   LayoutDashboard, Building2, Users, LogOut, ChevronRight,
-  PanelLeftClose, PanelLeft, Bell, Menu, X, Inbox
+  PanelLeftClose, PanelLeft, Bell, Menu, X, Inbox, BarChart3
 } from 'lucide-react';
 import casaticLogo from '../../img/Reverse - v2@4x.png';
 
@@ -95,6 +95,7 @@ export default function AdminLayout() {
     { to: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
     { to: '/admin/socios', label: 'Socios', icon: Building2 },
     { to: '/admin/formularios', label: 'Formularios', icon: Inbox },
+    { to: '/admin/reportes', label: 'Reportes', icon: BarChart3 },
     { to: '/admin/usuarios', label: 'Usuarios', icon: Users },
   ];
 
