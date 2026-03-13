@@ -110,19 +110,19 @@ export default function PresentacionPage() {
       </div>
 
       {/* SLIDER */}
-<section className="py-16 bg-slate-50 bg-blue-800">
+<section className="py-10 bg-white rounded-2xl shadow-lg overflow-hidden flex items-center justify-center">
 
   <div className="max-w-6xl mx-auto px-4 text-center">
 
     {/* Título */}
-    <h2 className="text-3xl md:text-4xl font-bold text-white mb-2 tracking-tight">
-     Alianzas internacionales
+    <h2 className="text-3xl md:text-4xl font-bold text-grey-700 mb-2 tracking-tight">
+    ALIANZAS INTERNACIONALES
     </h2>
 
-    <p className="text-1x1 md:text-1x1 font-bold text-white mb-2 tracking-tight">
-      Organizaciones y aliados que apoyan el desarrollo tecnológico, brindan 
+    <p className="text-surface-600 from-text-gradient mb-4">
+      Organizaciones y aliados que apoyan el desarrollo tecnológico
     </p>
-
+<br></br>
     {/* Slider o proveedores del area */}
     <div className="relative h-[300px] bg-white rounded-2xl shadow-lg overflow-hidden flex items-center justify-center">
 
@@ -132,7 +132,7 @@ export default function PresentacionPage() {
           href={slide.link}
           target="_blank"
           rel="noopener noreferrer"
-          className={`absolute transition-opacity duration-1000 ${
+          className={`absolute transition-opacity duration-100 ${
             index === currentSlide ? "opacity-1000" : "opacity-0"
           }`}
         >
@@ -148,7 +148,47 @@ export default function PresentacionPage() {
 
   </div>
 
-</section>
+</section><br></br><br></br>
+<section className="py-10 bg-white rounded-2xl shadow-lg overflow-hidden flex items-center justify-center">
+
+  <div className="max-w-6xl mx-auto px-4 text-center">
+
+    {/* Título */}
+    <h2 className="text-3xl md:text-4xl font-bold text-grey-700 mb-2 tracking-tight">
+    SOCIOS Y PROVEEDORES DE CASATIC
+
+    </h2>
+
+    <p className="text-surface-600 from-text-gradient mb-4">
+      Socios aliados y clientes satisfechos por servisios relizados
+    </p>
+<br></br>
+    {/* Slider o proveedores del area */}
+    <div className="relative h-[300px] bg-white rounded-2xl shadow-lg overflow-hidden flex items-center justify-center">
+
+      {slides.map((slide, index) => (
+        <a
+          key={index}
+          href={slide.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`absolute transition-opacity duration-100 ${
+            index === currentSlide ? "opacity-1000" : "opacity-0"
+          }`}
+        >
+          <img
+            src={slide.img}
+            alt="proveedor"
+            className="max-h-[180px] object-contain hover:scale-105 transition-transform duration-300"
+          />
+        </a>
+      ))}
+
+    </div>
+
+  </div>
+
+</section><br></br><br></br>
 
     </div>
   );
