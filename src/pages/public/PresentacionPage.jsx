@@ -219,7 +219,7 @@ const visibleSlides = slides.slice(
     { img:imagen53, link:"http://www.aeegle.com/"},
     { img:imagen54, link:"http://www.ayssa.net/"},
     { img:imagen55, link:"https://www.aracaristudios.com/"},
-    { img:imagen56, link:"https://www.2itjobs.com/"},
+ 
 
 
   ];
