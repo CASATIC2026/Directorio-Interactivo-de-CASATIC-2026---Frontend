@@ -126,6 +126,7 @@ export default function CategoriasPage() {
         {/* ── Buscador ────────────────────────────────── */}
         <div className="card-base p-4 mb-8 flex items-center gap-3">
           <Search size={18} className="text-surface-400 flex-shrink-0" />
+      
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
