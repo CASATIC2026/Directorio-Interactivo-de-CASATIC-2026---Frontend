@@ -7,6 +7,7 @@ import icono3 from '../public/img/visibili.png'
 import {
   Search, Building2, Globe, ShieldCheck, ArrowRight, Users, BarChart3
 } from 'lucide-react';
+import casaticLogo from '../../img/Reverse - v2@4x.png';
 
 const features = [
   {
@@ -58,6 +59,7 @@ export default function HomePage() {
 
             {/* Copy */}
             <div className="text-center lg:text-left animate-fade-in-up">
+              <img src={casaticLogo} alt="CASATIC" className="h-12 w-auto object-contain mb-5 mx-auto lg:mx-0" />
               <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-casatic-300 bg-white/10 px-3 py-1.5 rounded-full mb-5">
                 <span className="w-1.5 h-1.5 rounded-full bg-accent-400 animate-pulse-soft" />
                 Directorio Interactivo 2026
@@ -91,8 +93,8 @@ export default function HomePage() {
                 <div className="absolute inset-0 bg-casatic-500/30 rounded-3xl blur-2xl" />
                 <div className="relative bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-8 shadow-glass-lg">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 bg-casatic-600 rounded-2xl flex items-center justify-center shadow-lg">
-                      <Building2 size={24} className="text-white" />
+                    <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center shadow-lg p-1.5">
+                      <img src={casaticLogo} alt="CASATIC" className="h-full w-auto object-contain" />
                     </div>
                     <div>
                       <p className="font-bold text-white text-sm">CASATIC</p>
@@ -148,7 +150,7 @@ export default function HomePage() {
             </p>
           </div>
           {/*--------------------cuadro de menus de casatic --------------*/}
-     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 stagger-children">
+     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 stagger-children max-w-4xl mx-auto">
 
       {/* Imagen si existe */}
      {features.map((f, i) => (

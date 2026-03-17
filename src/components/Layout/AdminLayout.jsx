@@ -3,7 +3,7 @@ import { Outlet, Link, Navigate, useNavigate, useLocation } from 'react-router-d
 import { useAuth } from '../../context/AuthContext';
 import {
   LayoutDashboard, Building2, Users, LogOut, ChevronRight,
-  PanelLeftClose, PanelLeft, Bell, Menu, X, Inbox
+  PanelLeftClose, PanelLeft, Bell, Menu, X, Inbox, BarChart3
 } from 'lucide-react';
 import casaticLogo from '../../img/Reverse - v2@4x.png';
 
@@ -17,7 +17,6 @@ function SidebarContent({ collapsed, user, menuItems, isActive, handleLogout, on
         </div>
         {!collapsed && (
           <div className="animate-fade-in">
-            <p className="font-bold text-sm leading-tight">CASATIC</p>
             <p className="text-[10px] text-surface-500 uppercase tracking-widest">Admin Panel</p>
           </div>
         )}
@@ -33,7 +32,7 @@ function SidebarContent({ collapsed, user, menuItems, isActive, handleLogout, on
               onClick={onLinkClick}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group relative ${
                 active
-                  ? 'bg-casatic-600 text-white shadow-lg shadow-casatic-600/25'
+                  ? 'bg-[#0c9ec6] text-white shadow-lg shadow-[#0c9ec6]/25'
                   : 'text-surface-400 hover:bg-white/[0.06] hover:text-white'
               }`}
               title={collapsed ? item.label : undefined}
@@ -45,7 +44,7 @@ function SidebarContent({ collapsed, user, menuItems, isActive, handleLogout, on
                   <ChevronRight size={14} className={`ml-auto transition-transform ${active ? 'opacity-100' : 'opacity-0 group-hover:opacity-50'}`} />
                 </>
               )}
-              {active && <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1.5 w-1 h-5 bg-casatic-400 rounded-full" />}
+              {active && <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1.5 w-1 h-5 bg-[#3df0d8] rounded-full" />}
             </Link>
           );
         })}
@@ -96,6 +95,7 @@ export default function AdminLayout() {
     { to: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
     { to: '/admin/socios', label: 'Socios', icon: Building2 },
     { to: '/admin/formularios', label: 'Formularios', icon: Inbox },
+    { to: '/admin/reportes', label: 'Reportes', icon: BarChart3 },
     { to: '/admin/usuarios', label: 'Usuarios', icon: Users },
   ];
 

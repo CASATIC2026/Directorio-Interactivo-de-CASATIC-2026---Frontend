@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { Search, Home, Menu, X, ChevronRight, Grid3X3, Mail, HelpCircle, Info } from 'lucide-react';
+import { Search, Home, Menu, X, Grid3X3, Mail, HelpCircle, Info } from 'lucide-react';
 import colorLogo from '../../img/Full Color v2@4x.png';
 import reverseLogo from '../../img/Reverse - v2@4x.png';
 
@@ -70,18 +70,7 @@ export default function PublicLayout() {
                   {link.label}
                 </Link>
               ))}
-              <div className={`w-px h-6 mx-2 ${scrolled ? 'bg-surface-200' : 'bg-white/20'}`} />
-              <Link
-                to="/admin/login"
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
-                  scrolled
-                    ? 'bg-casatic-600 text-white hover:bg-casatic-700 shadow-sm shadow-casatic-600/25'
-                    : 'bg-white/15 text-white hover:bg-white/25 backdrop-blur-sm'
-                }`}
-              >
-                Acceso Admin
-                <ChevronRight size={14} />
-              </Link>
+
             </nav>
 
             <button
@@ -110,9 +99,7 @@ export default function PublicLayout() {
                   {link.label}
                 </Link>
               ))}
-              <Link to="/admin/login" className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium bg-casatic-600 text-white">
-                Acceso Admin <ChevronRight size={14} />
-              </Link>
+
             </div>
           </div>
         )}
@@ -134,7 +121,7 @@ export default function PublicLayout() {
                   <img src={reverseLogo} alt="CASATIC" className="h-full w-auto object-contain" />
                 </div>
                 <div>
-                  <p className="font-bold text-white">CASATIC</p>
+                  
                   <p className="text-xs text-surface-500">Directorio Interactivo 2026</p>
                 </div>
               </div>

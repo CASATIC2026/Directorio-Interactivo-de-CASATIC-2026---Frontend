@@ -11,16 +11,22 @@ export default function CambiarPasswordPage() {
   const { cambiarPassword } = useAuth();
   const navigate = useNavigate();
 
-  const strength = password.length >= 12 ? 3 : password.length >= 8 ? 2 : password.length >= 4 ? 1 : 0;
-  const strengthColors = ['bg-red-400', 'bg-amber-400', 'bg-emerald-400', 'bg-emerald-500'];
-  const strengthLabels = ['Muy débil', 'Débil', 'Buena', 'Fuerte'];
+  const hasUpper = /[A-Z]/.test(password);
+  const hasNumber = /\d/.test(password);
+  const hasSpecial = /[^a-zA-Z0-9]/.test(password);
+  const hasMinLength = password.length >= 8;
+  const isValid = hasUpper && hasNumber && hasSpecial && hasMinLength;
+
+  const strength = [hasMinLength, hasUpper, hasNumber, hasSpecial].filter(Boolean).length;
+  const strengthColors = ['bg-red-400', 'bg-amber-400', 'bg-amber-400', 'bg-emerald-400', 'bg-emerald-500'];
+  const strengthLabels = ['Muy débil', 'Débil', 'Regular', 'Buena', 'Fuerte'];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
 
-    if (password.length < 8) {
-      setError('La contraseña debe tener al menos 8 caracteres');
+    if (!isValid) {
+      setError('La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un carácter especial');
       return;
     }
     if (password !== confirm) {
@@ -70,7 +76,7 @@ export default function CambiarPasswordPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="input-field pr-11"
-                  placeholder="Mínimo 8 caracteres"
+                  placeholder="Mín. 8 caracteres, mayúscula, número y especial"
                 />
                 <button
                   type="button"
@@ -82,15 +88,29 @@ export default function CambiarPasswordPage() {
               </div>
               {/* Strength meter */}
               {password.length > 0 && (
-                <div className="mt-2 space-y-1">
+                <div className="mt-2 space-y-1.5">
                   <div className="flex gap-1">
-                    {[0, 1, 2].map((i) => (
+                    {[0, 1, 2, 3].map((i) => (
                       <div key={i} className={`h-1.5 flex-1 rounded-full transition-colors duration-300 ${
-                        i < strength ? strengthColors[strength - 1] : 'bg-surface-200'
+                        i < strength ? strengthColors[strength] : 'bg-surface-200'
                       }`} />
                     ))}
                   </div>
                   <p className="text-[10px] text-surface-500">{strengthLabels[strength]}</p>
+                  <ul className="space-y-0.5 text-[11px]">
+                    <li className={hasMinLength ? 'text-emerald-600' : 'text-surface-400'}>
+                      {hasMinLength ? '✓' : '○'} Mínimo 8 caracteres
+                    </li>
+                    <li className={hasUpper ? 'text-emerald-600' : 'text-surface-400'}>
+                      {hasUpper ? '✓' : '○'} Una letra mayúscula
+                    </li>
+                    <li className={hasNumber ? 'text-emerald-600' : 'text-surface-400'}>
+                      {hasNumber ? '✓' : '○'} Un número
+                    </li>
+                    <li className={hasSpecial ? 'text-emerald-600' : 'text-surface-400'}>
+                      {hasSpecial ? '✓' : '○'} Un carácter especial (!@#$...)
+                    </li>
+                  </ul>
                 </div>
               )}
             </div>

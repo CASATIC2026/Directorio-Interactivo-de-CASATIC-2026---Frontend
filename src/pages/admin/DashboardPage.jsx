@@ -2,8 +2,30 @@ import { useState, useEffect } from 'react';
 import api from '../../api/client';
 import {
   Eye, Search, FileText, Users, Building2, AlertTriangle,
-  TrendingUp, BarChart3, Activity, ArrowUpRight, PieChart as PieIcon
+  TrendingUp, BarChart3, Activity
 } from 'lucide-react';
+
+function StatCard({ icon: Icon, label, value, color = 'casatic' }) {
+  const colors = {
+    casatic: 'bg-casatic-50 text-casatic-600',
+    accent:  'bg-accent-50 text-accent-600',
+    red:     'bg-red-50 text-red-600',
+    purple:  'bg-purple-50 text-purple-600',
+  };
+  return (
+    <div className="card-base p-5 hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-300">
+      <div className="flex flex-col gap-3">
+        <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${colors[color]}`}>
+          <Icon size={20} />
+        </div>
+        <div>
+          <p className="text-2xl font-bold text-surface-900 leading-none">{value}</p>
+          <p className="text-[10px] font-semibold text-surface-400 uppercase tracking-widest mt-1.5">{label}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function DashboardPage() {
   const [data, setData] = useState(null);
@@ -17,19 +39,22 @@ export default function DashboardPage() {
   }, []);
 
   if (loading || !data) return (
-    <div className="min-h-screen bg-[#0E3877] p-8 text-white/50 font-bold animate-pulse">
-      CARGANDO DATOS DEL SISTEMA...
+    <div className="flex items-center justify-center py-24">
+      <div className="flex flex-col items-center gap-3">
+        <div className="w-10 h-10 border-4 border-casatic-200 border-t-casatic-600 rounded-full animate-spin" />
+        <p className="text-sm text-surface-400 font-medium">Cargando datos…</p>
+      </div>
     </div>
   );
 
   const cards = [
-    { label: 'Visitas Sem', value: data.visitasSemana, icon: Eye, accent: '#0C9EC6' },
-    { label: 'Visitas Mes', value: data.visitasMes, icon: TrendingUp, accent: '#3FD0D8' },
-    { label: 'Búsquedas', value: data.busquedasMes, icon: Search, accent: '#0C9EC6' },
-    { label: 'Formularios', value: data.formulariosMes, icon: FileText, accent: '#3FD0D8' },
-    { label: 'Total Socios', value: data.totalSocios, icon: Building2, accent: '#0C9EC6' },
-    { label: 'Activos', value: data.sociosActivos, icon: Users, accent: '#3FD0D8' },
-    { label: 'En Mora', value: data.sociosEnMora, icon: AlertTriangle, accent: '#ef4444' },
+    { label: 'Visitas Sem',  value: data.visitasSemana,  icon: Eye,           color: 'casatic' },
+    { label: 'Visitas Mes',  value: data.visitasMes,     icon: TrendingUp,    color: 'accent' },
+    { label: 'Búsquedas',    value: data.busquedasMes,   icon: Search,        color: 'purple' },
+    { label: 'Formularios',  value: data.formulariosMes, icon: FileText,      color: 'accent' },
+    { label: 'Total Socios', value: data.totalSocios,    icon: Building2,     color: 'casatic' },
+    { label: 'Activos',      value: data.sociosActivos,  icon: Users,         color: 'accent' },
+    { label: 'En Mora',      value: data.sociosEnMora,   icon: AlertTriangle, color: 'red' },
   ];
 
   const totalS = data.sociosActivos + data.sociosEnMora || 1;
@@ -39,134 +64,118 @@ export default function DashboardPage() {
   const dashVisita = `${(data.visitasSemana / totalV) * 100} 100`;
 
   return (
-    <div className="min-h-screen bg-[#0E3877] p-4 sm:p-8 font-['Roboto'] text-white overflow-x-hidden">
-      <style>
-        {`@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');`}
-      </style>
-
-      {/* ── Header Estilo Gestión de Usuarios ──────────────── */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-8">
-        <div>
-          <h1 className="text-3xl font-bold flex items-center gap-3 tracking-tight">
-            <BarChart3 size={32} className="text-[#0C9EC6]" />
-            Tablero Principal
-          </h1>
-          <p className="text-white/60 text-sm mt-1 font-normal uppercase tracking-wider">Inteligencia de Datos CASATIC</p>
+    <div className="space-y-6">
+      {/* ── Header ──────────────────────────────────────── */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="w-11 h-11 bg-casatic-100 rounded-2xl flex items-center justify-center">
+            <BarChart3 size={22} className="text-casatic-600" />
+          </div>
+          <div>
+            <h1 className="text-xl sm:text-2xl font-bold text-surface-900">Tablero Principal</h1>
+            <p className="text-sm text-surface-500">Inteligencia de datos CASATIC</p>
+          </div>
         </div>
       </div>
 
-      {/* ── Stat Cards (Estilo UsuariosAdmin) ────────────────── */}
-      <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-4 mb-8">
+      {/* ── Stat Cards ──────────────────────────────────── */}
+      <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-4">
         {cards.map((card) => (
-          <div key={card.label} className="bg-white rounded-2xl p-5 shadow-xl transition-all hover:translate-y-[-4px] group">
-            <div className="flex flex-col gap-3">
-              <div className="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center shadow-sm group-hover:bg-[#0C9EC6]/10 transition-colors">
-                <card.icon size={22} style={{ color: card.accent }} /> 
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-[#0E3877] leading-none tracking-tighter">{card.value}</p>
-                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1.5">{card.label}</p>
-              </div>
-            </div>
-          </div>
+          <StatCard key={card.label} {...card} />
         ))}
       </div>
 
-      {/* ── Charts Row (Estilo Contenedores Blancos) ────────── */}
+      {/* ── Charts Row ──────────────────────────────────── */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-        
+
         {/* Gráfico 1: Estado de Socios */}
-        <div className="lg:col-span-4 bg-white rounded-3xl p-8 shadow-2xl flex flex-col items-center text-[#0E3877]">
-          <div className="w-full mb-6 border-b border-gray-50 pb-4">
-            <h3 className="text-lg font-bold tracking-tight">Estado de Socios</h3>
-            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Distribución de Cartera</p>
+        <div className="lg:col-span-4 card-base p-6 flex flex-col items-center">
+          <div className="w-full mb-6 border-b border-surface-100 pb-4">
+            <h3 className="text-base font-bold text-surface-900">Estado de Socios</h3>
+            <p className="text-xs text-surface-400 mt-0.5">Distribución de cartera</p>
           </div>
-          
-          <div className="relative w-40 h-40 mb-6">
+
+          <div className="relative w-36 h-36 mb-6">
             <svg viewBox="0 0 36 36" className="w-full h-full transform -rotate-90">
-              <circle cx="18" cy="18" r="16" fill="none" stroke="#f3f4f6" strokeWidth="3.5" />
+              <circle cx="18" cy="18" r="16" fill="none" stroke="currentColor" strokeWidth="3.5" className="text-surface-100" />
               <circle cx="18" cy="18" r="16" fill="none" stroke="#ef4444" strokeWidth="3.5" strokeDasharray={dashSocio} strokeDashoffset="0" strokeLinecap="round" />
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="text-3xl font-bold">{Math.round((data.sociosEnMora/totalS)*100)}%</span>
-              <span className="text-[8px] font-bold text-gray-400 uppercase tracking-tighter">En Mora</span>
+              <span className="text-2xl font-bold text-surface-900">{Math.round((data.sociosEnMora / totalS) * 100)}%</span>
+              <span className="text-[9px] font-semibold text-surface-400 uppercase">En Mora</span>
             </div>
           </div>
 
           <div className="w-full space-y-2">
-             <div className="flex justify-between items-center p-2 bg-gray-50 rounded-lg">
-               <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest flex items-center gap-2">
-                 <div className="w-2 h-2 rounded-full bg-[#0C9EC6]" /> Activos
-               </span>
-               <span className="font-bold">{data.sociosActivos}</span>
-             </div>
-             <div className="flex justify-between items-center p-2 bg-gray-50 rounded-lg">
-               <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest flex items-center gap-2">
-                 <div className="w-2 h-2 rounded-full bg-[#ef4444]" /> En Mora
-               </span>
-               <span className="font-bold">{data.sociosEnMora}</span>
-             </div>
+            <div className="flex justify-between items-center p-2.5 bg-surface-50 rounded-xl">
+              <span className="text-xs font-medium text-surface-500 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-casatic-500" /> Activos
+              </span>
+              <span className="font-bold text-surface-800">{data.sociosActivos}</span>
+            </div>
+            <div className="flex justify-between items-center p-2.5 bg-surface-50 rounded-xl">
+              <span className="text-xs font-medium text-surface-500 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-red-500" /> En Mora
+              </span>
+              <span className="font-bold text-surface-800">{data.sociosEnMora}</span>
+            </div>
           </div>
         </div>
 
         {/* Gráfico 2: Rendimiento Red */}
-        <div className="lg:col-span-4 bg-white rounded-3xl p-8 shadow-2xl flex flex-col items-center text-[#0E3877]">
-          <div className="w-full mb-6 border-b border-gray-50 pb-4">
-            <h3 className="text-lg font-bold tracking-tight">Rendimiento Red</h3>
-            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Tráfico de Visitas</p>
+        <div className="lg:col-span-4 card-base p-6 flex flex-col items-center">
+          <div className="w-full mb-6 border-b border-surface-100 pb-4">
+            <h3 className="text-base font-bold text-surface-900">Rendimiento Red</h3>
+            <p className="text-xs text-surface-400 mt-0.5">Tráfico de visitas</p>
           </div>
 
-          <div className="relative w-40 h-40 mb-6">
+          <div className="relative w-36 h-36 mb-6">
             <svg viewBox="0 0 36 36" className="w-full h-full transform -rotate-90">
-              <circle cx="18" cy="18" r="16" fill="none" stroke="#f3f4f6" strokeWidth="3.5" />
-              <circle cx="18" cy="18" r="16" fill="none" stroke="#0C9EC6" strokeWidth="3.5" strokeDasharray={dashVisita} strokeDashoffset="0" strokeLinecap="round" />
+              <circle cx="18" cy="18" r="16" fill="none" stroke="currentColor" strokeWidth="3.5" className="text-surface-100" />
+              <circle cx="18" cy="18" r="16" fill="none" stroke="currentColor" strokeWidth="3.5" strokeDasharray={dashVisita} strokeDashoffset="0" strokeLinecap="round" className="text-casatic-500" />
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="text-3xl font-bold">{Math.round((data.visitasSemana/totalV)*100)}%</span>
-              <span className="text-[8px] font-bold text-gray-400 uppercase tracking-tighter">Semanal</span>
+              <span className="text-2xl font-bold text-surface-900">{Math.round((data.visitasSemana / totalV) * 100)}%</span>
+              <span className="text-[9px] font-semibold text-surface-400 uppercase">Semanal</span>
             </div>
           </div>
 
           <div className="w-full space-y-2">
-             <div className="flex justify-between items-center p-2 bg-gray-50 rounded-lg">
-               <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Semana Actual</span>
-               <span className="font-bold">{data.visitasSemana}</span>
-             </div>
-             <div className="flex justify-between items-center p-2 bg-gray-50 rounded-lg">
-               <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Acumulado Mes</span>
-               <span className="font-bold text-gray-400">{data.visitasMes}</span>
-             </div>
+            <div className="flex justify-between items-center p-2.5 bg-surface-50 rounded-xl">
+              <span className="text-xs font-medium text-surface-500">Semana Actual</span>
+              <span className="font-bold text-surface-800">{data.visitasSemana}</span>
+            </div>
+            <div className="flex justify-between items-center p-2.5 bg-surface-50 rounded-xl">
+              <span className="text-xs font-medium text-surface-500">Acumulado Mes</span>
+              <span className="font-bold text-surface-400">{data.visitasMes}</span>
+            </div>
           </div>
         </div>
 
-        {/* Actividad Estilo Tabla UsuariosAdmin */}
-        <div className="lg:col-span-4 bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col">
-          <div className="p-6 bg-gray-50 border-b border-gray-100">
-            <h3 className="text-lg font-bold text-[#0E3877] tracking-tight">Actividad</h3>
-            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Accesos Recientes</p>
+        {/* Actividad: Accesos recientes */}
+        <div className="lg:col-span-4 card-base overflow-hidden flex flex-col">
+          <div className="p-5 border-b border-surface-100">
+            <h3 className="text-base font-bold text-surface-900 flex items-center gap-2">
+              <Activity size={16} className="text-casatic-500" /> Actividad
+            </h3>
+            <p className="text-xs text-surface-400 mt-0.5">Accesos recientes</p>
           </div>
-          
-          <div className="flex-1 overflow-y-auto p-4 space-y-2 custom-scrollbar">
+
+          <div className="flex-1 overflow-y-auto p-4 space-y-2">
             {Object.entries(data?.loginsPorUsuario || {}).map(([email, count]) => (
-              <div key={email} className="flex items-center justify-between p-3 hover:bg-blue-50/50 rounded-2xl transition-colors group">
+              <div key={email} className="flex items-center justify-between p-3 hover:bg-casatic-50/50 rounded-xl transition-colors group">
                 <div className="flex items-center gap-3 truncate">
-                  <div className="w-9 h-9 bg-[#0C9EC6] rounded-xl flex items-center justify-center text-white font-bold text-xs shadow-sm">
+                  <div className="w-8 h-8 bg-casatic-500 rounded-lg flex items-center justify-center text-white font-bold text-xs">
                     {email.charAt(0).toUpperCase()}
                   </div>
-                  <span className="text-sm font-normal text-[#0E3877] truncate tracking-tight">{email}</span>
+                  <span className="text-sm text-surface-700 truncate">{email}</span>
                 </div>
-                <div className="bg-white px-3 py-1 rounded-lg border border-gray-100 shadow-sm group-hover:border-[#0C9EC6]/30 transition-all">
-                  <span className="text-xs font-bold text-[#0C9EC6]">{count}</span>
-                </div>
+                <span className="badge-primary">{count}</span>
               </div>
             ))}
           </div>
         </div>
 
-      </div>
-
-      <div className="mt-12 text-center opacity-30">
-        <p className="text-[9px] font-bold uppercase tracking-[0.5em] text-white"> Gestión de datos CASATIC©</p>
       </div>
     </div>
   );

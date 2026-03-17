@@ -237,6 +237,19 @@ export default function MicroSitioPage() {
           </div>
         </div>
 
+        {/* ── Marcas que representa ──────────────────────── */}
+        {marcas && (
+          <div className="card-base p-5 sm:p-8">
+            <h2 className="font-bold text-surface-900 text-lg flex items-center gap-2 mb-4">
+              <span className="w-8 h-8 bg-casatic-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                <Package size={16} className="text-casatic-600" />
+              </span>
+              Marcas que representa
+            </h2>
+            <p className="text-surface-700 text-sm sm:text-base leading-relaxed">{marcas}</p>
+          </div>
+        )}
+
         {/* ── Formulario de contacto inline ─────────────── */}
         <div className="card-base p-5 sm:p-8" id="contacto">
           <h2 className="font-bold text-surface-900 text-lg flex items-center gap-2 mb-5">
@@ -285,6 +298,30 @@ export default function MicroSitioPage() {
             </div>
           </form>
         </div>
+
+        {/* ── Ubicación / Google Maps ──────────────────── */}
+        {socio.mapaUrl && (
+          <div className="card-base p-5 sm:p-8">
+            <h2 className="font-bold text-surface-900 text-lg flex items-center gap-2 mb-4">
+              <span className="w-8 h-8 bg-casatic-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                <MapPin size={16} className="text-casatic-600" />
+              </span>
+              Ubicación
+            </h2>
+            <div className="rounded-xl overflow-hidden border border-surface-200">
+              <iframe
+                src={socio.mapaUrl}
+                width="100%"
+                height="350"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title={`Ubicación de ${nombre}`}
+              />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

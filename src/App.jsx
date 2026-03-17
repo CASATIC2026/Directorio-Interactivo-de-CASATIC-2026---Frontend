@@ -22,6 +22,7 @@ const SociosAdminPage    = lazy(() => import('./pages/admin/SociosAdminPage'));
 const UsuariosAdminPage  = lazy(() => import('./pages/admin/UsuariosAdminPage'));
 const SocioFormPage      = lazy(() => import('./pages/admin/SocioFormPage'));
 const FormulariosAdminPage = lazy(() => import('./pages/admin/FormulariosAdminPage'));
+const ReportesPage       = lazy(() => import('./pages/admin/ReportesPage'));
 
 
 /** Spinner de transición mientras carga el chunk */
@@ -69,6 +70,7 @@ export default function App() {
           <Route path="/admin/socios/:id" element={<SocioFormPage />} />
           <Route path="/admin/usuarios" element={<UsuariosAdminPage />} />
           <Route path="/admin/formularios" element={<FormulariosAdminPage />} />
+          <Route path="/admin/reportes" element={<ReportesPage />} />
         </Route>
       </Routes>
     </Suspense>
