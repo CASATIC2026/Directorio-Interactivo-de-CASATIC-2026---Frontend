@@ -2,11 +2,29 @@ import { Eye, Target, Trophy } from 'lucide-react';
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-import slide1 from '../public/img/usaid del pueblo de usaid.png';
-import slide2 from '../public/img/giz2-1.png';
-import slide3 from '../public/img/witsa2.png';
-import slide4 from '../public/img/ales2.png';
-import slide5 from '../public/img/aleti logo.png';
+
+import slide1 from '../public/img/alianzas internacionales/world vision.png';
+import slide2 from '../public/img/alianzas internacionales/usaid.png';
+import slide3 from '../public/img/alianzas internacionales/proesa organismo promotor de exportaciones e inversiones de el salvador.png';
+import slide4 from '../public/img/alianzas internacionales/pnud.png';
+import slide5 from '../public/img/alianzas internacionales/oportunidades gloria de kriete.png';
+import slide6 from '../public/img/alianzas internacionales/junior achievement.png';
+import slide7 from '../public/img/alianzas internacionales/gobierno de el salvador.png';
+import slide8 from '../public/img/alianzas internacionales/fusades fundacion salvadoreña para el desarrollo economico y social.png';
+import slide9 from '../public/img/alianzas internacionales/fundacion gloria kriete.png';
+import slide10 from '../public/img/alianzas internacionales/dica direccion de innovacion y calidad.png';
+
+import slide11 from '../public/img/alianzas internacionales/comite de proyecion social de el salvador.png';
+import slide12 from '../public/img/alianzas internacionales/club tic.png';
+import slide13 from '../public/img/alianzas internacionales/camarasal.png';
+import slide14 from '../public/img/alianzas internacionales/camara de comercio britanico salvadoreño.png';
+import slide15 from '../public/img/alianzas internacionales/bin lab banco interamericano de desaroolo bib labv.png';
+import slide16 from '../public/img/alianzas internacionales/bandesal.png';
+import slide17 from '../public/img/alianzas internacionales/asi a no asi a no.png';
+import slide18 from '../public/img/alianzas internacionales/althes asciacion de lideres del talento humano de el salvador.png';
+import slide19 from '../public/img/alianzas internacionales/aleti impulsamos la transformacion digital.png';
+import slide20 from '../public/img/alianzas internacionales/ales.png';
+
 
 import imagen1 from './img/socios e inversionistas/usam universidad alberto masferrer.png';
 import imagen2 from './img/socios e inversionistas/unplug studio.png';
@@ -103,11 +121,27 @@ export default function PresentacionPage() {
 
   /* SLIDER */
   const slides = [
-    { img: slide1, link: "https://oig.usaid.gov/" },
-    { img: slide2, link: "https://gizcentroamerica.org/" },
-    { img: slide3, link: "https://www.witsa.org/" },
-    { img: slide4, link: "https://ales-lac.org/" },
-    { img: slide5, link: "/backend" }
+    { img: slide1, link:"https://worldvision.org.sv/"},
+    { img: slide2, link: "https://www.usaid.gov/" },
+    { img: slide3, link: "https://www.proesa.gob.sv/" },
+    { img: slide4, link:"https://www.sv.undp.org/content/el_salvador/es/home.html" },
+    { img: slide5, link: "https://www.oportunidades.org.sv/" },
+    {img:slide6, link:"https://jaelsalvador.org/"},
+    { img:slide7, link:"https://www.presidencia.gob.sv/"},
+    { img:slide8, link:"https://fusades.org/"},
+    { img:slide9, link:"https://fundaciongloriakriete.org/"},
+    { img:slide10, link:"http://dica.minec.gob.sv/home.html"},
+    { img:slide11, link:"http://cpses.org/"},
+   { img:slide12, link:"https://www.facebook.com/ClubTICSV/"},
+    { img:slide13, link:"https://camarasal.com/"},
+    { img:slide14, link:"https://industriaelsalvador.com/"},
+    { img:slide15, link:"https://bidlab.org/es"},
+    { img:slide16, link:"http://www.bandesal.gob.sv/"},
+    { img:slide17, link:"https://industriaelsalvador.com/"},
+    { img:slide18, link:"https://fb.com/AsociacionDeLideresDelTalentoHumanoDeElSalvador"},
+    { img:slide19, link:"https://www.aleti.org/"},
+    { img:slide20, link:"https://www.ales-lac.org/"},
+
   ];
 
   
@@ -133,7 +167,7 @@ const visibleSlides = slides.slice(
     { img: imagen2, link: "https://gizcentroamerica.org/" },
     { img: imagen3, link: "https://www.witsa.org/" },
     { img: imagen4, link: "https://ales-lac.org/" },
-    { img: imagen5, link: "https://www.bing.com/ck/a?!&&p=7d92c7b64a90e597286ae7d390c554924f89dc6451f5ff65fc63b917f7226a24JmltdHM9MTc3MzM2MDAwMA&ptn=3&ver=2&hsh=4&fclid=20aa1469-9121-6271-1a0c-021e90a763b0&psq=matias+delgado&u=a1aHR0cHM6Ly93d3cudWptZC5lZHUuc3Yv" },
+   { img: imagen5, link: "https://www.bing.com/ck/a?!&&p=7d92c7b64a90e597286ae7d390c554924f89dc6451f5ff65fc63b917f7226a24JmltdHM9MTc3MzM2MDAwMA&ptn=3&ver=2&hsh=4&fclid=20aa1469-9121-6271-1a0c-021e90a763b0&psq=matias+delgado&u=a1aHR0cHM6Ly93d3cudWptZC5lZHUuc3Yv" },
     { img:imagen6, link: "https://ugb.edu.sv/"},
     { img:imagen7, link:"https://ufg.edu.sv/"},
     { img:imagen8, link:"https://www.uees.edu.sv/"},
