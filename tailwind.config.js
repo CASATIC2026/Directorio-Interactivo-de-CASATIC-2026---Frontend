@@ -55,6 +55,7 @@ export default {
         'shimmer': 'shimmer 2s infinite linear',
         'pulse-soft': 'pulseSoft 2s ease-in-out infinite',
         'float': 'float 6s ease-in-out infinite',
+        'carousel': 'carousel 22s linear infinite',
         'gradient': 'gradient 8s ease infinite',
         'count-up': 'countUp 0.6s ease-out forwards',
       },
@@ -94,6 +95,10 @@ export default {
         float: {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-10px)' },
+        },
+        carousel: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
         },
         gradient: {
           '0%, 100%': { backgroundPosition: '0% 50%' },

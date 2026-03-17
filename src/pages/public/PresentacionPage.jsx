@@ -1,4 +1,4 @@
-import { Eye, Target, Trophy } from 'lucide-react';
+import { Code2, Cpu, Database, Eye, Server, Smartphone, Target, Trophy } from 'lucide-react';
 
 export default function PresentacionPage() {
   const sections = [
@@ -31,6 +31,14 @@ export default function PresentacionPage() {
         'Contribuir al desarrollo económico a través de la innovación tecnológica',
       ],
     },
+  ];
+
+  const programmingIcons = [
+    { name: 'Programación', icon: Code2 },
+    { name: 'Infraestructura', icon: Server },
+    { name: 'Base de datos', icon: Database },
+    { name: 'Hardware', icon: Cpu },
+    { name: 'Móvil', icon: Smartphone },
   ];
 
   return (
@@ -83,6 +91,30 @@ export default function PresentacionPage() {
           );
         })}
       </div>
+
+      <section className="bg-surface-100 py-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-surface-900 mb-6 text-center">
+            Stack de programación
+          </h2>
+          <div className="overflow-x-auto">
+            <div className="inline-flex gap-4 min-w-max">
+              {programmingIcons.map((tech) => {
+                const Icon = tech.icon;
+                return (
+                  <div
+                    key={tech.name}
+                    className="min-w-[12rem] bg-white border border-surface-200 rounded-2xl p-5 flex flex-col items-center gap-2 shadow-sm hover:shadow-md transition-shadow duration-300"
+                  >
+                    <Icon size={36} className="text-casatic-600 animate-float" />
+                    <span className="text-sm font-medium text-surface-700">{tech.name}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
