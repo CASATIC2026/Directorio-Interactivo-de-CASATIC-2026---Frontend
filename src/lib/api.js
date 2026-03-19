@@ -5,7 +5,8 @@ const BASE_URL = import.meta.env.VITE_API_URL || '/api'
 async function request(path, options = {}) {
 	const token = getToken()
 	const headers = {
-		'Content-Type': 'application/json',
+		'Content-Type': 'application/json; charset=utf-8',
+		'Accept': 'application/json',
 		...(options.headers || {})
 	}
 
