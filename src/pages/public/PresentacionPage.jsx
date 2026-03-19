@@ -251,16 +251,15 @@ const visibleSlides = slides.slice(
       </div>
 
       {/* SECCIONES */}
-      <div className="max-w-7xl mx-auto px-4 py-12 space-y-16">
+      <div className="max-w-7xl mx-auto px-4 py-20 space-y-16">
         {sections.map((sec) => {
           const Icon = sec.icon;
 
           return (
             <div
               key={sec.id}
-              className="bg-white rounded-2xl shadow-lg p-8 flex flex-col md:flex-row items-center gap-6"
-            >
-              <Icon size={48} className="text-casatic-600" />
+              className={`bg-white rounded-2x1 shadow.lg p-8 flex flex-col ${sec.id=="mision"?"md:flex-row-revere":"md:flex-row"}items-center gap-6`}            >
+              <Icon size={48} className="text-casatic-600 flex-shrink-0" />
               
 
               <div>
