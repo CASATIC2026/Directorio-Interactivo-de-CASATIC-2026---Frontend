@@ -87,6 +87,7 @@ import imagen56 from './img/socios e inversionistas/2tijobs.png'
 
 export default function PresentacionPage() {
 
+
   const sections = [
     {
       id: 'vision',
@@ -260,6 +261,7 @@ const visibleSlides = slides.slice(
               className="bg-white rounded-2xl shadow-lg p-8 flex flex-col md:flex-row items-center gap-6"
             >
               <Icon size={48} className="text-casatic-600" />
+              
 
               <div>
                 <h2 className="text-2xl font-bold mb-4">{sec.title}</h2>
