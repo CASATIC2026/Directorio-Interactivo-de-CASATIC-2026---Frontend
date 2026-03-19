@@ -1,7 +1,9 @@
 import { Eye, Target, Trophy } from 'lucide-react';
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
+import reunion from '../public/img/imagenes referentes a nuevos iconos,fondos etc/reunion 2 .0.png';
+import reunion2 from './img/imagenes referentes a nuevos iconos,fondos etc/imagen mision 2.0.png'
+import reunion3 from './img/imagenes referentes a nuevos iconos,fondos etc/reuniones globales.jpg'
 
 import slide1 from '../public/img/alianzas internacionales/world vision.png';
 import slide2 from '../public/img/alianzas internacionales/usaid.png';
@@ -95,6 +97,7 @@ export default function PresentacionPage() {
       icon: Eye,
       description:
         'Ser el referente necesario y reconocido en el sector de las tecnologías de la información y las comunicaciones a nivel nacional e internacional.',
+        img:reunion,
     },
     {
       id: 'mision',
@@ -104,6 +107,7 @@ export default function PresentacionPage() {
         'Somos una organización sin fines de lucro que representa y promueve al sector TIC como motor de desarrollo de El Salvador.',
       details:
         'Buscamos ampliar y acercar las oportunidades que proporcionen la competitividad y el crecimiento del sector tecnológico.',
+        img:reunion2,
     },
     {
       id: 'objetivos',
@@ -116,7 +120,8 @@ export default function PresentacionPage() {
         'Networking entre empresas tecnológicas',
         'Promover tecnologías emergentes',
         'Impulsar el desarrollo económico tecnológico',
-      ],
+   
+      ],     img:reunion3,
     },
   ];
 
@@ -251,39 +256,59 @@ const visibleSlides = slides.slice(
       </div>
 
       {/* SECCIONES */}
-      <div className="max-w-7xl mx-auto px-4 py-20 space-y-16">
-        {sections.map((sec) => {
-          const Icon = sec.icon;
+<div className="max-w-7xl mx-auto px-4 py-20 space-y-16">
+  {sections.map((sec) => {
+    return (
+      <div
+        key={sec.id}
+        className={`bg-white rounded-2xl shadow-lg p-8 flex flex-col md:flex-row items-center gap-6 hover:scale-[1.02] transition-all duration-300 ${
+          sec.id === "mision"
+            ? "md:ml-auto md:w-[60%]"
+            : "md:mr-auto md:w-[60%]"
+        }`}
+      >
 
-          return (
-            <div
-              key={sec.id}
-              className={`bg-white rounded-2x1 shadow.lg p-8 flex flex-col ${sec.id=="mision"?"md:flex-row-revere":"md:flex-row"}items-center gap-6`}            >
-              <Icon size={48} className="text-casatic-600 flex-shrink-0" />
-              
+        {/* IMAGEN IZQUIERDA (misión) */}
+        {sec.id === "mision" && sec.img && (
+          <img
+            src={sec.img}
+            alt={sec.title}
+            className="w-40 h-40 object-contain"
+          />
+        )}
 
-              <div>
-                <h2 className="text-2xl font-bold mb-4">{sec.title}</h2>
+        {/* TEXTO */}
+        <div className="flex-1">
+          <h2 className="text-2xl font-bold mb-4">{sec.title}</h2>
 
-                <p className="text-surface-600 mb-4">
-                  {sec.description}
-                </p>
+          <p className="text-surface-600 mb-4">
+            {sec.description}
+          </p>
 
-                {Array.isArray(sec.details) ? (
-                  <ul className="list-disc pl-5 space-y-2">
-                    {sec.details.map((d, i) => (
-                      <li key={i}>{d}</li>
-                    ))}
-                  </ul>
-                ) : sec.details ? (
-                  <p>{sec.details}</p>
-                ) : null}
-              </div>
+          {Array.isArray(sec.details) ? (
+            <ul className="list-disc pl-5 space-y-2">
+              {sec.details.map((d, i) => (
+                <li key={i}>{d}</li>
+              ))}
+            </ul>
+          ) : sec.details ? (
+            <p>{sec.details}</p>
+          ) : null}
+        </div>
 
-            </div>
-          );
-        })}
+        {/* IMAGEN DERECHA (visión) */}
+        {sec.id !== "mision" && sec.img && (
+          <img
+            src={sec.img}
+            alt={sec.title}
+            className="w-40 h-40 object-contain"
+          />
+        )}
+
       </div>
+    );
+  })}
+</div>
 
       {/* SLIDER */}
 <section className="py-10 bg-white rounded-2xl shadow-lg overflow-hidden flex items-center justify-center">
