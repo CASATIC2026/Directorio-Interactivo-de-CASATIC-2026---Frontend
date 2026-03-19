@@ -2,6 +2,9 @@
   GUÍA: DOCKER Y BASE DE DATOS - CASATIC DIRECTORIO
 ======================================================
 
+  Última actualización: Julio 2025
+  Empresas en el backup: 20
+
 ANTES DE EMPEZAR:
   - Tener Docker Desktop instalado y corriendo
   - Haber clonado el repositorio
@@ -19,7 +22,7 @@ ANTES DE EMPEZAR:
      docker rm $(docker ps -aq)
 
   3) Bajar los últimos cambios del repo:
-     git pull origin main
+     git pull origin desarrollo
 
   4) Ir a la carpeta del proyecto y levantar los contenedores correctos:
      cd casatic-directorio
@@ -42,7 +45,7 @@ ANTES DE EMPEZAR:
 ======================================================
 
   PASO 1 — Asegurarse de tener el backup actualizado:
-     git pull origin main
+     git pull origin desarrollo
 
   PASO 2 — Borrar la BD anterior:
      docker exec casatic-db psql -U casatic -c "DROP DATABASE IF EXISTS casatic_directorio"
@@ -93,7 +96,7 @@ ANTES DE EMPEZAR:
   2) Commitear y pushear:
      git add backup.sql
      git commit -m "chore: actualizar backup BD - [fecha]"
-     git push origin main
+     git push origin desarrollo
 
   Los demás compañeros repiten la PARTE 2 desde el PASO 1.
 
