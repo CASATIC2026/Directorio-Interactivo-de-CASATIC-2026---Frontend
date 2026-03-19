@@ -7,7 +7,7 @@ const FAQS = [
     items: [
       {
         q: '¿Qué es CASATIC?',
-        a: 'CASATIC (Cámara Salvadoreña de Tecnologías de la Información y Comunicación) es la organización gremial que agrupa a las empresas del sector TIC de El Salvador, promoviendo su desarrollo, competitividad e internacionalización.',
+        a: 'CASATIC (Cámara Salvadoreña de Tecnologías de la Información y Comunicación) Es una asociacion sin fines de lucro del sector privado especializada en als tecnologìas de informacìon y comunicaciones ',
       },
       {
         q: '¿Qué es el Directorio de Empresas CASATIC?',

@@ -5,6 +5,8 @@ import reunion from '../public/img/imagenes referentes a nuevos iconos,fondos et
 import reunion2 from './img/imagenes referentes a nuevos iconos,fondos etc/imagen mision 2.0.png'
 import reunion3 from './img/imagenes referentes a nuevos iconos,fondos etc/reuniones globales.jpg'
 
+import casaticLogo from './img/Reverse - v2@4x.png'
+
 import slide1 from '../public/img/alianzas internacionales/world vision.png';
 import slide2 from '../public/img/alianzas internacionales/usaid.png';
 import slide3 from '../public/img/alianzas internacionales/proesa organismo promotor de exportaciones e inversiones de el salvador.png';
@@ -120,8 +122,8 @@ export default function PresentacionPage() {
         'Networking entre empresas tecnológicas',
         'Promover tecnologías emergentes',
         'Impulsar el desarrollo económico tecnológico',
-   
-      ],     img:reunion3,
+     
+      ],img:reunion3,
     },
   ];
 
@@ -243,18 +245,23 @@ const visibleSlides = slides.slice(
   );
   
   return (
-    <div className="bg-mesh min-h-screen">
+    <div className="bg-white overflow-x-hidden">
 
       {/* HEADER */}
-      <div className="bg-gradient-to-br from-casatic-700 via-casatic-800 to-surface-900 text-white py-16 text-center">
-        <h1 className="text-4xl md:text-5xl font-bold mb-4">
-          Presentación CASATIC
-        </h1>
-        <p className="text-lg text-white/90 max-w-2xl mx-auto">
-          Conoce nuestra visión, misión y objetivos
-        </p>
-      </div>
+      <div className="relative overflow-hidden bg-gradient-to-br from-casatic-700 via-casatic-800 to-surface-900 py-16 sm:py-24 lg:py-32">
+<div className='absolute inset-0 bg-grid opacity-10 pointer-events-none'/>
+      <div className='absolute top-[-40px] right-[-40px] blur-3xl w-96 h-96 bg-casatic-500/20 rounded-full pointer-events-none bg-gradient-to-blue' />
+      <div className='absolute insert-0 br-grid opacity-10 pointer-events-none'/>
+<div className='relative max-w-7x1 mx-auto px-4 sm:px-6 lg:px-8' >
+<div className='grid lg:grid-cols-2 gap-10 lg:gap-16 items-center'>
 
+<img src={casaticLogo} alt="CASATIC" className='h-12 w-auto object-conyain mb-5 mx-auto lg:mx-0 center'/>
+<div className='text-center lg:text.left animate-fade-in-up'>
+        <h1 className=" text-center text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-extrabold text-white leading-tight tracking-tight mb-5">
+          CAMARA SALVADOREÑA DE TECNOLOGÍAS DE LA INFORMACIÓN Y LA COMUNICACIÓN {''}<br></br>
+    <br></br>
+        <span className="text-gradient-accent">Es una asociacion no lucrativa que agremia a enmtidades del sector TIC en el país, con el objetivo de promover el desarrollo en El Salvador</span>    </h1>
+      </div></div></div></div>
       {/* SECCIONES */}
 <div className="max-w-7xl mx-auto px-4 py-20 space-y-16">
   {sections.map((sec) => {

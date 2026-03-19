@@ -6,7 +6,7 @@ const INFO = [
   { icon: Phone, label: 'Teléfono', value: '+503 2222-0000', href: 'tel:+50322220000' },
   { icon: MapPin, label: 'Dirección', value: 'San Salvador, El Salvador', href: null },
   { icon: Clock, label: 'Horario de atención', value: 'Lunes a Viernes, 8:00 – 17:00', href: null },
-  { icon: Globe, label: 'Sitio web', value: 'www.casatic.org.sv', href: 'https://www.casatic.org.sv' },
+  { icon: Globe, label: 'Sitio web', value: 'www.casatic.org.sv', href: 'https://www.casatic.org' },
 ];
 
 export default function ContactoPage() {
