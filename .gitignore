@@ -1,4 +1,42 @@
-﻿node_modules/
-dist/
+﻿# ══════════════════════════════════════════════════════════════
+# .gitignore — Frontend CASATIC Directorio
+# ══════════════════════════════════════════════════════════════
+
+# ── Secretos y variables de entorno ──────────────────────
 .env
+.env.local
+.env.production
+.env.*.local
+
+# ── Base de datos / Backups ──────────────────────────────
+*.sql
+
+# ── Dependencias ─────────────────────────────────────────
+node_modules/
+
+# ── Build output ─────────────────────────────────────────
+dist/
+build/
+.cache/
+
+# ── Logs ─────────────────────────────────────────────────
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ── IDE ──────────────────────────────────────────────────
+.vs/
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── OS ───────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ── Docker override local ───────────────────────────────
+docker-compose.override.yml
