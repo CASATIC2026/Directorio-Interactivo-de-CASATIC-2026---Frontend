@@ -248,73 +248,38 @@ const visibleSlides = slides.slice(
     <div className="bg-white overflow-x-hidden">
 
       {/* HEADER */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-casatic-700 via-casatic-800 to-surface-900 py-16 sm:py-24 lg:py-32">
-<div className='absolute inset-0 bg-grid opacity-10 pointer-events-none'/>
-      <div className='absolute top-[-40px] right-[-40px] blur-3xl w-96 h-96 bg-casatic-500/20 rounded-full pointer-events-none bg-gradient-to-blue' />
-      <div className='absolute insert-0 br-grid opacity-10 pointer-events-none'/>
-<div className='relative max-w-7x1 mx-auto px-4 sm:px-6 lg:px-8' >
-<div className='grid lg:grid-cols-2 gap-10 lg:gap-16 items-center'>
+      {/* HEADER */}
+<div className="relative overflow-hidden bg-gradient-to-br from-casatic-700 via-casatic-800 to-surface-900 py-20 sm:py-24 lg:py-32">
 
-<img src={casaticLogo} alt="CASATIC" className='h-12 w-auto object-conyain mb-5 mx-auto lg:mx-0 center'/>
-<div className='text-center lg:text.left animate-fade-in-up'>
-        <h1 className=" text-center text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-extrabold text-white leading-tight tracking-tight mb-5">
-          CAMARA SALVADOREÑA DE TECNOLOGÍAS DE LA INFORMACIÓN Y LA COMUNICACIÓN {''}<br></br>
-    <br></br>
-        <span className="text-gradient-accent">Es una asociacion no lucrativa que agremia a enmtidades del sector TIC en el país, con el objetivo de promover el desarrollo en El Salvador</span>    </h1>
-      </div></div></div></div>
-      {/* SECCIONES */}
-<div className="max-w-7xl mx-auto px-4 py-20 space-y-16">
-  {sections.map((sec) => {
-    return (
-      <div
-        key={sec.id}
-        className={`bg-white rounded-2xl shadow-lg p-8 flex flex-col md:flex-row items-center gap-6 hover:scale-[1.02] transition-all duration-300 ${
-          sec.id === "mision"
-            ? "md:ml-auto md:w-[60%]"
-            : "md:mr-auto md:w-[60%]"
-        }`}
-      >
+  {/* Fondo decorativo */}
+  <div className="absolute inset-0 bg-grid opacity-10 pointer-events-none" />
+  <div className="absolute top-[-60px] right-[-60px] w-96 h-96 bg-casatic-500/20 rounded-full blur-3xl" />
+  <div className="absolute bottom-[-60px] left-[-60px] w-80 h-80 bg-accent-500/10 rounded-full blur-3xl" />
 
-        {/* IMAGEN IZQUIERDA (misión) */}
-        {sec.id === "mision" && sec.img && (
-          <img
-            src={sec.img}
-            alt={sec.title}
-            className="w-40 h-40 object-contain"
-          />
-        )}
+  <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* TEXTO */}
-        <div className="flex-1">
-          <h2 className="text-2xl font-bold mb-4">{sec.title}</h2>
+    <div className="flex flex-col items-center text-center">
 
-          <p className="text-surface-600 mb-4">
-            {sec.description}
-          </p>
+      {/* Logo */}
+      <img 
+        src={casaticLogo} 
+        alt="CASATIC" 
+        className="h-16 mb-6 object-contain"
+      />
 
-          {Array.isArray(sec.details) ? (
-            <ul className="list-disc pl-5 space-y-2">
-              {sec.details.map((d, i) => (
-                <li key={i}>{d}</li>
-              ))}
-            </ul>
-          ) : sec.details ? (
-            <p>{sec.details}</p>
-          ) : null}
-        </div>
+      {/* Título */}
+      <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.2rem] font-extrabold text-white leading-tight tracking-tight max-w-4xl">
+        Cámara Salvadoreña de Tecnologías de la Información y la Comunicación
+      </h1>
 
-        {/* IMAGEN DERECHA (visión) */}
-        {sec.id !== "mision" && sec.img && (
-          <img
-            src={sec.img}
-            alt={sec.title}
-            className="w-40 h-40 object-contain"
-          />
-        )}
+      {/* Descripción */}
+      <p className="mt-6 text-base sm:text-lg md:text-xl text-white/80 max-w-3xl leading-relaxed">
+        Es una asociación sin fines de lucro que agrupa a entidades del sector TIC en el país, 
+        con el objetivo de promover el desarrollo tecnológico en El Salvador.
+      </p>
 
-      </div>
-    );
-  })}
+    </div>
+  </div>
 </div>
 
       {/* SLIDER */}
