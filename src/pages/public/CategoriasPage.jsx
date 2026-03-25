@@ -178,3 +178,5 @@ export default function CategoriasPage() {
     </div>
   );
 }
+// prueba
+console.log("test frontend");
