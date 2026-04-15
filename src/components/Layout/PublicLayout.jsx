@@ -137,6 +137,9 @@ export default function PublicLayout() {
                 <li><Link to="/directorio" className="text-sm hover:text-white transition-colors">Directorio de Socios</Link></li>
                 <li><Link to="/presentacion" className="text-sm hover:text-white transition-colors">Presentación</Link></li>
                 <li><Link to="/admin/login" className="text-sm hover:text-white transition-colors">Panel de Administración</Link></li>
+                <li><Link to="/categorias" className="text-sm hover:text-white transition-colors">Categorías</Link></li>
+                <li><Link to="/contacto" className="text-sm hover:text-white transition-colors">Contacto</Link></li>
+                <li><Link to="/faq" className="text-sm hover:text-white transition-colors">Preguntas Frecuentes</Link></li>
               </ul>
             </div>
             <div>
