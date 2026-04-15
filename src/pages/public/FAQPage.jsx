@@ -7,15 +7,15 @@ const FAQS = [
     items: [
       {
         q: '¿Qué es CASATIC?',
-        a: 'CASATIC (Cámara Salvadoreña de Tecnologías de la Información y Comunicación) Es una asociacion sin fines de lucro del sector privado especializada en als tecnologìas de informacìon y comunicaciones ',
+        a: 'CASATIC (Cámara Salvadoreña de Tecnologías de la Información y Comunicación) Es una asociacion sin fines de lucro del sector privado especializada en als tecnologìas de informacìon y comunicaciones cuyo fin principal es promover el uso de las tecnologías para la mejora de la calidad de vida de los salvadoreños ',
       },
       {
         q: '¿Qué es el Directorio de Empresas CASATIC?',
-        a: 'Es una plataforma digital que reúne el listado actualizado de las empresas socias de CASATIC, permitiendo a compradores, inversionistas y el público en general encontrar proveedores tecnológicos calificados en El Salvador.',
+        a: 'Es una plataforma que permite asus socios darse a conocer, promover sus productos y servicios, a cualquier persona o insitución del mercado nacional o internacional.',
       },
       {
         q: '¿Es gratuito utilizar el directorio?',
-        a: 'Sí, consultar el directorio es completamente gratuito para cualquier persona. Las empresas que deseen aparecer en el directorio deben ser socias activas de CASATIC.',
+        a: 'Sí, para los socios es gratis, otras empresas del sector TIC pueden ser parte del directorio pagando una membresía, para los usuarios el acceso es publico y libre.',
       },
     ],
   },
@@ -24,19 +24,19 @@ const FAQS = [
     items: [
       {
         q: '¿Cómo puedo asociarme a CASATIC?',
-        a: 'Para afiliarse, contáctenos a través del formulario de contacto o al correo info@casatic.org.sv. Nuestro equipo le explicará los requisitos, categorías de membresía y beneficios disponibles.',
+        a: 'Solicitar a tráves de redes ociales, correo institucional. página web.',
       },
       {
         q: '¿Qué beneficios tiene ser socio de CASATIC?',
-        a: 'Los socios de CASATIC acceden a: presencia en el directorio digital, participación en eventos y ferias del sector, oportunidades de networking, acceso a programas de formación, representación gremial ante entidades gubernamentales y beneficios con aliados estratégicos.',
+        a: 'Principalmente la representación ante el sector empresarial, el aparato gubernamental, organismos internacinales y la sociedad. También, oportunidades de networking y participacion en proyectos que generen oportunidad de negocios.',
       },
       {
         q: '¿Cómo actualizo la información de mi empresa en el directorio?',
-        a: 'Los socios activos pueden acceder a su panel de gestión en la sección "Mi Empresa" usando el correo y contraseña registrados. Desde ahí pueden editar su perfil, servicios, especialidades y datos de contacto.',
+        a: 'Como socio, cada uno puede tener aceso a actualizar su micro sitio, solicitando su acceso, o solicitando a la administración de CASATIC.',
       },
       {
         q: '¿Qué pasa si no recuerdo mi contraseña?',
-        a: 'En la página de inicio de sesión de socios encontrará la opción "¿Olvidé mi contraseña?". Ingrese su correo registrado y recibirá un enlace para restablecerla.',
+        a: 'Puede solicitar a la adminitración de CASATIC que restablesca su contraseña.',
       },
     ],
   },
@@ -45,15 +45,15 @@ const FAQS = [
     items: [
       {
         q: '¿Cómo busco una empresa en el directorio?',
-        a: 'Desde la página del Directorio puede buscar por nombre de empresa, especialidad técnica, servicio ofrecido o sector. Use los filtros disponibles para afinar su búsqueda.',
+        a: 'A traves de navegación en el sitio o por busqueda con o sin filtro.',
       },
       {
         q: '¿Qué significan los estados de membresía?',
-        a: 'Las empresas del directorio pueden tener estado "Activo" (al día con sus obligaciones), "En Mora" (con pagos pendientes) o "Inactivo" (membresía suspendida). Recomendamos contactar únicamente a empresas en estado Activo.',
+        a: 'En el directorio se vicualizan solo socios activos con membresía vigente, socios en mora o que ya no  pertenecen son puestos en pausa o dados de baja por la administración de CASATIC.',
       },
       {
         q: '¿Puedo contactar directamente a una empresa desde el directorio?',
-        a: 'Sí, cada perfil de empresa cuenta con un formulario de contacto que envía su consulta directamente a la empresa. También puede ver sus teléfonos y redes sociales si los tiene disponibles.',
+        a: 'En el directorio está la información de contacto y los enlaces a los sitios de los socios, la plataforma es solo informativa.',
       },
     ],
   },
@@ -62,15 +62,15 @@ const FAQS = [
     items: [
       {
         q: '¿En qué navegadores funciona mejor el directorio?',
-        a: 'El directorio funciona en los navegadores modernos: Google Chrome, Mozilla Firefox, Microsoft Edge y Safari. Le recomendamos mantener su navegador actualizado para la mejor experiencia.',
+        a: 'Debe ser principalmente comtatible con Edge, Chrome, Firefox, Safari.',
       },
       {
         q: '¿La información de las empresas está verificada?',
-        a: 'CASATIC verifica la membresía activa de cada empresa listada. Sin embargo, la información de perfil (descripción, servicios, contacto) es responsabilidad de cada empresa socia.',
+        a: 'Debe ser validada y verificada por la administración de CASATIC.',
       },
       {
         q: '¿Detecté un error en el perfil de una empresa. ¿Qué hago?',
-        a: 'Si encuentra información incorrecta o desactualizada, contáctenos a través de nuestro formulario de contacto indicando el nombre de la empresa y el error detectado. Lo revisaremos a la brevedad.',
+        a: 'Los socios pueden actualizar la información de sus empresas si tienen usuarios o solicitarlo a la administración de CASATIC.',
       },
     ],
   },
