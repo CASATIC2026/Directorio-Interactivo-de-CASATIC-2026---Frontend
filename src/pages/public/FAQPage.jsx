@@ -7,11 +7,11 @@ const FAQS = [
     items: [
       {
         q: '¿Qué es CASATIC?',
-        a: 'CASATIC (Cámara Salvadoreña de Tecnologías de la Información y Comunicación) Es una asociacion sin fines de lucro del sector privado especializada en als tecnologìas de informacìon y comunicaciones cuyo fin principal es promover el uso de las tecnologías para la mejora de la calidad de vida de los salvadoreños ',
+        a: 'CASATIC (Cámara Salvadoreña de Tecnologías de la Información y Comunicación) Es una asociacion sin fines de lucro del sector privado especializada en las tecnologìas de informacìon y comunicaciones cuyo fin principal es promover el uso de las tecnologías para la mejora de la calidad de vida de los salvadoreños ',
       },
       {
         q: '¿Qué es el Directorio de Empresas CASATIC?',
-        a: 'Es una plataforma que permite asus socios darse a conocer, promover sus productos y servicios, a cualquier persona o insitución del mercado nacional o internacional.',
+        a: 'Es una plataforma que permite a sus socios darse a conocer, promover sus productos y servicios, a cualquier persona o insitución del mercado nacional o internacional.',
       },
       {
         q: '¿Es gratuito utilizar el directorio?',
@@ -24,7 +24,7 @@ const FAQS = [
     items: [
       {
         q: '¿Cómo puedo asociarme a CASATIC?',
-        a: 'Solicitar a tráves de redes ociales, correo institucional. página web.',
+        a: 'Solicitar a tráves de redes sociales, correo institucional. página web.',
       },
       {
         q: '¿Qué beneficios tiene ser socio de CASATIC?',
@@ -49,7 +49,7 @@ const FAQS = [
       },
       {
         q: '¿Qué significan los estados de membresía?',
-        a: 'En el directorio se vicualizan solo socios activos con membresía vigente, socios en mora o que ya no  pertenecen son puestos en pausa o dados de baja por la administración de CASATIC.',
+        a: 'En el directorio se visualizan solo socios activos con membresía vigente, socios en mora o que ya no  pertenecen son puestos en pausa o dados de baja por la administración de CASATIC.',
       },
       {
         q: '¿Puedo contactar directamente a una empresa desde el directorio?',
