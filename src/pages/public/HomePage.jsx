@@ -15,7 +15,7 @@ const features = [
     title: 'Búsqueda Avanzada',
     desc: 'Encuentra socios por especialidad, sector o nombre con filtros potentes.',
     color: 'bg-casatic-50 text-casatic-600',
-    img2:icono1,
+    img2:icono1,  
     link:"/categorias"
   },
   {
