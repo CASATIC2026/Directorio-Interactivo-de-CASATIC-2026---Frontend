@@ -50,9 +50,9 @@ export default function SocioDetallePage() {
 	}
 
 	return (
-		<section>
-			<article className="card">
-				<h2>{socio.nombreEmpresa}</h2>
+		<section><br></br>
+			<article className="card"><br></br><hr></hr>
+				<h2>{socio.nombreEmpresa}</h2><br></br>
 				<p>{socio.descripcion}</p>
 				<p>
 					<strong>Especialidades:</strong> {(socio.especialidades || []).join(', ')}
