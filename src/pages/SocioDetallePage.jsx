@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { api } from '../lib/api'
 
 export default function SocioDetallePage() {
-	const { id } = useParams()
+	const { slug } = useParams()
 	const [socio, setSocio] = useState(null)
 	const [error, setError] = useState('')
 	const [ok, setOk] = useState('')
@@ -17,7 +17,7 @@ export default function SocioDetallePage() {
 		const cargar = async () => {
 			setError('')
 			try {
-				const result = await api.obtenerSocioPorId(id)
+				const result = await api.obtenerSocioPorId(slug)
 				setSocio(result)
 			} catch (err) {
 				setError(err.message)
@@ -25,7 +25,7 @@ export default function SocioDetallePage() {
 		}
 
 		cargar()
-	}, [id])
+	}, [slug])
 
 	const onSubmit = async (event) => {
 		event.preventDefault()
@@ -33,7 +33,7 @@ export default function SocioDetallePage() {
 		setOk('')
 
 		try {
-			await api.enviarFormulario(id, form)
+			await api.enviarFormulario(slug, form)
 			setOk('Mensaje enviado correctamente')
 			setForm({ nombre: '', correo: '', mensaje: '' })
 		} catch (err) {
@@ -50,8 +50,8 @@ export default function SocioDetallePage() {
 	}
 
 	return (
-		<section>
-			<article className="card">
+		<section><br></br>
+			<article className="card"><br></br>
 				<h2>{socio.nombreEmpresa}</h2>
 				<p>{socio.descripcion}</p>
 				<p>

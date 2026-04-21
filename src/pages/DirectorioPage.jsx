@@ -132,7 +132,7 @@ export default function DirectorioPage() {
 						<h3>{item.nombreEmpresa}</h3>
 						<p>{item.descripcion}</p>
 						<p className="muted">{(item.especialidades || []).join(', ')}</p>
-						<Link to={`/directorio/${item.id}`}>Ver detalle</Link>
+						<Link to={`/socio/${item.id}`}>Ver detalle</Link>
 					</article>
 				))}
 			</div>
