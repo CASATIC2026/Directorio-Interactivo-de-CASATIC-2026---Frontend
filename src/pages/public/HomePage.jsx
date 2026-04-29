@@ -340,7 +340,7 @@ const images = [
 <div className="flex items-center gap-2 justify-center">
  <Link to="/talentohumano" className="flex items-center gap-2 justify-center group">
   <Users className="text-gray-400 w-6 h-6 group-hover:text-blue-600" />
-  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0b2a5a] tracking-tight group-hover:underline">
+  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0b2a5a] tracking-tight group-hover:underline">
     TALENTO HUMANO
   </h3>
 </Link>
@@ -349,7 +349,7 @@ const images = [
              <div className="flex items-center gap-2 justify-center">
  <Link to="/innovacion" className="flex items-center gap-2 justify-center group">
   <BarChart3 className="text-gray-400 w-6 h-6 group-hover:text-blue-600" />
-  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0b2a5a] tracking-tight group-hover:underline">
+  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0b2a5a] tracking-tight group-hover:underline">
     INNOVACIÓN
   </h3>
 </Link>
