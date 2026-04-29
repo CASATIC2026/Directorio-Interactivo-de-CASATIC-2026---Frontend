@@ -384,7 +384,7 @@ const images = [
       </h2><br></br><br></br>
 
       {/*---------MENU DE MENBRESIAS ASOCIADAS A CASATIC PRECIOS VARIADOS*/}
-       <div className="max-w-5xl mx-auto px-4 "  className="py-10 bg-write-200  hover:scale-[1.02] transition-transform duration-300 rounded-lg">
+       <div className="max-w-5xl mx-auto px-4 py-10 bg-write-200 hover:scale-[1.02] transition-transform duration-300 rounded-lg">
     
     <div className="w-full relative group cursor-pointer">
 
@@ -408,7 +408,7 @@ const images = [
       </h6>
       </div><br></br><br></br></div></div>
 
-      <div className="max-w-5xl mx-auto px-4 "  className="py-10 bg-write-200  hover:scale-[1.02] transition-transform duration-300 rounded-lg">
+      <div className="max-w-5xl mx-auto px-4 py-10 bg-write-200 hover:scale-[1.02] transition-transform duration-300 rounded-lg">
 
       <div className="w-full relative group cursor-pointer">
    
@@ -433,7 +433,7 @@ const images = [
       </h5>
       </div> </div> </div>
 
-      <div className="max-w-5xl mx-auto px-4 "  className="py-10 bg-write-200  hover:scale-[1.02] transition-transform duration-300 rounded-lg">
+      <div className="max-w-5xl mx-auto px-4 py-10 bg-write-200 hover:scale-[1.02] transition-transform duration-300 rounded-lg">
 
       <br></br><br></br>
       <div className="w-full relative group cursor-pointer">
