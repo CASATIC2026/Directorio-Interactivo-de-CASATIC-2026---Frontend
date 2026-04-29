@@ -2,6 +2,10 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { ShieldCheck, Lock, Eye, EyeOff, AlertCircle, CheckCircle2 } from 'lucide-react';
+<<<<<<< HEAD
+=======
+import { validatePassword,  validatePasswordMatch, getPasswordStrengthFeedback } from '../../lib/validators';
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
 
 export default function CambiarPasswordPage() {
   const [password, setPassword] = useState('');
@@ -11,6 +15,7 @@ export default function CambiarPasswordPage() {
   const { cambiarPassword } = useAuth();
   const navigate = useNavigate();
 
+<<<<<<< HEAD
   const hasUpper = /[A-Z]/.test(password);
   const hasNumber = /\d/.test(password);
   const hasSpecial = /[^a-zA-Z0-9]/.test(password);
@@ -20,17 +25,42 @@ export default function CambiarPasswordPage() {
   const strength = [hasMinLength, hasUpper, hasNumber, hasSpecial].filter(Boolean).length;
   const strengthColors = ['bg-red-400', 'bg-amber-400', 'bg-amber-400', 'bg-emerald-400', 'bg-emerald-500'];
   const strengthLabels = ['Muy débil', 'Débil', 'Regular', 'Buena', 'Fuerte'];
+=======
+  // Usar validador senior-level
+  const passwordValidation = validatePassword(password);
+  const matchValidation = validatePasswordMatch(password, confirm);
+  const strengthFeedback = getPasswordStrengthFeedback(password);
+  
+  const isValid = passwordValidation.isValid && matchValidation.match && password.length > 0;
+  
+  // Mapear feedback a colores
+  const strengthColorMap = {
+    'weak': 'bg-red-500',
+    'medium': 'bg-amber-500',
+    'strong': 'bg-emerald-500',
+  };
+  
+  // Derivar requisitos de la validación
+  const hasMinLength = password.length >= 8;
+  const hasUpper = /[A-Z]/.test(password);
+  const hasNumber = /\d/.test(password);
+  const hasSpecial = /[^a-zA-Z0-9]/.test(password);
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
 
     if (!isValid) {
+<<<<<<< HEAD
       setError('La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un carácter especial');
       return;
     }
     if (password !== confirm) {
       setError('Las contraseñas no coinciden');
+=======
+      setError(passwordValidation.errors?.[0] || matchValidation.message || 'Por favor verifica los requisitos');
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
       return;
     }
 
@@ -92,11 +122,26 @@ export default function CambiarPasswordPage() {
                   <div className="flex gap-1">
                     {[0, 1, 2, 3].map((i) => (
                       <div key={i} className={`h-1.5 flex-1 rounded-full transition-colors duration-300 ${
+<<<<<<< HEAD
                         i < strength ? strengthColors[strength] : 'bg-surface-200'
                       }`} />
                     ))}
                   </div>
                   <p className="text-[10px] text-surface-500">{strengthLabels[strength]}</p>
+=======
+                        (i === 0 && hasMinLength) ||
+                        (i === 1 && hasUpper) ||
+                        (i === 2 && hasNumber) ||
+                        (i === 3 && hasSpecial)
+                          ? strengthColorMap[strengthFeedback.strength]
+                          : 'bg-surface-200'
+                      }`} />
+                    ))}
+                  </div>
+                  <p className="text-[10px] text-surface-500 capitalize">
+                    Seguridad: {strengthFeedback.strength}
+                  </p>
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
                   <ul className="space-y-0.5 text-[11px]">
                     <li className={hasMinLength ? 'text-emerald-600' : 'text-surface-400'}>
                       {hasMinLength ? '✓' : '○'} Mínimo 8 caracteres

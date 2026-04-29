@@ -44,6 +44,20 @@ export default {
           900: '#0b0b35',   // Base 01 — footer y fondos oscuros
           950: '#0b0b35',   // Base 01 — sidebar
         },
+<<<<<<< HEAD
+=======
+        // Social networks brand colors
+        social: {
+          facebook: '#1877F2',
+          linkedin: '#0A66C2',
+          instagram: '#E1306C',
+          youtube: '#FF0000',
+          twitter: '#1DA1F2',
+          tiktok: '#000000',
+          whatsapp: '#25D366',
+          telegram: '#0088cc',
+        },
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],

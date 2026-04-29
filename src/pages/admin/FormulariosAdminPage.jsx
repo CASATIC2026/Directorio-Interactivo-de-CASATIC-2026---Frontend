@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useAuth } from '../../context/AuthContext';
 import api from '../../api/client';
 import {
   Mail, Search, CalendarDays, Building2, RefreshCw,
@@ -82,6 +83,7 @@ function DetailModal({ item, onClose }) {
 const SORT_FIELDS = ['fecha', 'nombre', 'nombreEmpresa'];
 
 export default function FormulariosAdminPage() {
+  const { user } = useAuth();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -118,14 +120,19 @@ export default function FormulariosAdminPage() {
 
   const load = () => {
     setLoading(true);
+    // Si es Socio, solo obtener sus formularios; si es Admin, obtener todos
+    const endpoint = user?.rol === 'Socio' 
+      ? `/formulariocontacto/mi-socio`
+      : `/formulariocontacto`;
+      
     api
-      .get('/formulariocontacto', { params: { desde: `${desde}T00:00:00`, hasta: `${hasta}T23:59:59` } })
+      .get(endpoint, { params: { desde: `${desde}T00:00:00`, hasta: `${hasta}T23:59:59` } })
       .then((res) => setItems(res.data ?? []))
       .catch(() => setItems([]))
       .finally(() => setLoading(false));
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => { load(); }, [desde, hasta, user?.rol]);
 
   const toggleSort = (field) => {
     setSort((prev) =>
@@ -162,8 +169,14 @@ export default function FormulariosAdminPage() {
       {/* ── Header ──────────────────────────────────────── */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-surface-900">Formularios de Contacto</h1>
-          <p className="text-sm text-surface-500 mt-0.5">Mensajes recibidos a través del directorio</p>
+          <h1 className="text-2xl font-bold text-surface-900">
+            {user?.rol === 'Socio' ? 'Mensajes Recibidos' : 'Formularios de Contacto'}
+          </h1>
+          <p className="text-sm text-surface-500 mt-0.5">
+            {user?.rol === 'Socio' 
+              ? 'Mensajes de contacto dirigidos a tu empresa'
+              : 'Mensajes recibidos a través del directorio'}
+          </p>
         </div>
         <button onClick={load} className="btn-secondary btn-sm self-start sm:self-auto">
           <RefreshCw size={15} className={loading ? 'animate-spin' : ''} /> Actualizar

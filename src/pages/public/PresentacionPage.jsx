@@ -1,11 +1,22 @@
 import { Eye, Target, Trophy } from 'lucide-react';
 import { useState, useEffect } from "react";
+<<<<<<< HEAD
 import { Link } from "react-router-dom";
 import reunion from '../public/img/imagenes referentes a nuevos iconos,fondos etc/reunion 2 .0.png';
 import reunion2 from './img/imagenes referentes a nuevos iconos,fondos etc/imagen mision 2.0.png'
 import reunion3 from './img/imagenes referentes a nuevos iconos,fondos etc/reuniones globales.jpg'
 
 import casaticLogo from './img/Reverse - v2@4x.png'
+=======
+import reunion from '../public/img/imagenes referentes a nuevos iconos,fondos etc/reunion 2 .0.png';
+import reunion2 from './img/imagenes referentes a nuevos iconos,fondos etc/imagen mision 2.0.png'
+import reunion3 from './img/imagenes referentes a nuevos iconos,fondos etc/reuniones globales.jpg'
+import {
+  Search, SlidersHorizontal, Building2, ChevronLeft, ChevronRight,
+  ArrowRight, MapPin, X, Users, BarChart3, ShieldCheck
+} from 'lucide-react';
+import casaticLogo from '../../img/Reverse - v3@4x.png';
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
 
 import slide1 from '../public/img/alianzas internacionales/world vision.png';
 import slide2 from '../public/img/alianzas internacionales/usaid.png';
@@ -99,7 +110,11 @@ export default function PresentacionPage() {
       icon: Eye,
       description:
         'Ser el referente necesario y reconocido en el sector de las tecnologías de la información y las comunicaciones a nivel nacional e internacional.',
+<<<<<<< HEAD
         img:reunion,
+=======
+    
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
     },
     {
       id: 'mision',
@@ -109,7 +124,11 @@ export default function PresentacionPage() {
         'Somos una organización sin fines de lucro que representa y promueve al sector TIC como motor de desarrollo de El Salvador.',
       details:
         'Buscamos ampliar y acercar las oportunidades que proporcionen la competitividad y el crecimiento del sector tecnológico.',
+<<<<<<< HEAD
         img:reunion2,
+=======
+     
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
     },
     {
       id: 'objetivos',
@@ -122,8 +141,13 @@ export default function PresentacionPage() {
         'Networking entre empresas tecnológicas',
         'Promover tecnologías emergentes',
         'Impulsar el desarrollo económico tecnológico',
+<<<<<<< HEAD
      
       ],img:reunion3,
+=======
+   
+      ],     
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
     },
   ];
 
@@ -154,7 +178,11 @@ export default function PresentacionPage() {
 
   
    const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+<<<<<<< HEAD
 const slidesPerView = 2;
+=======
+const slidesPerView = 4;
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
 
 useEffect(() => {
   const interval = setInterval(() => {
@@ -245,6 +273,7 @@ const visibleSlides = slides.slice(
   );
   
   return (
+<<<<<<< HEAD
     <div className="bg-white overflow-x-hidden">
 
       {/* HEADER */}
@@ -376,5 +405,142 @@ const visibleSlides = slides.slice(
 </section><br></br><br></br>
 
     </div>
+=======
+    <div className="bg-white">
+
+      {/* HEADER */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-casatic-700 via-casatic-800 to-surface-900 py-1 sm:py-1">
+        <div className="absolute inset-0 bg-grid opacity-10 pointer-events-none" />
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-casatic-500/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-accent-500/10 rounded-full blur-3xl pointer-events-none" />
+
+
+          <div className=" text-center ">
+                  <img src={casaticLogo} alt="CASATIC" className="h-20 w-auto object-contain mb-1 mx-1 " />
+                  <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-casatic-300 bg-white/10 px-3 py-1.5 rounded-full mb-5 animate-fade-in-up">
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent-400 animate-pulse-soft" />
+                    Directorio Interactivo CASATIC
+                  </span>
+          <h1 className=" text-4xl sm:text-6xl md:text-7xl font-extrabold text-white tracking-tight mb-4 animate-fade-in-up">
+            Ejes Estratégicos de{' '}
+            <span className="text-gradient-accent">CASATIC</span>
+          </h1>
+          <p className="text-base sm:text-lg text-casatic-200 leading-relaxed max-w-2xl mx-auto animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+            Se parte de nuestra gremial que asocia a las empresas del sector TIC en el país, promoviendo el desarrollo tecnológico y la innovación en El Salvador.
+          </p><br></br>
+        </div>
+      </section>
+
+      {/* SECCIONES */}
+      <div className="bg-mesh">
+        <div className="max-w-7xl mx-auto px-40 py-12 space-y-10">  {sections.map((sec) => {
+    return (
+      <div
+        key={sec.id}
+        className="bg-white rounded-2xl shadow-lg p-8 flex flex-col md:flex-row items-center gap-6 hover:scale-[1.02] transition-all duration-300 justify-center text-center md:text-left"
+      >
+        {/* IMAGEN IZQUIERDA (misión) */}
+        {sec.id === "mision" && sec.img && (
+          <img
+            src={sec.img}
+            alt={sec.title}
+            className="w-40 h-40 object-contain mx-auto md:mx-0"
+          />
+        )}
+
+        {/* TEXTO */}
+        <div className="flex-1 flex flex-col justify-center text-center md:text-left">
+          <h2 className="text-2xl font-bold mb-4">{sec.title}</h2>
+          <p className="text-surface-600 mb-4">
+            {sec.description}
+          </p>
+          {Array.isArray(sec.details) ? (
+            <ul className="list-disc pl-5 space-y-2 text-left">
+              {sec.details.map((d, i) => (
+                <li key={i}>{d}</li>
+              ))}
+            </ul>
+          ) : sec.details ? (
+            <p>{sec.details}</p>
+          ) : null}
+        </div>
+
+        {/* IMAGEN DERECHA (visión y objetivos) */}
+        {sec.id !== "mision" && sec.img && (
+          <div className="w-40 h-40 overflow-hidden rounded-xl flex-shrink-0">
+            <img
+              src={sec.img}
+              alt={sec.title}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        )}
+      </div>
+    );
+  })}
+</div>
+
+      {/* SLIDER */}
+      <section className="py-5">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <div className="bg-white rounded-2xl shadow-elevated p-8">
+            <h2 className="text-2xl font-bold text-surface-900 mb-2">
+              ALIANZAS INTERNACIONALES
+            </h2>
+            <p className="text-surface-500 mb-4">
+              Organizaciones que apoyan el desarrollo tecnológico
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+              {visibleSlides.map((slide, index) => (
+                <a key={index} href={slide.link} target="_blank" rel="noopener noreferrer" className="group">
+                  <div className="h-24 flex items-center justify-center rounded-3xl border border-surface-200 bg-surface-50 shadow-sm transition hover:shadow-lg">
+                    <img
+                      src={slide.img}
+                      alt={"Logo aliado " + (index+1)}
+                      className="max-h-16 max-w-full object-contain transition duration-200 group-hover:scale-105"
+                    />
+                  </div>
+                </a>
+              ))}
+            </div>
+            <h3 className="text-lg font-medium text-surface-700 mt-4 text-gradient-to-r from-casatic-700 to-casatic-500 bg-clip-text text-grey-700">
+               👉 Haz clic en los logos para conocer más sobre nuestros aliados
+            </h3>
+          </div>
+        </div>
+      </section>
+
+      {/* SLIDER 2 SOCIOS E INVERSIONISTAS */}
+      <section className="py-5 ">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <div className="bg-white rounded-2xl shadow-elevated p-8">
+            <h2 className="text-2xl font-bold text-surface-900 mb-2">
+              SOCIOS Y PROVEEDORES DE CASATIC
+            </h2>
+            <p className="text-surface-500 mb-4">
+              Socios aliados y clientes satisfechos
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+              {visibleImagenes.map((imagen, index) => (
+                <a key={index} href={imagen.link} target="_blank" rel="noopener noreferrer" className="group">
+                  <div className="h-24 flex items-center justify-center rounded-3xl border border-surface-200 bg-surface-50 shadow-sm transition hover:shadow-lg">
+                    <img
+                      src={imagen.img}
+                      alt={"Logo socio/proveedor " + (index+1)}
+                      className="max-h-16 max-w-full object-contain opacity-80 transition duration-200 group-hover:opacity-100 group-hover:scale-105"
+                    />
+                  </div>
+                </a>
+              ))}
+            </div>
+            <h3 className="text-lg font-medium text-surface-700 mt-4 text-gradient-to-r from-casatic-700 to-casatic-500 bg-clip-text text-grey-700">
+              👉 Haz clic en los logos para conocer más sobre nuestros socios y proveedores
+            </h3>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
   );
 }

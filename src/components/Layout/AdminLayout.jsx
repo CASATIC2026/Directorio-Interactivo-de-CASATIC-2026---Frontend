@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
 import { useState, useEffect } from 'react';
 import { Outlet, Link, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
@@ -55,7 +58,13 @@ function SidebarContent({ collapsed, user, menuItems, isActive, handleLogout, on
         {!collapsed && (
           <div className="px-3 py-2 mb-2">
             <p className="text-xs text-surface-500 truncate">{user.email}</p>
+<<<<<<< HEAD
             <p className="text-[10px] text-surface-600 mt-0.5">{user.rol === 'Admin' ? 'Administrador' : 'Socio'}</p>
+=======
+            <p className="text-[10px] text-surface-600 mt-0.5">
+              {user.rol === 'Admin' ? 'Administrador' : user.rol === 'Socio' ? 'Socio' : user.rol}
+            </p>
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
           </div>
         )}
         <button
@@ -89,6 +98,7 @@ export default function AdminLayout() {
 
   if (!user) return <Navigate to="/admin/login" replace />;
   if (user.primerLogin) return <Navigate to="/admin/cambiar-password" replace />;
+<<<<<<< HEAD
 
   const handleLogout = () => { logout(); navigate('/admin/login'); };
 
@@ -100,6 +110,32 @@ export default function AdminLayout() {
     { to: '/admin/usuarios', label: 'Usuarios', icon: Users },
   ];
 
+=======
+  
+  // Redirigir socios que intenten acceder al dashboard principal
+  if (user.rol === 'Socio' && location.pathname === '/admin') {
+    return <Navigate to="/admin/mi-empresa" replace />;
+  }
+
+  const handleLogout = () => { logout(); navigate('/admin/login'); };
+
+  // Filtrar menú según rol
+  const baseMenuItems = [
+    { to: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true, roles: ['Admin'] },
+    { to: '/admin/mi-empresa', label: 'Mi Empresa', icon: Building2, exact: true, roles: ['Socio'] },
+    { to: '/admin/socios', label: 'Socios', icon: Building2, roles: ['Admin'] },
+    { to: '/admin/formularios', label: 'Mensajes Recibidos', icon: Inbox, roles: ['Socio'] },
+    { to: '/admin/formularios', label: 'Formularios', icon: Inbox, roles: ['Admin'] },
+    { to: '/admin/reportes', label: 'Reportes', icon: BarChart3, roles: ['Admin'] },
+    { to: '/admin/usuarios', label: 'Usuarios', icon: Users, roles: ['Admin'] },
+  ];
+
+  // Filtrar items según el rol del usuario
+  const menuItems = baseMenuItems.filter(item => 
+    item.roles && item.roles.includes(user.rol)
+  );
+
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
   const isActive = (item) =>
     item.exact ? location.pathname === item.to : location.pathname.startsWith(item.to);
 
@@ -193,4 +229,8 @@ export default function AdminLayout() {
       </div>
     </div>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)

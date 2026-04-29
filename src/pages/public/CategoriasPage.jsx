@@ -178,5 +178,8 @@ export default function CategoriasPage() {
     </div>
   );
 }
+<<<<<<< HEAD
 // prueba
 console.log("test frontend");
+=======
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)

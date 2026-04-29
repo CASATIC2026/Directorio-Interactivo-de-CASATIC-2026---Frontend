@@ -1,260 +1,361 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Mail, Smartphone, IdCard, ArrowLeft, Globe } from "lucide-react";
+import { Mail, ArrowLeft, Lock, CheckCircle, AlertCircle, Loader2, Eye, EyeOff } from "lucide-react";
+import api from "../../api/client";
+import { validatePassword, validatePasswordMatch, validateEmail } from "../../lib/validators";
+import logo from "../../img/logo.png";
 
-// 👇 Importa el logo (Asegúrate de que la ruta sea correcta en tu proyecto)
-
-
-const countryCodes = [
-  { code: "+1", flag: "🇺🇸" },
-  { code: "+34", flag: "🇪🇸" },
-  { code: "+52", flag: "🇲🇽" },
-  { code: "+503", flag: "🇸🇻" },
-  { code: "+54", flag: "🇦🇷" },
-  { code: "+57", flag: "🇨🇴" },
-];
-
-const translations = {
-  es: {
-    title: "RECUPERAR CONTRASEÑA",
-    id_placeholder: "Ingresa tu número de ID",
-    method_email: "Correo",
-    method_phone: "Celular",
-    email_placeholder: "Ejemplo: admin@gmail.com",
-    phone_placeholder: "Número de celular",
-    btn_send: "Enviar solicitud",
-    btn_back: "Regresar",
-    current_lang: "Español",
-    alert_phone: "Se enviará un código de validación al administrador.",
-    alert_email: "Solicitud enviada. Revisa tu correo o contacta al admin.",
-    error_msg: "Error al procesar la solicitud"
-  },
-  en: {
-    title: "RECOVER PASSWORD",
-    id_placeholder: "Enter your ID number",
-    method_email: "Email",
-    method_phone: "Phone",
-    email_placeholder: "Example: admin@gmail.com",
-    phone_placeholder: "Phone number",
-    btn_send: "Send Request",
-    btn_back: "Back",
-    current_lang: "English",
-    alert_phone: "A validation code will be sent to the administrator.",
-    alert_email: "Request sent. Check your email or contact the admin.",
-    error_msg: "Error processing request"
-  },
-};
-
+/**
+ * Página de recuperación de contraseña administrador
+ * Flujo de 3 pasos:
+ * 1. Solicitar token (email)
+ * 2. Validar token (código)
+ * 3. Resetear contraseña
+ */
 export default function ForgotPasswordPage() {
-  const [lang, setLang] = useState("es");
-  const [showDropdown, setShowDropdown] = useState(false);
-  const t = translations[lang];
-
-  const [idValue, setIdValue] = useState("");
-  const [method, setMethod] = useState("email");
-  const [contactValue, setContactValue] = useState("");
-  const [selectedCode, setSelectedCode] = useState(countryCodes[3].code);
-  const [error, setError] = useState(null);
-  
   const navigate = useNavigate();
-  const dropdownRef = useRef(null);
+  
+  // Estados del flujo
+  const [step, setStep] = useState(1); // 1: solicitar, 2: validar, 3: resetear
+  const [email, setEmail] = useState("");
+  const [token, setToken] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setShowDropdown(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  // Usar validador senior-level
+  const passwordValidation = validatePassword(newPassword);
+  const matchValidation = validatePasswordMatch(newPassword, confirmPassword);
+  const isPasswordValid = passwordValidation.isValid;
+  const isPasswordMatch = matchValidation.match && isPasswordValid;
+  const isEmailValid = validateEmail(email);
 
-  const handleSubmit = async (e) => {
+  // Paso 1: Solicitar token de recuperación
+  const handleRequestToken = async (e) => {
     e.preventDefault();
-    setError(null);
+    setError("");
+    setSuccess("");
+    setLoading(true);
+
     try {
-      if (method === "phone") {
-        alert(t.alert_phone);
-      } else {
-        alert(t.alert_email);
-      }
-      navigate("/admin/login");
+      await api.post('/auth/recuperar-password', { email });
+      setSuccess("Se ha enviado un código de recuperación a tu email. Por favor verifica tu bandeja.");
+      setTimeout(() => {
+        setSuccess("");
+        setStep(2);
+      }, 2000);
     } catch (err) {
-      setError(t.error_msg);
+      setError(err.response?.data?.message || err.message || "Error al enviar el código de recuperación");
+    } finally {
+      setLoading(false);
     }
   };
 
-  const isValidEmail = (email) => /\S+@\S+\.\S+/.test(email);
-  const isValidPhone = (phone) => phone.length >= 4;
+  // Paso 2: Validar token
+  const handleValidateToken = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+    setLoading(true);
 
-  const isFormValid =
-    idValue.trim() !== "" &&
-    ((method === "email" && isValidEmail(contactValue)) ||
-      (method === "phone" && isValidPhone(contactValue)));
+    try {
+      await api.post('/auth/validar-token-recuperacion', { email, token });
+      setSuccess("Código validado exitosamente.");
+      setTimeout(() => {
+        setSuccess("");
+        setStep(3);
+      }, 1500);
+    } catch (err) {
+      setError(err.response?.data?.message || err.message || "Código inválido o expirado. Intenta de nuevo.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Paso 3: Resetear contraseña
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+    setLoading(true);
+
+    if (!isPasswordMatch) {
+      setError("Las contraseñas no coinciden o no cumplen los requisitos");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      await api.post('/auth/restablecer-password', { 
+        email, 
+        token, 
+        nuevaPassword: newPassword 
+      });
+      setSuccess("Contraseña cambiada exitosamente. Redirigiendo al login...");
+      setTimeout(() => navigate("/admin/login"), 2000);
+    } catch (err) {
+      setError(err.response?.data?.message || err.message || "Error al resetear la contraseña");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div 
-      className="min-h-screen flex items-center justify-center bg-[#0E3877] relative"
-      style={{ fontFamily: "'Roboto', sans-serif", fontWeight: 500 }}
-    >
-      {/* Importación de Google Font Roboto Medium */}
-      <style>
-        {`@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');`}
-      </style>
-      
-      {/* Selector de idioma */}
-      <div className="absolute top-5 right-5" ref={dropdownRef}>
-        <div className="relative">
-          <button
-            onClick={() => setShowDropdown(!showDropdown)}
-            className="bg-[#0A0A0A]/20 backdrop-blur-md border border-white/20 text-white px-4 py-2 rounded-full flex items-center gap-2 hover:bg-[#0A0A0A]/40 transition"
-          >
-            <Globe size={16} /> {t.current_lang}
-          </button>
-          {showDropdown && (
-            <div className="absolute mt-2 right-0 bg-white rounded-md shadow-xl w-40 z-50 overflow-hidden border border-[#0A0A0A]/10">
-              {Object.keys(translations).map((code) => (
-                <button
-                  key={code}
-                  onClick={() => {
-                    setLang(code);
-                    setShowDropdown(false);
-                  }}
-                  className="w-full text-left px-4 py-3 text-sm hover:bg-[#0C9EC6]/10 text-[#0A0A0A] transition-colors border-b border-gray-50 last:border-none font-medium"
-                >
-                  {translations[code].current_lang}
-                </button>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-casatic-700 to-casatic-900 p-4">
+      <div className="w-full max-w-md">
+        {/* Card */}
+        <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
+          {/* Header */}
+          <div className="bg-gradient-to-r from-casatic-500 to-casatic-700 p-6">
+            <div className="flex justify-center mb-4">
+              <img src={logo} alt="CASATIC" className="h-12 opacity-90" />
+            </div>
+            <h1 className="text-2xl font-bold text-white text-center">Recuperar Contraseña</h1>
+            <p className="text-center text-sm text-casatic-100 mt-2">Administrador</p>
+          </div>
+
+          {/* Content */}
+          <div className="p-6 sm:p-8">
+            {/* Progress Indicator */}
+            <div className="flex justify-between mb-8">
+              {[1, 2, 3].map((s) => (
+                <div key={s} className="flex flex-col items-center gap-2">
+                  <div
+                    className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all ${
+                      step >= s
+                        ? "bg-casatic-500 text-white"
+                        : "bg-gray-200 text-gray-400"
+                    }`}
+                  >
+                    {step > s ? <CheckCircle size={20} /> : s}
+                  </div>
+                  <span className="text-xs text-gray-500 text-center">
+                    {s === 1 ? "Email" : s === 2 ? "Código" : "Nueva"}
+                  </span>
+                </div>
               ))}
             </div>
-          )}
-        </div>
-      </div>
 
-      {/* Tarjeta de Recuperación */}
-      <div className="bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] p-8 w-[400px]">
-        
-        <div className="flex justify-center mb-6">
-          <img
-            src={logo}
-            alt="Logo"
-            className="w-[150px] cursor-pointer hover:opacity-80 transition duration-300"
-          />
-        </div>
-
-        <h2 className="text-center text-lg font-bold text-[#0A0A0A] mb-8 tracking-widest uppercase">
-          {t.title}
-        </h2>
-
-        <form onSubmit={handleSubmit}>
-          {/* ID Input */}
-          <div className="mb-6 relative">
-            <IdCard className="absolute left-3 top-1/2 -translate-y-1/2 text-[#0E3877]" size={18} />
-            <input
-              type="text"
-              required
-              value={idValue}
-              onChange={(e) => setIdValue(e.target.value)}
-              className="w-full pl-10 pr-3 py-2.5 border-2 border-gray-100 rounded-lg focus:border-[#0C9EC6] focus:outline-none transition-all placeholder:text-gray-400 text-[#0A0A0A] font-medium"
-              placeholder={t.id_placeholder}
-            />
-          </div>
-
-          {/* Method Tabs */}
-          <div className="flex gap-2 mb-6">
-            <button
-              type="button"
-              onClick={() => { setMethod("email"); setContactValue(""); }}
-              className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg font-bold transition-all duration-300 ${
-                method === "email" 
-                ? "bg-[#0C9EC6] text-white shadow-md" 
-                : "bg-gray-100 text-[#0A0A0A]/40 hover:bg-gray-200"
-              }`}
-            >
-              <Mail size={16} /> {t.method_email}
-            </button>
-            <button
-              type="button"
-              onClick={() => { setMethod("phone"); setContactValue(""); }}
-              className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg font-bold transition-all duration-300 ${
-                method === "phone" 
-                ? "bg-[#0C9EC6] text-white shadow-md" 
-                : "bg-gray-100 text-[#0A0A0A]/40 hover:bg-gray-200"
-              }`}
-            >
-              <Smartphone size={16} /> {t.method_phone}
-            </button>
-          </div>
-
-          {/* Email/Phone Input dinámico */}
-          <div className="mb-8">
-            {method === "email" ? (
-              <div className="relative animate-in fade-in duration-300">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-[#0E3877]" size={18} />
-                <input
-                  type="email"
-                  required
-                  value={contactValue}
-                  onChange={(e) => setContactValue(e.target.value)}
-                  className="w-full pl-10 pr-3 py-2.5 border-2 border-gray-100 rounded-lg focus:border-[#0C9EC6] focus:outline-none transition-all placeholder:text-gray-400 text-[#0A0A0A] font-medium"
-                  placeholder={t.email_placeholder}
-                />
+            {/* Alerts */}
+            {error && (
+              <div className="mb-4 p-3 bg-red-50 border-l-4 border-red-500 rounded flex gap-2">
+                <AlertCircle size={20} className="text-red-500 flex-shrink-0 mt-0.5" />
+                <p className="text-sm text-red-700">{error}</p>
               </div>
-            ) : (
-              <div className="flex gap-2 animate-in fade-in duration-300">
-                <select
-                  value={selectedCode}
-                  onChange={(e) => setSelectedCode(e.target.value)}
-                  className="px-2 py-2 border-2 border-gray-100 rounded-lg focus:border-[#0C9EC6] focus:outline-none bg-gray-50 text-[#0A0A0A] font-medium text-sm"
+            )}
+            {success && (
+              <div className="mb-4 p-3 bg-green-50 border-l-4 border-green-500 rounded flex gap-2">
+                <CheckCircle size={20} className="text-green-500 flex-shrink-0 mt-0.5" />
+                <p className="text-sm text-green-700">{success}</p>
+              </div>
+            )}
+
+            {/* Paso 1: Solicitar Token */}
+            {step === 1 && (
+              <form onSubmit={handleRequestToken} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Email del administrador
+                  </label>
+                  <div className="relative">
+                    <Mail size={18} className="absolute left-3 top-3 text-gray-400" />
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="admin@casatic.org"
+                      required
+                      className="w-full pl-10 pr-4 py-2.5 border-2 border-gray-200 rounded-lg focus:border-casatic-500 focus:outline-none transition-colors"
+                    />
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Se enviará un código de recuperación a este email
+                  </p>
+                </div>
+                <button
+                  type="submit"
+                  disabled={loading || !email}
+                  className="w-full py-2.5 bg-casatic-600 hover:bg-casatic-700 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
-                  {countryCodes.map((c) => (
-                    <option key={c.code} value={c.code}>
-                      {c.flag} {c.code}
-                    </option>
-                  ))}
-                </select>
+                  {loading ? (
+                    <>
+                      <Loader2 size={18} className="animate-spin" />
+                      Enviando código...
+                    </>
+                  ) : (
+                    "Enviar código de recuperación"
+                  )}
+                </button>
+              </form>
+            )}
 
-                <input
-                  type="tel"
-                  required
-                  value={contactValue}
-                  onChange={(e) => setContactValue(e.target.value)}
-                  className="flex-1 px-3 py-2.5 border-2 border-gray-100 rounded-lg focus:border-[#0C9EC6] focus:outline-none transition-all placeholder:text-gray-400 text-[#0A0A0A] font-medium"
-                  placeholder={t.phone_placeholder}
-                />
-              </div>
+            {/* Paso 2: Validar Token */}
+            {step === 2 && (
+              <form onSubmit={handleValidateToken} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Código de recuperación
+                  </label>
+                  <input
+                    type="text"
+                    value={token}
+                    onChange={(e) => setToken(e.target.value)}
+                    placeholder="Copia el código del email"
+                    required
+                    className="w-full px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:border-casatic-500 focus:outline-none transition-colors font-mono text-center text-lg tracking-widest"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Verifica tu email (incluyendo spam) y copia el código
+                  </p>
+                </div>
+                <button
+                  type="submit"
+                  disabled={loading || !token}
+                  className="w-full py-2.5 bg-casatic-600 hover:bg-casatic-700 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 size={18} className="animate-spin" />
+                      Validando código...
+                    </>
+                  ) : (
+                    "Validar código"
+                  )}
+                </button>
+              </form>
+            )}
+
+            {/* Paso 3: Nueva Contraseña */}
+            {step === 3 && (
+              <form onSubmit={handleResetPassword} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Nueva contraseña
+                  </label>
+                  <div className="relative">
+                    <Lock size={18} className="absolute left-3 top-3 text-gray-400" />
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      placeholder="Min. 8 caracteres, mayúscula y número"
+                      required
+                      className="w-full pl-10 pr-10 py-2.5 border-2 border-gray-200 rounded-lg focus:border-casatic-500 focus:outline-none transition-colors"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+                    >
+                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
+                  </div>
+                  <div className="mt-2 text-xs space-y-1">
+                    <p className={/^.{8,}$/.test(newPassword) ? "text-green-600" : "text-gray-500"}>
+                      ✓ Mínimo 8 caracteres
+                    </p>
+                    <p className={/[A-Z]/.test(newPassword) ? "text-green-600" : "text-gray-500"}>
+                      ✓ Al menos una mayúscula
+                    </p>
+                    <p className={/\d/.test(newPassword) ? "text-green-600" : "text-gray-500"}>
+                      ✓ Al menos un número
+                    </p>
+                    <p className={/[^a-zA-Z0-9]/.test(newPassword) ? "text-green-600" : "text-gray-500"}>
+                      ✓ Al menos un carácter especial (!@#$%^&*)
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Confirmar contraseña
+                  </label>
+                  <div className="relative">
+                    <Lock size={18} className="absolute left-3 top-3 text-gray-400" />
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      placeholder="Repite la contraseña"
+                      required
+                      className={`w-full pl-10 pr-10 py-2.5 border-2 rounded-lg focus:outline-none transition-colors ${
+                        confirmPassword
+                          ? isPasswordMatch
+                            ? "border-green-500 focus:border-green-500"
+                            : "border-red-500 focus:border-red-500"
+                          : "border-gray-200 focus:border-casatic-500"
+                      }`}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+                    >
+                      {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading || !isPasswordMatch}
+                  className="w-full py-2.5 bg-casatic-600 hover:bg-casatic-700 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 size={18} className="animate-spin" />
+                      Cambiando contraseña...
+                    </>
+                  ) : (
+                    "Cambiar contraseña"
+                  )}
+                </button>
+              </form>
+            )}
+
+            {/* Botón volver */}
+            {step > 1 && (
+              <button
+                onClick={() => {
+                  setStep(step - 1);
+                  setError("");
+                  setSuccess("");
+                }}
+                className="mt-4 w-full py-2 text-casatic-600 hover:text-casatic-700 font-semibold text-sm flex items-center justify-center gap-2"
+              >
+                <ArrowLeft size={16} />
+                Volver al paso anterior
+              </button>
             )}
           </div>
 
-          {error && <div className="text-red-500 text-xs mb-4 text-center bg-red-50 py-2 rounded-lg border border-red-100 italic">{error}</div>}
-
-          {/* Botón Enviar Principal */}
-          <button
-            type="submit"
-            disabled={!isFormValid}
-            className={`w-full py-3 font-bold rounded-lg transition-all duration-300 shadow-lg active:scale-95 ${
-              isFormValid
-                ? "bg-[#0E3877] hover:bg-[#0C9EC6] text-white shadow-[#0E3877]/20"
-                : "bg-gray-200 text-gray-400 cursor-not-allowed"
-            }`}
-          >
-            {t.btn_send}
-          </button>
-        </form>
-
-        <div className="flex items-center my-6">
-          <div className="flex-1 h-px bg-gray-100"></div>
-          <div className="px-3 text-[10px] text-gray-300 font-bold uppercase">o</div>
-          <div className="flex-1 h-px bg-gray-100"></div>
+          {/* Footer */}
+          <div className="bg-gray-50 px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+            <span className="text-xs text-gray-600">¿Recuerdas tu contraseña?</span>
+            <Link
+              to="/admin/login"
+              className="text-casatic-600 hover:text-casatic-700 font-semibold text-sm flex items-center gap-1"
+            >
+              <ArrowLeft size={14} />
+              Ir a login
+            </Link>
+          </div>
         </div>
 
-        {/* Botón Regresar Neutro */}
-        <Link 
-          to="/admin/login" 
-          className="w-full py-2.5 bg-white border-2 border-[#0A0A0A] text-[#0A0A0A] text-sm font-bold rounded-lg flex items-center justify-center gap-2 hover:bg-[#0A0A0A] hover:text-white transition-all duration-300 group"
-        >
-          <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
-          {t.btn_back}
-        </Link>
+        {/* Help text */}
+        <div className="mt-4 p-3 bg-white/20 rounded-lg text-white text-xs">
+          <p className="font-semibold mb-1">💡 Ayuda:</p>
+          <ul className="space-y-0.5 text-white/90">
+            <li>• Verifica tu email incluyendo la carpeta de spam</li>
+            <li>• Si no recibiste el código, espera 1 minuto antes de reintentar</li>
+            <li>• El código caduca en 24 horas</li>
+          </ul>
+        </div>
       </div>
     </div>
   );

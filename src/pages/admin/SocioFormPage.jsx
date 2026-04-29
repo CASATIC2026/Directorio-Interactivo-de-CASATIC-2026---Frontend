@@ -23,9 +23,13 @@ export default function SocioFormPage() {
     direccion: '',
     logoUrl: '',
     emailContacto: '',
+<<<<<<< HEAD
 
     mapaUrl: '',
 
+=======
+    mapaUrl: '',
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
     marcasRepresenta: '',
     rsWebsite: '',
     rsFacebook: '',
@@ -55,6 +59,7 @@ export default function SocioFormPage() {
           logoUrl: s.logoUrl || '',
           marcasRepresenta: s.marcasRepresenta || '',
           emailContacto: s.emailContacto || '',
+<<<<<<< HEAD
 
           // Parsear redesSociales JSON a campos individuales
 
@@ -70,6 +75,14 @@ export default function SocioFormPage() {
               rsYoutube: rs.youtube || '',
             };
           })(),
+=======
+          rsWebsite: s.rsWebsite || '',
+          rsFacebook: s.rsFacebook || '',
+          rsLinkedin: s.rsLinkedin || '',
+          rsTwitter: s.rsTwitter || '',
+          rsInstagram: s.rsInstagram || '',
+          rsYoutube: s.rsYoutube || '',
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
         });
       }).finally(() => setLoadingData(false));
     }
@@ -119,6 +132,7 @@ export default function SocioFormPage() {
     setError(null);
     setSaving(true);
 
+<<<<<<< HEAD
     const redesSociales = JSON.stringify(
       Object.fromEntries(
         Object.entries({
@@ -132,6 +146,8 @@ export default function SocioFormPage() {
       )
     );
 
+=======
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
     const payload = {
       nombreEmpresa: form.nombreEmpresa,
       slug: form.slug,
@@ -140,10 +156,20 @@ export default function SocioFormPage() {
       direccion: form.direccion,
       logoUrl: form.logoUrl,
       emailContacto: form.emailContacto,
+<<<<<<< HEAD
 
       mapaUrl: form.mapaUrl,
 
       redesSociales,
+=======
+      mapaUrl: form.mapaUrl,
+      rsWebsite: form.rsWebsite.trim(),
+      rsFacebook: form.rsFacebook.trim(),
+      rsLinkedin: form.rsLinkedin.trim(),
+      rsTwitter: form.rsTwitter.trim(),
+      rsInstagram: form.rsInstagram.trim(),
+      rsYoutube: form.rsYoutube.trim(),
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
       especialidades: form.especialidades.split(',').map((s) => s.trim()).filter(Boolean),
       servicios: form.servicios.split(',').map((s) => s.trim()).filter(Boolean),
     };
@@ -256,6 +282,7 @@ export default function SocioFormPage() {
                 placeholder="IA, Cloud, Ciberseguridad…"
               />
             </div>
+<<<<<<< HEAD
 
           
 
@@ -445,6 +472,16 @@ export default function SocioFormPage() {
                 Cancelar
               </button>
 
+=======
+            <div>
+              <label className="input-label">Servicios</label>
+              <input
+                type="text" value={form.servicios}
+                onChange={handleChange('servicios')}
+                className="input-field"
+                placeholder="Desarrollo Web, Consultoría…"
+              />
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
             </div>
           </div>
         </div>
@@ -633,4 +670,7 @@ export default function SocioFormPage() {
     </div>
   );
 }
+<<<<<<< HEAD
 modified: SocioFormPage.jsx
+=======
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)

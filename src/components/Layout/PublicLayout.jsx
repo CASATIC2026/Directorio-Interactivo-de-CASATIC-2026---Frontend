@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
+<<<<<<< HEAD
 import { Search, Home, Menu, X, Grid3X3, Mail, HelpCircle, Info } from 'lucide-react';
+=======
+import { Search, Home, Menu, X, Grid3X3, Mail, HelpCircle, Info, Lightbulb, Globe, Scale, Users } from 'lucide-react';
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
 import colorLogo from '../../img/Full Color v2@4x.png';
 import reverseLogo from '../../img/Reverse - v2@4x.png';
 
@@ -22,8 +26,16 @@ export default function PublicLayout() {
     { to: '/directorio', label: 'Directorio', icon: Search },
     { to: '/presentacion', label: 'Presentación', icon: Info },
     { to: '/categorias', label: 'Categorías', icon: Grid3X3 },
+<<<<<<< HEAD
     { to: '/contacto', label: 'Contacto', icon: Mail },
     { to: '/faq', label: 'FAQ', icon: HelpCircle },
+=======
+    { to: ' /contacto', label: 'Contacto', icon: Mail },
+    { to: '/faq', label: 'FAQ', icon: HelpCircle },
+
+  
+
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
   ];
 
   const isActive = (path) =>
@@ -132,6 +144,7 @@ export default function PublicLayout() {
             </div>
             <div>
               <h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">Navegación</h4>
+<<<<<<< HEAD
               <ul className="space-y-2">
                 <li><Link to="/" className="text-sm hover:text-white transition-colors">Inicio</Link></li>
                 <li><Link to="/directorio" className="text-sm hover:text-white transition-colors">Directorio de Socios</Link></li>
@@ -140,6 +153,22 @@ export default function PublicLayout() {
                 <li><Link to="/categorias" className="text-sm hover:text-white transition-colors">Categorías</Link></li>
                 <li><Link to="/contacto" className="text-sm hover:text-white transition-colors">Contacto</Link></li>
                 <li><Link to="/faq" className="text-sm hover:text-white transition-colors">Preguntas Frecuentes</Link></li>
+=======
+             
+              <ul className="space-y-2">
+                <li><Link to="/" className="text-sm hover:text-white transition-colors">Inicio</Link></li>
+                <li><Link to="/directorio" className="text-sm hover:text-white transition-colors">Directorio de Socios</Link></li>
+                <li><Link to="/categorias" className="text-sm hover:text-white transition-colors">Categorías</Link></li>
+                <li><Link to="/presentacion" className="text-sm hover:text-white transition-colors">Presentación</Link></li>
+       
+                <li><Link to="/admin/login" className="text-sm hover:text-white transition-colors">Panel de Administración</Link></li>
+                <li><Link to="/contacto" className="text-sm hover:text-white transition-colors">Contacto</Link></li>
+                <li><Link to="/faq" className="text-sm hover:text-white transition-colors">FAQ</Link></li>
+
+
+                 <li><Link to="/admin/login" className="text-sm hover:text-white transition-colors">Acceso Administrador</Link></li>
+               
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
               </ul>
             </div>
             <div>

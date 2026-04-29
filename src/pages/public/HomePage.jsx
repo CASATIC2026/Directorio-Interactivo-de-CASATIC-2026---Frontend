@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../../api/client';
@@ -8,6 +9,27 @@ import {
   Search, Building2, Globe, ShieldCheck, ArrowRight, Users, BarChart3
 } from 'lucide-react';
 import casaticLogo from '../../img/Reverse - v2@4x.png';
+=======
+
+import { Link } from 'react-router-dom';
+
+import { useState, useEffect } from 'react';
+import api from '../../api/client';
+import icono1 from '../public/img/busquedainteligente.png'
+import icono2 from '../public/img/gestionsegura.png'
+import icono3 from '../public/img/conexionempresarial.png'
+import {
+  Search, Building2, Globe, ShieldCheck, ArrowRight, Users, BarChart3,Crown,ChevronLeft,ChevronRight,User
+
+} from 'lucide-react';
+import casaticLogo from '../../img/Reverse - v3@4x.png';
+import { useNavigate } from 'react-router-dom';
+import casatic1 from './img/imagenes casatic/ChatGPT Image 27 abr 2026, 15_48_16.png';
+import membresia from './img/MEMBRESIA CASATIC.png';
+
+
+//*]*//*  uso de clip´s para ir a otra pagina en la carpeto convenios de casatic *//*]*/
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
 
 const features = [
   {
@@ -15,7 +37,11 @@ const features = [
     title: 'Búsqueda Avanzada',
     desc: 'Encuentra socios por especialidad, sector o nombre con filtros potentes.',
     color: 'bg-casatic-50 text-casatic-600',
+<<<<<<< HEAD
     img2:icono1,  
+=======
+    img2:icono1,
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
     link:"/categorias"
   },
   {
@@ -36,7 +62,12 @@ const features = [
 ];
 
 export default function HomePage() {
+<<<<<<< HEAD
   const [total, setTotal] = useState(0);
+=======
+    const [total, setTotal] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
 
   useEffect(() => {
     api.get('/directorio?page=1&pageSize=1')
@@ -44,6 +75,63 @@ export default function HomePage() {
       .catch(() => {});
   }, []);
 
+<<<<<<< HEAD
+=======
+
+  const navigate = useNavigate();
+
+  const handleClick = (item) => {
+    if (item.route) {
+      navigate(item.route);
+    } else if (item.url) {
+      window.open(item.url, '_blank');
+    }
+  };
+
+
+  // Imágenes del carousel con título y link
+const images = [
+  {
+    route: "/convenio_innovacion",
+    title: "Convenio con la Secretaría de Innovación",
+    img: "https://www.casatic.org/images/FOTOS%20CONVENIOS/CONVENIO%20CON%20SECRETAR%C3%8DA%20DE%20INNOVACI%C3%93N/convenio%204%20secretaria.jpg",
+  },
+  {
+    route: "/convenio_brita",
+    title: "Convenio con la Cámara de Comercio Británica",
+    img: "https://www.casatic.org/images/FOTOS%20CONVENIOS/CONVENIO%20CAMARA%20DE%20COMERCIO%20BRITANICO/convenio%202.jpg",
+  },
+  {
+    route: "/convenio_proyeccion",
+    title: "Convenio con la Universidad de El Salvador",
+    img: "https://www.casatic.org/images/FOTOS%20CONVENIOS/CONVENIO%20CON%20PROYECCI%C3%93N%20SOCIAL/proyeccion%20social%202.jpg"
+  },
+  {
+    route: "/convenio_ugb",
+    title: "Convenio con UGB",
+    img: "https://www.casatic.org/images/FOTOS%20CONVENIOS/CONVENIO%20UNIVERSIDAD%20GERARDO%20BARRIOS/convenio%20ugb%203.jpg"
+  },
+  {
+    route: "/convenio_uo",
+    title: "Convenio con UNIVO",
+    img: "https://www.casatic.org/images/FOTOS%20CONVENIOS/UNIVERSIDAD%20DE%20ORIENTE/convenio%20univo%204.jpg"
+  }
+];
+
+  const prevSlide = () => {
+    setCurrentIndex((prev) =>
+      prev === 0 ? images.length - 1 : prev - 1
+    );
+  };
+
+  const nextSlide = () => {
+    setCurrentIndex((prev) =>
+      prev === images.length - 1 ? 0 : prev + 1
+    );
+  };
+
+
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
   return (
     <div className="bg-white overflow-x-hidden">
 
@@ -79,10 +167,17 @@ export default function HomePage() {
                   Explorar Directorio <ArrowRight size={18} />
                 </Link>
                 <Link
+<<<<<<< HEAD
                   to="/login-socios"
                   className="btn btn-lg bg-white/10 text-white border border-white/20 hover:bg-white/20 backdrop-blur-sm"
                 >
                   Acceso Socios
+=======
+                  to="/login"
+                  className="btn btn-lg bg-white/10 text-white border border-white/20 hover:bg-white/20 backdrop-blur-sm"
+                >
+                  Iniciar Sesión
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
                 </Link>
               </div>
             </div>
@@ -143,9 +238,15 @@ export default function HomePage() {
           <div className="text-center max-w-2xl mx-auto mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-surface-900 tracking-tight mb-4">
               Todo lo que necesitas en un
+<<<<<<< HEAD
               <span className="text-#1e3a8a text-gradient"> solo lugar</span>
             </h2>
             <p className="bg-black/2 inline-block text-lg text-surface-0 px-4 py-2 rounded-lg">
+=======
+              <span className="text-accent-400 text-gradient"> solo lugar</span>
+            </h2>
+            <p className="bg-blue-200/50 inline-block text-lg text-gray-600 px-4 py-2 rounded-lg">
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
               Una plataforma moderna para conectar empresas de tecnología con quienes necesitan sus servicios.
             </p>
           </div>
@@ -160,6 +261,10 @@ export default function HomePage() {
       <img
         src={f.img}
         alt={f.title}
+<<<<<<< HEAD
+=======
+  
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
         className="w-40 mx-auto mb-4"
       />
     )}
@@ -181,6 +286,7 @@ export default function HomePage() {
     </p>
 
     {f.link && (
+<<<<<<< HEAD
       <a
      href={f.link}
      target="_black"
@@ -189,6 +295,11 @@ export default function HomePage() {
       >
         Ver más
       </a>
+=======
+     <Link to={f.link} className="text-blue-600 font-semibold">
+  Ver más
+</Link>
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
     )}
 
   </div>
@@ -197,6 +308,156 @@ export default function HomePage() {
   </div>
   </section>
 
+<<<<<<< HEAD
+=======
+  { /*--------------------EJES ESTRATEGICOS ACTUALIZADOS  --------------*/}
+        <section className="py-20 bg-gradient-to-br from-[rgb(254, 255, 255)] to-[#1e3a8a] ">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-surface-900 tracking-tight mb-5">
+              Ejes Estratégicos de{' '}
+              <span className="text-blue-900 text-gradient">CASATIC</span>
+            </h2>
+            <div className="flex items-center gap-2 justify-center">
+   <Link to="/Politicaspublicas" className="flex items-center gap-2 justify-center group">
+  <Crown className="text-gray-400 w-6 h-6 group-hover:text-blue-600" />
+  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0b2a5a] tracking-tight group-hover:underline">
+    POLÍTICAS PÚBLICAS
+  </h3>
+  </Link>
+</div>
+     
+
+<div className="flex items-center gap-2 justify-center">
+ <Link to="/exportacion" className="flex items-center gap-2 justify-center group">
+  <Globe className="text-gray-400 w-6 h-6 group-hover:text-blue-600" />
+  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0b2a5a] tracking-tight group-hover:underline">
+    EXPORTACIÓN Y NEGOCIOS
+  </h3>
+  </Link>
+</div>
+
+<div className="flex items-center gap-2 justify-center">
+ <Link to="/talentohumano" className="flex items-center gap-2 justify-center group">
+  <Users className="text-gray-400 w-6 h-6 group-hover:text-blue-600" />
+  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0b2a5a] tracking-tight group-hover:underline">
+    TALENTO HUMANO
+  </h3>
+</Link>
+</div>
+
+             <div className="flex items-center gap-2 justify-center">
+ <Link to="/innovacion" className="flex items-center gap-2 justify-center group">
+  <BarChart3 className="text-gray-400 w-6 h-6 group-hover:text-blue-600" />
+  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0b2a5a] tracking-tight group-hover:underline">
+    INNOVACIÓN
+  </h3>
+</Link>
+</div>
+           </div>
+        </div>
+
+        </section>
+{/* --------- convenios de casatic---------- */}
+
+        <section className="py-10 bg-gradient-to-br from-[rgb(254, 255, 255)] to-[#1e3a8a] ">
+         <div className="relative w-full max-w-3xl mx-auto overflow-hidden">
+          <h2 className="text-3xl sm:text-4xl font-bold text-surface-900 tracking-tight mb-10 text-center">
+              Convenios de{' '}
+              <span className="text-blue-900 text-gradient">CASATIC</span>
+            </h2>
+      
+      {/* Imagen con link */}
+     <div
+  className="w-full h-[500px] relative group cursor-pointer"
+  onClick={() => handleClick(images[currentIndex])}
+>
+<img
+  src={images[currentIndex].img}
+  alt={images[currentIndex].title}
+ 
+  className="w-full h-full object-cover rounded-xl"
+/>
+
+  {/* overlay con título */}
+  <div className="absolute inset-0 flex items-center justify-center">
+    <div className="bg-black/40 backdrop-blur-sm px-6 py-3 rounded-lg">
+      <h3 className="text-white text-lg font-semibold text-center">
+        {images[currentIndex].title}
+      </h3>
+    </div>
+  </div>
+
+      {/* Botón izquierda */}
+     <button
+  onClick={(e) => {
+    e.stopPropagation();
+    prevSlide();
+  }}
+  className="absolute top-1/2 left-4 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow"
+>
+  <ChevronLeft size={24} />
+</button>
+
+<button
+  onClick={(e) => {
+    e.stopPropagation();
+    nextSlide();
+  }}
+  className="absolute top-1/2 right-4 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow"
+>
+  <ChevronRight size={24} />
+</button>
+
+        </div>
+        </div>
+
+        </section>
+       <section className="py-20 bg-writer-200 ">
+  <div className="max-w-5xl mx-auto px-4">
+    
+    <div className="w-full relative group cursor-pointer">
+      <img
+        src={casatic1}
+        alt="CASATIC"
+        className="w-full h-[300px] md:h-[500px] object-cover rounded-3xl"
+      />
+    </div>
+
+  </div>
+</section>
+{/*           MEBRESIAS DE CASATIC*/}
+<section
+  className="py-20 bg-gradient-to-br from-[rgb(254, 255, 255)] to-[#1e3a8a] "
+>
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="text-center max-w-2xl mx-auto mb-16">
+      <h2 className="text-3xl sm:text-4xl font-bold text-surface-900 tracking-tight mb-4">
+        MEMBRESÍAS
+      </h2><br></br><br></br>
+
+      {/*---------MENU DE MENBRESIAS ASOCIADAS A CASATIC PRECIOS VARIADOS*/}
+       <div className="max-w-5xl mx-auto px-4 "  className="py-10 bg-green-200 ">
+    
+    <div className="w-full relative group cursor-pointer">
+      <img
+        src={membresia}
+        alt="membresia 1 casatic"
+        className="w-100  h-[200px] md:h-[500px] object-cover rounded-3xl"
+      />
+      <h1>
+        hola
+      </h1>
+    </div>
+
+  </div>
+
+    </div>
+  </div>
+</section>
+
+
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
       {/* ── CTA ─────────────────────────────────────────── */}
       <section className="py-16 sm:py-20 bg-white border-t border-surface-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -218,10 +479,17 @@ export default function HomePage() {
                   Ver Directorio <ArrowRight size={18} />
                 </Link>
                 <Link
+<<<<<<< HEAD
                   to="/login-socios"
                   className="btn btn-lg bg-white/10 text-white border border-white/30 hover:bg-white/20"
                 >
                   Soy Socio
+=======
+                  to="/login"
+                  className="btn btn-lg bg-white/10 text-white border border-white/30 hover:bg-white/20"
+                >
+                  Iniciar Sesión
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
                 </Link>
               </div>
             </div>

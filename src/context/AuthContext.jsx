@@ -18,6 +18,9 @@ export function AuthProvider({ children }) {
       localStorage.setItem('casatic_user', JSON.stringify(data));
       setUser(data);
       return data;
+    } catch (error) {
+      console.error('Error en login:', error);
+      throw error; // Re-lanzar para que LoginPageSocios lo capture
     } finally {
       setLoading(false);
     }

@@ -101,3 +101,43 @@ ANTES DE EMPEZAR:
   Los demás compañeros repiten la PARTE 2 desde el PASO 1.
 
 ======================================================
+<<<<<<< HEAD
+=======
+
+
+docker compose up --build
+docker compose up -d
+
+si esta detenido es docker ps -a
+des pues docker compose up -d
+
+
+
+
+ 
+
+Ran terminal command: docker ps
+
+
+
+
+ 
+
+Ran terminal command: docker logs casatic-api --tail 20
+
+
+
+Docker está corriendo correctamente. Los servicios están activos:
+
+| Contenedor | Puerto | Estado |
+|------------|--------|--------|
+| **Frontend** | http://localhost:80 | ✅ Corriendo |
+| **API** | http://localhost:5000 | ✅ Corriendo |
+| **PostgreSQL** | localhost:5432 | ✅ Healthy |
+| **pgAdmin** | http://localhost:5050 | ✅ Corriendo |
+
+---
+
+**记** Antes había un error de build porque en App.jsx la ruta de importación usaba `ConvenioUGBpage` (con mayúscula) pero el archivo real se llama ConveniougbPage.jsx (con minúscula). Ya lo corregí y los contenedores están funcionando.
+
+>>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
