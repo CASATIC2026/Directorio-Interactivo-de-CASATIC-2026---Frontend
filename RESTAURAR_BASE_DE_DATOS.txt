@@ -101,8 +101,6 @@ ANTES DE EMPEZAR:
   Los demás compañeros repiten la PARTE 2 desde el PASO 1.
 
 ======================================================
-<<<<<<< HEAD
-=======
 
 
 docker compose up --build
@@ -140,4 +138,3 @@ Docker está corriendo correctamente. Los servicios están activos:
 
 **记** Antes había un error de build porque en App.jsx la ruta de importación usaba `ConvenioUGBpage` (con mayúscula) pero el archivo real se llama ConveniougbPage.jsx (con minúscula). Ya lo corregí y los contenedores están funcionando.
 
->>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)

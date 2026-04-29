@@ -7,11 +7,7 @@ const FAQS = [
     items: [
       {
         q: '¿Qué es CASATIC?',
-<<<<<<< HEAD
-        a: 'CASATIC (Cámara Salvadoreña de Tecnologías de la Información y Comunicación) Es una asociacion sin fines de lucro del sector privado especializada en als tecnologìas de informacìon y comunicaciones ',
-=======
         a: 'CASATIC (Cámara Salvadoreña de Tecnologías de la Información y Comunicación) es la organización gremial que agrupa a las empresas del sector TIC de El Salvador, promoviendo su desarrollo, competitividad e internacionalización.',
->>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
       },
       {
         q: '¿Qué es el Directorio de Empresas CASATIC?',

@@ -6,11 +6,7 @@ const INFO = [
   { icon: Phone, label: 'Teléfono', value: '+503 2222-0000', href: 'tel:+50322220000' },
   { icon: MapPin, label: 'Dirección', value: 'San Salvador, El Salvador', href: null },
   { icon: Clock, label: 'Horario de atención', value: 'Lunes a Viernes, 8:00 – 17:00', href: null },
-<<<<<<< HEAD
-  { icon: Globe, label: 'Sitio web', value: 'www.casatic.org.sv', href: 'https://www.casatic.org' },
-=======
   { icon: Globe, label: 'Sitio web', value: 'www.casatic.org.sv', href: 'https://www.casatic.org.sv' },
->>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
 ];
 
 export default function ContactoPage() {

@@ -1,15 +1,3 @@
-<<<<<<< HEAD
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import api from '../../api/client';
-import icono1 from '../public/img/busquedainteligente.png'
-import icono2 from '../public/img/gestionsegura.png'
-import icono3 from '../public/img/visibili.png'
-import {
-  Search, Building2, Globe, ShieldCheck, ArrowRight, Users, BarChart3
-} from 'lucide-react';
-import casaticLogo from '../../img/Reverse - v2@4x.png';
-=======
 
 import { Link } from 'react-router-dom';
 
@@ -29,7 +17,6 @@ import membresia from './img/MEMBRESIA CASATIC.png';
 
 
 //*]*//*  uso de clip´s para ir a otra pagina en la carpeto convenios de casatic *//*]*/
->>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
 
 const features = [
   {
@@ -37,11 +24,7 @@ const features = [
     title: 'Búsqueda Avanzada',
     desc: 'Encuentra socios por especialidad, sector o nombre con filtros potentes.',
     color: 'bg-casatic-50 text-casatic-600',
-<<<<<<< HEAD
     img2:icono1,  
-=======
-    img2:icono1,
->>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
     link:"/categorias"
   },
   {
@@ -62,12 +45,8 @@ const features = [
 ];
 
 export default function HomePage() {
-<<<<<<< HEAD
-  const [total, setTotal] = useState(0);
-=======
     const [total, setTotal] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
->>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
 
   useEffect(() => {
     api.get('/directorio?page=1&pageSize=1')
@@ -75,8 +54,6 @@ export default function HomePage() {
       .catch(() => {});
   }, []);
 
-<<<<<<< HEAD
-=======
 
   const navigate = useNavigate();
 
@@ -131,7 +108,6 @@ const images = [
   };
 
 
->>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
   return (
     <div className="bg-white overflow-x-hidden">
 
@@ -167,17 +143,10 @@ const images = [
                   Explorar Directorio <ArrowRight size={18} />
                 </Link>
                 <Link
-<<<<<<< HEAD
-                  to="/login-socios"
-                  className="btn btn-lg bg-white/10 text-white border border-white/20 hover:bg-white/20 backdrop-blur-sm"
-                >
-                  Acceso Socios
-=======
                   to="/login"
                   className="btn btn-lg bg-white/10 text-white border border-white/20 hover:bg-white/20 backdrop-blur-sm"
                 >
                   Iniciar Sesión
->>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
                 </Link>
               </div>
             </div>
@@ -238,15 +207,9 @@ const images = [
           <div className="text-center max-w-2xl mx-auto mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-surface-900 tracking-tight mb-4">
               Todo lo que necesitas en un
-<<<<<<< HEAD
-              <span className="text-#1e3a8a text-gradient"> solo lugar</span>
-            </h2>
-            <p className="bg-black/2 inline-block text-lg text-surface-0 px-4 py-2 rounded-lg">
-=======
               <span className="text-accent-400 text-gradient"> solo lugar</span>
             </h2>
             <p className="bg-blue-200/50 inline-block text-lg text-gray-600 px-4 py-2 rounded-lg">
->>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
               Una plataforma moderna para conectar empresas de tecnología con quienes necesitan sus servicios.
             </p>
           </div>
@@ -261,10 +224,7 @@ const images = [
       <img
         src={f.img}
         alt={f.title}
-<<<<<<< HEAD
-=======
   
->>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
         className="w-40 mx-auto mb-4"
       />
     )}
@@ -286,20 +246,9 @@ const images = [
     </p>
 
     {f.link && (
-<<<<<<< HEAD
-      <a
-     href={f.link}
-     target="_black"
-     rel="noopener noreferrer"
-     className="text-blue-600 font-semibold"
-      >
-        Ver más
-      </a>
-=======
      <Link to={f.link} className="text-blue-600 font-semibold">
   Ver más
 </Link>
->>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
     )}
 
   </div>
@@ -308,8 +257,6 @@ const images = [
   </div>
   </section>
 
-<<<<<<< HEAD
-=======
   { /*--------------------EJES ESTRATEGICOS ACTUALIZADOS  --------------*/}
         <section className="py-20 bg-gradient-to-br from-[rgb(254, 255, 255)] to-[#1e3a8a] ">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -437,18 +384,89 @@ const images = [
       </h2><br></br><br></br>
 
       {/*---------MENU DE MENBRESIAS ASOCIADAS A CASATIC PRECIOS VARIADOS*/}
-       <div className="max-w-5xl mx-auto px-4 "  className="py-10 bg-green-200 ">
+       <div className="max-w-5xl mx-auto px-4 "  className="py-10 bg-write-200  hover:scale-[1.02] transition-transform duration-300 rounded-lg">
     
     <div className="w-full relative group cursor-pointer">
-      <img
-        src={membresia}
-        alt="membresia 1 casatic"
-        className="w-100  h-[200px] md:h-[500px] object-cover rounded-3xl"
-      />
-      <h1>
-        hola
+
+    {/*Socios fundadores */}
+    <div
+       
+        className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-8 shadow-glass-lg"
+      >
+        {/* IMAGEN IZQUIERDA (misión) */}
+       
+          <img
+            src={membresia}
+            alt="CASATIC"
+            className="w-30 h-30 object-contain mx-center md-[200]"
+          />
+          <h1 className="text-3xl sm:text-4xl font-bold text-surface-900 tracking-tight mb-4 ">
+        Socios fundadores
       </h1>
-    </div>
+      <h6 className="text-3xl sm:text-4xl font-bold text-surface-900 tracking-tight mb-4">
+        $1,300
+      </h6>
+      </div><br></br><br></br></div></div>
+
+      <div className="max-w-5xl mx-auto px-4 "  className="py-10 bg-write-200  hover:scale-[1.02] transition-transform duration-300 rounded-lg">
+
+      <div className="w-full relative group cursor-pointer">
+   
+
+       {/*Socios miembros */}
+    <div
+       
+        className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-8 shadow-glass-lg"
+      >
+        {/* IMAGEN IZQUIERDA (misión) */}
+       
+          <img
+            src={membresia}
+            alt="CASATIC"
+            className="w-30 h-30 object-contain mx-center md-[200]"
+          />
+          <h1 className="text-3xl sm:text-4xl font-bold text-surface-900 tracking-tight mb-4 ">
+        Socios miembros
+      </h1>
+      <h5 className="text-3xl sm:text-4xl font-bold text-surface-900 tracking-tight mb-4">
+        $400-$1,200
+      </h5>
+      </div> </div> </div>
+
+      <div className="max-w-5xl mx-auto px-4 "  className="py-10 bg-write-200  hover:scale-[1.02] transition-transform duration-300 rounded-lg">
+
+      <br></br><br></br>
+      <div className="w-full relative group cursor-pointer">
+   {/*Socios invitados*/}
+    <div
+       
+        className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-8 shadow-glass-lg"
+      >
+        {/* IMAGEN IZQUIERDA (misión) */}
+       
+          <img
+            src={membresia}
+            alt="CASATIC"
+            className="w-30 h-30 object-contain mx-center md-[200]"
+          />
+          <h1 className="text-3xl sm:text-4xl font-bold text-surface-900 tracking-tight mb-4 ">
+        Socios invitados
+      </h1>
+     
+      <h5 className="text-3xl sm:text-4xl font-bold text-surface-900 tracking-tight mb-4">
+        $25-$100
+      </h5>
+       <h1 className="text-3xl sm:text-1xl font-bold text-surface-900 tracking-tight mb-4 text-center"><br></br>
+       
+          <ul >Entidades con menos de 10 empleados pagan trimestralmente</ul><br></br>
+          <ul >Multinacionales hacen un pago único</ul>
+       
+      </h1>
+      </div></div>
+
+     
+
+
 
   </div>
 
@@ -457,7 +475,6 @@ const images = [
 </section>
 
 
->>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
       {/* ── CTA ─────────────────────────────────────────── */}
       <section className="py-16 sm:py-20 bg-white border-t border-surface-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -479,17 +496,10 @@ const images = [
                   Ver Directorio <ArrowRight size={18} />
                 </Link>
                 <Link
-<<<<<<< HEAD
-                  to="/login-socios"
-                  className="btn btn-lg bg-white/10 text-white border border-white/30 hover:bg-white/20"
-                >
-                  Soy Socio
-=======
                   to="/login"
                   className="btn btn-lg bg-white/10 text-white border border-white/30 hover:bg-white/20"
                 >
                   Iniciar Sesión
->>>>>>> 0708ec2 ( estoy actualizando el frontend y las paginas publicas del proyecto asi que eh modificado bastantes cosas espero no aiga errores)
                 </Link>
               </div>
             </div>
