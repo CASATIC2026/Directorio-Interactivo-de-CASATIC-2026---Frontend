@@ -7,7 +7,8 @@ import icono1 from '../public/img/busquedainteligente.png'
 import icono2 from '../public/img/gestionsegura.png'
 import icono3 from '../public/img/conexionempresarial.png'
 import {
-  Search, Building2, Globe, ShieldCheck, ArrowRight, Users, BarChart3,Crown,ChevronLeft,ChevronRight,User
+  Search, Building2, Check, Globe, ShieldCheck, ArrowRight, Users, BarChart3,Crown,ChevronLeft,ChevronRight,User,
+ 
 
 } from 'lucide-react';
 import casaticLogo from '../../img/Reverse - v3@4x.png';
@@ -24,7 +25,7 @@ const features = [
     title: 'Búsqueda Avanzada',
     desc: 'Encuentra socios por especialidad, sector o nombre con filtros potentes.',
     color: 'bg-casatic-50 text-casatic-600',
-    img2:icono1,  
+    
     link:"/categorias"
   },
   {
@@ -32,7 +33,7 @@ const features = [
     title: 'Información Completa',
     desc: 'Perfiles detallados con sitios web, contactos y descripciones.',
     color: 'bg-accent-50 text-accent-600',
-    img2:icono3,
+
     link:"/directorio"
   },
   {
@@ -40,7 +41,7 @@ const features = [
     title: 'Datos Verificados',
     desc: 'Información confiable y actualizada de socios registrados.',
     color: 'bg-purple-50 text-purple-600',
-    img2:icono2,
+   
   },
 ];
 
@@ -138,13 +139,13 @@ const images = [
               <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
                 <Link
                   to="/directorio"
-                  className="btn-primary btn-lg shadow-xl shadow-casatic-700/40 hover:shadow-casatic-600/50"
+                  className="btn-primary btn-lg shadow-xl shadow-casatic-700/40 hover:shadow-casatic-600/50 hover:scale-105 hover:shadow-2xl transition-all duration-300"
                 >
                   Explorar Directorio <ArrowRight size={18} />
                 </Link>
                 <Link
                   to="/login"
-                  className="btn btn-lg bg-white/10 text-white border border-white/20 hover:bg-white/20 backdrop-blur-sm"
+                  className="btn btn-lg bg-white/10 text-white border border-white/20 hover:bg-white/20 backdrop-blur-sm shadow-xl hover:scale-105 hover:shadow-2xl transition-all duration-300"
                 >
                   Iniciar Sesión
                 </Link>
@@ -214,18 +215,18 @@ const images = [
             </p>
           </div>
           {/*--------------------cuadro de menus de casatic --------------*/}
-     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 stagger-children max-w-4xl mx-auto">
+     <div className="grid grid-cols-1 md:grid-cols-3 gap-6  max-w-4xl mx-auto">
 
       {/* Imagen si existe */}
      {features.map((f, i) => (
-  <div key={i} className="group card-interactive p-6 text-center">
+  <div key={i}        className="bg-white/20 backdrop-blur-lg border border-white/30 rounded-3xl p-8 shadow-xl text-center transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
 
     {f.img && (
       <img
         src={f.img}
         alt={f.title}
   
-        className="w-40 mx-auto mb-4"
+        className="w-40 mx-auto mb-4  "
       />
     )}
 
@@ -241,12 +242,12 @@ const images = [
       {f.title}
     </h3>
 
-    <p className="text-sm text-surface-600 mb-4">
+    <p className="text-sm text-gray-600 mb-4">
       {f.desc}
     </p>
 
     {f.link && (
-     <Link to={f.link} className="text-blue-600 font-semibold">
+     <Link to={f.link} className="text-blue-600 font-semibold hover:underline">
   Ver más
 </Link>
     )}
@@ -373,104 +374,74 @@ const images = [
 
   </div>
 </section>
+
+
 {/*           MEBRESIAS DE CASATIC*/}
-<section
-  className="py-20 bg-gradient-to-br from-[rgb(254, 255, 255)] to-[#1e3a8a] "
->
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div className="text-center max-w-2xl mx-auto mb-16">
-      <h2 className="text-3xl sm:text-4xl font-bold text-surface-900 tracking-tight mb-4">
-        MEMBRESÍAS
-      </h2><br></br><br></br>
+<section className="py-10">
+  <div className="max-w-10xl mx-auto px-4">
 
-      {/*---------MENU DE MENBRESIAS ASOCIADAS A CASATIC PRECIOS VARIADOS*/}
-       <div className="max-w-5xl mx-auto px-4 py-10 bg-write-200 hover:scale-[1.02] transition-transform duration-300 rounded-lg">
-    
-    <div className="w-full relative group cursor-pointer">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      {/* SOcios fundadores */}
+      <div className="bg-white/10 backdrop-blur-md border border-black/20 rounded-3xl p-8 shadow-lg text-center hover:scale-105 transition">
+        <img src={membresia} alt="CASATIC" className="w-70 h-80 mx-auto mb-4" />
+        <h2 className="text-2xl font-bold mb-2">Socios fundadores</h2>
+        <p className="text-xl font-semibold mb-2">$1,300</p><br></br>
+        <p className="text-3x1 text-xl font-semibold mb-2 text-center">
+          Empresas fundadoras de CASATIC <br /><br></br>
+          CASATIC fue fundada en 2010 por más de 20 empresas TIC
+        </p>
+      </div>
 
-    {/*Socios fundadores */}
-    <div
-       
-        className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-8 shadow-glass-lg"
-      >
-        {/* IMAGEN IZQUIERDA (misión) */}
-       
-          <img
-            src={membresia}
-            alt="CASATIC"
-            className="w-30 h-30 object-contain mx-center md-[200]"
-          />
-          <h1 className="text-3xl sm:text-4xl font-bold text-surface-900 tracking-tight mb-4 ">
-        Socios fundadores
-      </h1>
-      <h6 className="text-3xl sm:text-4xl font-bold text-surface-900 tracking-tight mb-4">
-        $1,300
-      </h6>
-      </div><br></br><br></br></div></div>
+      {/* socios miembros */}
+      <div className="bg-white/10 backdrop-blur-md border border-black/20 rounded-3xl p-8 shadow-lg text-center hover:scale-105 transition">
+        <img src={membresia} alt="CASATIC" className="w-70 h-80 mx-auto mb-4" />
+        <h2 className="text-2xl font-bold mb-2">Socios miembros</h2>
+        <p className="text-xl font-semibold mb-2">$400 - $1,200</p><br></br>
+        <p className=" text-3xl text-xl font-semibold mb-2 text-center">
+          Empresas del sector industrial, comercio, finanzas y servicios
+        </p>
+      </div>
 
-      <div className="max-w-5xl mx-auto px-4 py-10 bg-write-200 hover:scale-[1.02] transition-transform duration-300 rounded-lg">
-
-      <div className="w-full relative group cursor-pointer">
-   
-
-       {/*Socios miembros */}
-    <div
-       
-        className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-8 shadow-glass-lg"
-      >
-        {/* IMAGEN IZQUIERDA (misión) */}
-       
-          <img
-            src={membresia}
-            alt="CASATIC"
-            className="w-30 h-30 object-contain mx-center md-[200]"
-          />
-          <h1 className="text-3xl sm:text-4xl font-bold text-surface-900 tracking-tight mb-4 ">
-        Socios miembros
-      </h1>
-      <h5 className="text-3xl sm:text-4xl font-bold text-surface-900 tracking-tight mb-4">
-        $400-$1,200
-      </h5>
-      </div> </div> </div>
-
-      <div className="max-w-5xl mx-auto px-4 py-10 bg-write-200 hover:scale-[1.02] transition-transform duration-300 rounded-lg">
-
-      <br></br><br></br>
-      <div className="w-full relative group cursor-pointer">
-   {/*Socios invitados*/}
-    <div
-       
-        className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-8 shadow-glass-lg"
-      >
-        {/* IMAGEN IZQUIERDA (misión) */}
-       
-          <img
-            src={membresia}
-            alt="CASATIC"
-            className="w-30 h-30 object-contain mx-center md-[200]"
-          />
-          <h1 className="text-3xl sm:text-4xl font-bold text-surface-900 tracking-tight mb-4 ">
-        Socios invitados
-      </h1>
-     
-      <h5 className="text-3xl sm:text-4xl font-bold text-surface-900 tracking-tight mb-4">
-        $25-$100
-      </h5>
-       <h1 className="text-3xl sm:text-1xl font-bold text-surface-900 tracking-tight mb-4 text-center"><br></br>
-       
-          <ul >Entidades con menos de 10 empleados pagan trimestralmente</ul><br></br>
-          <ul >Multinacionales hacen un pago único</ul>
-       
-      </h1>
-      </div></div>
-
-     
-
-
-
-  </div>
+      {/* socios invitados */}
+      <div className="bg-white/10 backdrop-blur-md border border-black/20 rounded-3xl p-8 shadow-lg text-center hover:scale-105 transition">
+        <img src={membresia} alt="CASATIC" className="w-70 h-80 mx-auto mb-4" />
+        <h2 className="text-2xl font-bold mb-2">Socios invitados</h2>
+        <p className="text-xl font-semibold mb-2">$25 - $100</p><br></br>
+        <p className="text-3x1 text-xl font-semibold mb-2 text-center">
+          Entidades con menos de 10 empleados pagan trimestralmente <br /><br></br>
+          Multinacionales hacen un pago único
+        </p>
+      </div>
 
     </div>
+
+    
+
+  </div>
+</section>
+
+<section className="flex justify-center">
+  <div className="bg-yellow-100 text-yellow-900 p-4 rounded-lg max-w-2xl w-full">
+    
+    <div className="flex items-center gap-2 mb-2">
+      <Check className="text-green-600" />
+      <h1 className="font-bold">PRECIOS NO INCLUYEN IVA</h1>
+    </div>
+    <div className="flex items-center gap-2 mb-2">
+      <Check className="text-green-600" />
+      <h1 className="font-bold">10% DE DESCUENTO SOBRE EL PAGO PARA SOCIOS QUE CANCELEN SUS CUOTAS ANUALES POR ADELANTADO </h1>
+    </div>
+    <div className="flex items-center gap-2 mb-2">
+      <Check className="text-green-600" />
+      <h1 className="font-bold">ENVIAR SIN EXCEPCIÓN COPIA DE SU NIT Y TARJETA DE IVA AL MOMENTO DE REMITIR EL FORMULARIO DE FORMA DE PAGO</h1>
+    </div>
+    <div className="flex items-center gap-2 mb-2">
+      <Check className="text-green-600" />
+      <h1 className="font-bold">AL AFILIARSE A CASATIC Y DESIGNAR UNA FORMA DE PAGO, AUTORIZA LA EMISIÓN DE CCD O FACTURA (SEGUN SEA EL CASO) PARA EL COBRO DE LA CUOTA MENSUAL,TRIMESTRAL Y/O ANUAL</h1>
+    </div>
+
+
   </div>
 </section>
 
