@@ -4,7 +4,7 @@ import proyecto1 from '../img/imagenes convenio/proyecto1.jpg';
 import proyecto2 from '../img/imagenes convenio/proyecto2.jpg';
 import proyecto3 from '../img/imagenes convenio/proyecto3.jpg';
 
-export default function ConvenioInnovacionPage() {
+export default function Convenioproyectosocialpage() {
   const features = [
     { title:'CONVENIO DE COOPERACIÓN ENTRE CASATIC Y EL COMITÉ DE PROYECCIÓN SOCIAL EL SALVADOR.',
       description: 'Con el objetivo de promover la cooperación interinstitucional en aras de fortalecer el desarrollo de ambas instituciones en temas de desarrollo de programas y proyectos de formación en beneficio del interés social, estrechar vínculos y establecer modalidades de cooperación entre CASATIC y EL COMITÉ.',},

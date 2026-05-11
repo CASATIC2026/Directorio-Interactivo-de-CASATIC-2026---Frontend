@@ -31,6 +31,7 @@ const UsuariosAdminPage  = lazy(() => import('./pages/admin/UsuariosAdminPage'))
 const SocioFormPage      = lazy(() => import('./pages/admin/SocioFormPage'));
 const FormulariosAdminPage = lazy(() => import('./pages/admin/FormulariosAdminPage'));
 const ReportesPage       = lazy(() => import('./pages/admin/ReportesPage'));
+const BoletinesPage      = lazy(() => import('./pages/public/BoletinesPage'));
 
 
 /** Spinner de transición mientras carga el chunk */
@@ -67,6 +68,7 @@ export default function App() {
           <Route path="/exportacion" element={<ExportacionPage />} />
           <Route path="/talentohumano" element={<TalentoHumanoPage />} />
           <Route path="/innovacion" element={<InnovacionPage />} />
+          <Route path="/boletines" element={<BoletinesPage />} />
           {/*                      los convenios carpeta*/}
           <Route path="/convenio_innovacion" element={<ConvenioInnovacionPage />} />
           <Route path="/convenio_brita" element={<ConvenioBritapage />} />

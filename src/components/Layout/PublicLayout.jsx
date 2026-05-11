@@ -24,6 +24,7 @@ export default function PublicLayout() {
     { to: '/categorias', label: 'Categorías', icon: Grid3X3 },
     { to: '/contacto', label: 'Contacto', icon: Mail },
     { to: '/faq', label: 'FAQ', icon: HelpCircle },
+    { to: '/boletines', label: 'Boletines', icon: () => <span className="text-xs font-mono">B</span> },
 
   
 
