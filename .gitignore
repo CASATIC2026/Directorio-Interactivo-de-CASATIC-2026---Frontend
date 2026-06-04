@@ -1,0 +1,37 @@
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+
+# .NET
+backend/**/bin/
+backend/**/obj/
+backend/src/CasaticDirectorio.Api/logs/*.log
+
+# IDE and OS
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+.DS_Store
+Thumbs.db
+
+# Temporary local SQL/data exports
+add-pendiente.sql
+check-facturas.sql
+check-schema.sql
+cleanup.sql
+insert-7-facturas.sql
+query.sql
+reset-facturas.sql
+generate-facturas.sql
+get-socios.sql
+tmp-eventos.json
+backend/docker script/socios-current.sql
+backend/docker script/facturas-current.sql

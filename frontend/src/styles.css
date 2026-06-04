@@ -1,0 +1,144 @@
+:root {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f3f4f6;
+  color: #111827;
+}
+
+a {
+  color: #1d4ed8;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.nav {
+  background: #0f172a;
+  color: #ffffff;
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-brand {
+  font-weight: 700;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.nav a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.form-card {
+  max-width: 520px;
+  margin: 1rem auto;
+}
+
+label {
+  display: block;
+  font-size: 0.9rem;
+  margin-bottom: 0.2rem;
+}
+
+/* Scoped only to legacy pages that don't use Tailwind inputs */
+.form-card input,
+.form-card select,
+.form-card textarea {
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  padding: 0.6rem;
+  margin-bottom: 0.7rem;
+  font-family: inherit;
+}
+
+.form-card button[type="submit"] {
+  width: 100%;
+  border-radius: 6px;
+  border: none;
+  padding: 0.6rem;
+  margin-bottom: 0.7rem;
+  font-family: inherit;
+  background: #2563eb;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.form-card button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.grid-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.8rem;
+}
+
+.grid-four {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.7rem;
+}
+
+.muted {
+  color: #6b7280;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-top: 0.8rem;
+}
+
+.alert {
+  border-radius: 6px;
+  padding: 0.6rem;
+  margin-bottom: 0.75rem;
+}
+
+.alert.error {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.alert.success {
+  background: #dcfce7;
+  color: #166534;
+}
+
+/* ── Responsive helpers for legacy layout ── */
+@media (max-width: 640px) {
+  .grid-cards {
+    grid-template-columns: 1fr;
+  }
+  .grid-four {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

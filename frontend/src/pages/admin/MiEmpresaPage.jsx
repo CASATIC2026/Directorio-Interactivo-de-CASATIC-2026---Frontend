@@ -1,0 +1,391 @@
+import { useState, useEffect, useRef } from 'react';
+import { useAuth } from '../../context/AuthContext';
+import api from '../../api/client';
+import {
+  Save, Building2, Globe, Phone, MapPin,
+  Tag, Briefcase, Image, Share2, AlertCircle, Loader2,
+  Facebook, Linkedin, Twitter, Instagram, Youtube, Mail, Upload
+} from 'lucide-react';
+
+export default function MiEmpresaPage() {
+  const { user } = useAuth();
+  const fileInputRef = useRef(null);
+
+  const [form, setForm] = useState({
+    nombreEmpresa: '',
+    slug: '',
+    descripcion: '',
+    especialidades: '',
+    servicios: '',
+    telefono: '',
+    direccion: '',
+    logoUrl: '',
+    emailContacto: '',
+    mapaUrl: '',
+    marcasRepresenta: '',
+    rsWebsite: '',
+    rsFacebook: '',
+    rsLinkedin: '',
+    rsTwitter: '',
+    rsInstagram: '',
+    rsYoutube: '',
+  });
+  const [error, setError] = useState(null);
+  const [saving, setSaving] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [uploadingLogo, setUploadingLogo] = useState(false);
+  const [uploadError, setUploadError] = useState(null);
+
+  useEffect(() => {
+    const fetchEmpresa = async () => {
+      try {
+        setLoading(true);
+        const { data } = await api.get('/miempresa');
+        setForm({
+          nombreEmpresa: data.nombreEmpresa || '',
+          slug: data.slug || '',
+          descripcion: data.descripcion || '',
+          especialidades: (data.especialidades || []).join(', '),
+          servicios: (data.servicios || []).join(', '),
+          telefono: data.telefono || '',
+          direccion: data.direccion || '',
+          logoUrl: data.logoUrl || '',
+          marcasRepresenta: data.marcasRepresenta || '',
+          emailContacto: data.emailContacto || '',
+          rsWebsite: data.rsWebsite || '',
+          rsFacebook: data.rsFacebook || '',
+          rsLinkedin: data.rsLinkedin || '',
+          rsTwitter: data.rsTwitter || '',
+          rsInstagram: data.rsInstagram || '',
+          rsYoutube: data.rsYoutube || '',
+          mapaUrl: data.mapaUrl || '',
+        });
+      } catch {
+        setError('No se pudo cargar la información de tu empresa');
+      } finally {
+        setLoading(false);
+      }
+    };
+    if (user?.socioId || user?.email) {
+      fetchEmpresa();
+    } else {
+      setLoading(false);
+    }
+  }, [user?.socioId]);
+
+  const handleChange = (field) => (e) =>
+    setForm({ ...form, [field]: e.target.value });
+
+  const handleLogoUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingLogo(true);
+    setUploadError(null);
+    const fd = new FormData();
+    fd.append('file', file);
+    try {
+      const res = await api.post('/upload/logo', fd, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      setForm((prev) => ({ ...prev, logoUrl: res.data.url }));
+    } catch {
+      setUploadError(err.response?.data?.message || 'Error al subir la imagen');
+    } finally {
+      setUploadingLogo(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(null);
+    setSaving(true);
+
+    const payload = {
+      nombreEmpresa: form.nombreEmpresa,
+      slug: form.slug,
+      descripcion: form.descripcion,
+      telefono: form.telefono,
+      direccion: form.direccion,
+      logoUrl: form.logoUrl,
+      emailContacto: form.emailContacto,
+      mapaUrl: form.mapaUrl,
+      rsWebsite: form.rsWebsite.trim(),
+      rsFacebook: form.rsFacebook.trim(),
+      rsLinkedin: form.rsLinkedin.trim(),
+      rsTwitter: form.rsTwitter.trim(),
+      rsInstagram: form.rsInstagram.trim(),
+      rsYoutube: form.rsYoutube.trim(),
+      especialidades: form.especialidades.split(',').map((s) => s.trim()).filter(Boolean),
+      servicios: form.servicios.split(',').map((s) => s.trim()).filter(Boolean),
+    };
+
+    try {
+      await api.put('/miempresa', payload);
+      setError(null);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch {
+      setError(err.response?.data?.message || 'Error al guardar');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-24">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-10 h-10 border-4 border-casatic-200 border-t-casatic-600 rounded-full animate-spin" />
+          <p className="text-sm text-surface-400 font-medium">Cargando información…</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-4xl mx-auto space-y-6">
+      {/* ── Header ────────────────────────────────────── */}
+      <div className="flex items-center gap-3">
+        <div className="w-11 h-11 bg-casatic-100 rounded-2xl flex items-center justify-center">
+          <Building2 size={22} className="text-casatic-600" />
+        </div>
+        <div>
+          <h1 className="text-xl sm:text-2xl font-bold text-surface-900">Mi Empresa</h1>
+          <p className="text-sm text-surface-500">Gestiona la información de tu empresa</p>
+        </div>
+      </div>
+
+      {/* ── Formulario ────────────────────────────────── */}
+      <form onSubmit={handleSubmit} className="space-y-6">
+
+        {/* Información General */}
+        <div className="card-base p-5 sm:p-6 space-y-5">
+          <h2 className="font-semibold text-sm uppercase tracking-widest text-surface-400 flex items-center gap-2">
+            <Tag size={14} /> Información General
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="input-label">Nombre Empresa *</label>
+              <input
+                type="text" required value={form.nombreEmpresa}
+                onChange={handleChange('nombreEmpresa')}
+                className="input-field"
+                placeholder="Ej. Tech Solutions"
+              />
+            </div>
+            <div>
+              <label className="input-label flex items-center gap-1">
+                <Globe size={12} /> Slug (URL) *
+              </label>
+              <input
+                type="text" required value={form.slug}
+                onChange={handleChange('slug')}
+                className="input-field font-mono text-sm bg-surface-50"
+              />
+            </div>
+            <div className="md:col-span-2">
+              <label className="input-label">Descripción</label>
+              <textarea
+                rows={3} value={form.descripcion}
+                onChange={handleChange('descripcion')}
+                className="input-field resize-none"
+                placeholder="Breve reseña de la organización…"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Capacidades Técnicas */}
+        <div className="card-base p-5 sm:p-6 space-y-5">
+          <h2 className="font-semibold text-sm uppercase tracking-widest text-surface-400 flex items-center gap-2">
+            <Briefcase size={14} /> Capacidades Técnicas
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="input-label">Especialidades</label>
+              <input
+                type="text" value={form.especialidades}
+                onChange={handleChange('especialidades')}
+                className="input-field"
+                placeholder="IA, Cloud, Ciberseguridad…"
+              />
+            </div>
+            <div>
+              <label className="input-label">Servicios</label>
+              <input
+                type="text" value={form.servicios}
+                onChange={handleChange('servicios')}
+                className="input-field"
+                placeholder="Desarrollo Web, Consultoría…"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Contacto y Presencia Digital */}
+        <div className="card-base p-5 sm:p-6 space-y-5">
+          <h2 className="font-semibold text-sm uppercase tracking-widest text-surface-400 flex items-center gap-2">
+            <Phone size={14} /> Contacto y Presencia Digital
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="input-label flex items-center gap-1"><Phone size={12} /> Teléfono</label>
+              <input type="text" value={form.telefono} onChange={handleChange('telefono')}
+                className="input-field" placeholder="+503 2222-0000" />
+            </div>
+            <div>
+              <label className="input-label flex items-center gap-1"><MapPin size={12} /> Dirección</label>
+              <input type="text" value={form.direccion} onChange={handleChange('direccion')}
+                className="input-field" placeholder="San Salvador, El Salvador" />
+            </div>
+            <div className="md:col-span-2">
+              <label className="input-label flex items-center gap-1">
+                <Mail size={12} /> Email de Contacto
+                <span className="text-surface-400 font-normal text-xs ml-1">— se recibirán los formularios enviados por clientes</span>
+              </label>
+              <input type="email" value={form.emailContacto} onChange={handleChange('emailContacto')}
+                className="input-field" placeholder="contacto@miempresa.com" />
+            </div>
+            {/* Logo */}
+            <div className="md:col-span-2">
+              <label className="input-label flex items-center gap-1">
+                <Image size={12} /> Logo Corporativo
+              </label>
+              <div className="flex gap-3 items-start">
+                <div className="flex-1">
+                  <input type="text" value={form.logoUrl} onChange={handleChange('logoUrl')}
+                    className="input-field" placeholder="https://midominio.com/logo.png" />
+                </div>
+                <div className="flex flex-col items-center gap-1">
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/jpeg,image/png,image/gif,image/webp"
+                    className="hidden"
+                    onChange={handleLogoUpload}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={uploadingLogo}
+                    className="btn-primary btn-sm whitespace-nowrap"
+                  >
+                    {uploadingLogo ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
+                    {uploadingLogo ? 'Subiendo…' : 'Subir imagen'}
+                  </button>
+                  <span className="text-[10px] text-surface-400">JPG, PNG, WebP · máx 5MB</span>
+                </div>
+              </div>
+              {uploadError && (
+                <p className="mt-2 text-xs text-red-500 flex items-center gap-1">
+                  <AlertCircle size={12} /> {uploadError}
+                </p>
+              )}
+              {form.logoUrl && (
+                <div className="mt-3 flex items-center gap-3">
+                  <img
+                    src={form.logoUrl}
+                    alt="Preview logo"
+                    className="h-14 w-14 object-contain rounded-xl border border-surface-200 bg-surface-50 p-1"
+                    onError={(e) => { e.target.style.display = 'none'; }}
+                  />
+                  <span className="text-xs text-surface-400 break-all">{form.logoUrl}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Ubicación en mapa */}
+        <div className="card-base p-5 sm:p-6 space-y-4">
+          <h2 className="font-semibold text-sm uppercase tracking-widest text-surface-400 flex items-center gap-2">
+            <MapPin size={14} /> Ubicación en mapa
+          </h2>
+          <div>
+            <label className="input-label">Código iframe de Google Maps</label>
+            <textarea
+              rows={3}
+              value={form.mapaUrl}
+              onChange={(e) => {
+                const val = e.target.value.trim();
+                const match = val.match(/src="([^"]+)"/);
+                setForm((prev) => ({ ...prev, mapaUrl: match ? match[1] : val }));
+              }}
+              className="input-field resize-none font-mono text-xs"
+              placeholder='Pega aquí el iframe completo o solo la URL del src'
+            />
+            <p className="text-[11px] text-surface-400 mt-1">En Google Maps: <strong>Compartir → Insertar un mapa</strong> → copia y pega el código completo aquí</p>
+            {form.mapaUrl && (
+              <div className="mt-3 rounded-xl overflow-hidden border border-surface-200">
+                <iframe
+                  src={form.mapaUrl}
+                  width="100%"
+                  height="200"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Vista previa del mapa"
+                />
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Redes Sociales */}
+        <div className="card-base p-5 sm:p-6 space-y-5">
+          <h2 className="font-semibold text-sm uppercase tracking-widest text-surface-400 flex items-center gap-2">
+            <Share2 size={14} /> Redes Sociales y Presencia Web
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="input-label flex items-center gap-1"><Globe size={12} /> Sitio Web</label>
+              <input type="url" value={form.rsWebsite} onChange={handleChange('rsWebsite')}
+                className="input-field" placeholder="https://miempresa.com" />
+            </div>
+            <div>
+              <label className="input-label flex items-center gap-1"><Facebook size={12} className="text-[#1877F2]" /> Facebook</label>
+              <input type="url" value={form.rsFacebook} onChange={handleChange('rsFacebook')}
+                className="input-field" placeholder="https://facebook.com/miempresa" />
+            </div>
+            <div>
+              <label className="input-label flex items-center gap-1"><Linkedin size={12} className="text-[#0A66C2]" /> LinkedIn</label>
+              <input type="url" value={form.rsLinkedin} onChange={handleChange('rsLinkedin')}
+                className="input-field" placeholder="https://linkedin.com/company/miempresa" />
+            </div>
+            <div>
+              <label className="input-label flex items-center gap-1"><Twitter size={12} className="text-[#1DA1F2]" /> Twitter / X</label>
+              <input type="url" value={form.rsTwitter} onChange={handleChange('rsTwitter')}
+                className="input-field" placeholder="https://twitter.com/miempresa" />
+            </div>
+            <div>
+              <label className="input-label flex items-center gap-1"><Instagram size={12} className="text-[#E1306C]" /> Instagram</label>
+              <input type="url" value={form.rsInstagram} onChange={handleChange('rsInstagram')}
+                className="input-field" placeholder="https://instagram.com/miempresa" />
+            </div>
+            <div>
+              <label className="input-label flex items-center gap-1"><Youtube size={12} className="text-[#FF0000]" /> YouTube</label>
+              <input type="url" value={form.rsYoutube} onChange={handleChange('rsYoutube')}
+                className="input-field" placeholder="https://youtube.com/@miempresa" />
+            </div>
+          </div>
+        </div>
+
+        {/* Error */}
+        {error && (
+          <div className="alert-error">
+            <AlertCircle size={16} /> {error}
+          </div>
+        )}
+
+        {/* Acciones */}
+        <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
+          <button type="submit" disabled={saving} className="btn-primary btn-lg w-full sm:w-auto">
+            {saving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
+            {saving ? 'Procesando…' : 'Guardar Cambios'}
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}
