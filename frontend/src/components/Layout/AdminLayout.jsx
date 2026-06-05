@@ -7,7 +7,7 @@ import {
   Moon, Sun, Receipt
 } from 'lucide-react';
 import casaticLogo from '../../img/Reverse - v2@4x.png';
-import casaticMoonLogo from '../../img/logo.png';
+import casaticMoonLogo from '../../img/casatic-moon.png';
 
 /* ─── SidebarContent ─── reusable inside both desktop & mobile drawer */
 function SidebarContent({ collapsed, user, menuItems, isActive, handleLogout, onLinkClick }) {
@@ -15,11 +15,11 @@ function SidebarContent({ collapsed, user, menuItems, isActive, handleLogout, on
     <>
       <div className={`h-16 flex items-center ${collapsed ? 'justify-center px-0' : 'gap-3 px-4'} border-b border-white/[0.06] flex-shrink-0`}>
         {collapsed ? (
-          <div className="h-10 w-10 overflow-hidden flex items-start justify-center flex-shrink-0">
+          <div className="h-9 w-9 flex items-center justify-center flex-shrink-0">
             <img
               src={casaticMoonLogo}
               alt="CASATIC"
-              className="w-24 h-auto max-w-none object-contain -translate-y-1"
+              className="h-full w-full object-contain"
             />
           </div>
         ) : (
