@@ -17,6 +17,9 @@ public class SocioRepository : ISocioRepository
     public async Task<Socio?> GetBySlugAsync(string slug) =>
         await _db.Socios.FirstOrDefaultAsync(s => s.Slug == slug);
 
+    public async Task<Socio?> GetByEmailContactoAsync(string email) =>
+        await _db.Socios.FirstOrDefaultAsync(s => s.EmailContacto.ToLower() == email.ToLower());
+
     /// <summary>
     /// Búsqueda paginada con Full-Text Search (PostgreSQL to_tsquery)
     /// y filtro opcional por especialidad.

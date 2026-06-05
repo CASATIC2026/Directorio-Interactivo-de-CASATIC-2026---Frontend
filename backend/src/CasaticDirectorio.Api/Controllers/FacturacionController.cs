@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Net;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 using CasaticDirectorio.Api.DTOs.Facturacion;
@@ -288,10 +289,10 @@ public class FacturacionController : ControllerBase
     }
 
     [HttpGet("mi-factura")]
-    [Authorize(Roles = "Socio")]
+    [Authorize(Roles = "Usuario,Socio")]
     public async Task<IActionResult> MiFactura()
     {
-        var socioId = GetSocioId();
+        var socioId = await GetSocioIdAsync();
         if (socioId == null) return Forbid();
 
         var facturas = await _db.Facturas
@@ -306,10 +307,10 @@ public class FacturacionController : ControllerBase
     }
 
     [HttpGet("mi-factura/descargar")]
-    [Authorize(Roles = "Socio")]
+    [Authorize(Roles = "Usuario,Socio")]
     public async Task<IActionResult> DescargarMiFactura()
     {
-        var socioId = GetSocioId();
+        var socioId = await GetSocioIdAsync();
         if (socioId == null) return Forbid();
 
         var factura = await _db.Facturas
@@ -324,10 +325,10 @@ public class FacturacionController : ControllerBase
     }
 
     [HttpGet("mi-factura/{id:guid}/descargar")]
-    [Authorize(Roles = "Socio")]
+    [Authorize(Roles = "Usuario,Socio")]
     public async Task<IActionResult> DescargarMiFactura(Guid id)
     {
-        var socioId = GetSocioId();
+        var socioId = await GetSocioIdAsync();
         if (socioId == null) return Forbid();
 
         var factura = await _db.Facturas
@@ -609,10 +610,26 @@ public class FacturacionController : ControllerBase
     private static string BuildNumeroControl(string numero) =>
         $"DTE-01-CASATIC-{numero.Replace("CAS-", "", StringComparison.OrdinalIgnoreCase)}";
 
-    private Guid? GetSocioId()
+    private async Task<Guid?> GetSocioIdAsync()
     {
         var value = User.FindFirst("SocioId")?.Value;
-        return Guid.TryParse(value, out var id) ? id : null;
+        if (Guid.TryParse(value, out var id)) return id;
+
+        var userIdValue = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!Guid.TryParse(userIdValue, out var userId)) return null;
+
+        var usuario = await _db.Usuarios.FirstOrDefaultAsync(u => u.Id == userId);
+        if (usuario == null) return null;
+        if (usuario.SocioId.HasValue) return usuario.SocioId.Value;
+
+        var socio = await _db.Socios.FirstOrDefaultAsync(s =>
+            s.EmailContacto.ToLower() == usuario.Email.ToLower());
+
+        if (socio == null) return null;
+
+        usuario.SocioId = socio.Id;
+        await _db.SaveChangesAsync();
+        return socio.Id;
     }
 
     private FileContentResult HtmlFactura(Factura factura)

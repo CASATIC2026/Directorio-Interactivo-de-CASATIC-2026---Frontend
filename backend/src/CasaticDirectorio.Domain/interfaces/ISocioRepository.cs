@@ -6,6 +6,7 @@ public interface ISocioRepository
 {
     Task<Socio?> GetByIdAsync(Guid id);
     Task<Socio?> GetBySlugAsync(string slug);
+    Task<Socio?> GetByEmailContactoAsync(string email);
     Task<(List<Socio> Items, int Total)> SearchAsync(
         string? query,
         IEnumerable<string>? especialidades,
