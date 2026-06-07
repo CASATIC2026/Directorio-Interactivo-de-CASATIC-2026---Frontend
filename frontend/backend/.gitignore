@@ -1,0 +1,16 @@
+**/bin/
+**/obj/
+src/CasaticDirectorio.Api/logs/
+logs/
+.env
+.env.*
+!.env.example
+.railway/
+docker script/current-data.sql
+docker script/total_socios.sql
+docker script/*-current.sql
+
+.DS_Store
+Thumbs.db
+*.user
+*.suo

@@ -1,0 +1,13 @@
+node_modules
+dist
+build
+.env
+.env.*
+!.env.example
+*.log
+.git
+.vs
+.idea
+.vscode
+**/bin
+**/obj
