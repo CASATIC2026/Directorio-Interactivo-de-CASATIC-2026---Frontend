@@ -19,7 +19,7 @@ function SidebarContent({ collapsed, user, menuItems, isActive, handleLogout, on
             <img
               src={casaticMoonLogo}
               alt="CASATIC"
-              className="h-full w-full object-contain"
+              className="h-full w-full object-contain brightness-0 invert"
             />
           </div>
         ) : (
@@ -198,7 +198,7 @@ export default function AdminLayout() {
 
       {/* ── Main area ────────────────────────────────── */}
       <div className="flex-1 flex flex-col min-h-screen overflow-hidden min-w-0">
-        <header className="h-16 bg-white/80 backdrop-blur-xl border-b border-surface-200/50 flex items-center justify-between px-4 sm:px-6 flex-shrink-0">
+        <header className="h-16 bg-white border-b border-surface-200 flex items-center justify-between px-4 sm:px-6 flex-shrink-0">
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Mobile hamburger */}
             <button

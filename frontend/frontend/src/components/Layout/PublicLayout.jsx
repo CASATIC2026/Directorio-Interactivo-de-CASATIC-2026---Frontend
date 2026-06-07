@@ -40,7 +40,7 @@ export default function PublicLayout() {
       <header
         className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
           scrolled
-            ? 'bg-white/90 backdrop-blur-xl shadow-glass border-b border-surface-200/50'
+            ? 'bg-white shadow-sm border-b border-surface-200'
             : 'bg-transparent'
         }`}
       >
@@ -109,7 +109,7 @@ export default function PublicLayout() {
 
         {/* Mobile drawer */}
         {mobileOpen && (
-          <div className="md:hidden bg-white/95 backdrop-blur-xl border-t border-surface-200/50 animate-fade-in-down shadow-glass">
+          <div className="md:hidden bg-white border-t border-surface-200 animate-fade-in-down shadow-sm">
             <div className="px-4 py-3 space-y-1">
               {navLinks.map((link) => (
                 <Link
