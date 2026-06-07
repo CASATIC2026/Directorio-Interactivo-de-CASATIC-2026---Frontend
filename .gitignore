@@ -22,6 +22,19 @@ backend/src/CasaticDirectorio.Api/logs/*.log
 .DS_Store
 Thumbs.db
 
+# Credentials and secrets (NEVER commit to public repo)
+CREDENTIALS.md
+frontend/CREDENTIALS.md
+frontend/DEPLOYMENT.md
+frontend/DEPLOYMENT_SUMMARY.md
+frontend/NEXT_STEPS.md
+frontend/READY_TO_DEPLOY.md
+frontend/VERCEL_DEPLOYMENT.md
+
+# Vercel and Vite local cache
+frontend/.vercel/
+frontend/.vite/
+
 # Temporary local SQL/data exports
 add-pendiente.sql
 check-facturas.sql
