@@ -389,7 +389,7 @@ export default function AdminLayout() {
       </aside>
 
       {/* Main area */}
-      <div className="flex-1 flex flex-col min-h-screen overflow-hidden min-w-0">
+      <div className="flex-1 flex flex-col min-h-screen min-w-0">
 
         {/* Header */}
         <header className="h-16 bg-white dark:bg-[#13132a] border-b border-surface-200 dark:border-white/[0.06] flex items-center justify-between px-4 sm:px-6 flex-shrink-0 transition-colors duration-200">
