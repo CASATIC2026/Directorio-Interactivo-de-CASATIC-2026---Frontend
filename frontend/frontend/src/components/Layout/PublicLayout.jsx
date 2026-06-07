@@ -8,15 +8,8 @@ import colorLogo from '../../img/Full Color v2@4x.png';
 import reverseLogo from '../../img/Reverse - v2@4x.png';
 
 export default function PublicLayout() {
-  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
 
   useEffect(() => setMobileOpen(false), [location.pathname]);
 
@@ -37,13 +30,7 @@ export default function PublicLayout() {
     <div className="min-h-screen flex flex-col bg-surface-50">
 
       {/* ── Navbar ──────────────────────────────────────── */}
-      <header
-        className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
-          scrolled
-            ? 'bg-white shadow-sm border-b border-surface-200'
-            : 'bg-transparent'
-        }`}
-      >
+      <header className="fixed top-0 inset-x-0 z-50 bg-white border-b border-surface-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
 
@@ -51,9 +38,9 @@ export default function PublicLayout() {
             <Link to="/" className="flex items-center group flex-shrink-0">
               <div className="h-9 flex items-center">
                 <img
-                  src={scrolled ? colorLogo : reverseLogo}
+                  src={colorLogo}
                   alt="CASATIC"
-                  className="h-full w-auto object-contain transition-all duration-300"
+                  className="h-full w-auto object-contain"
                 />
               </div>
             </Link>
@@ -66,12 +53,8 @@ export default function PublicLayout() {
                   to={link.to}
                   className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
                     isActive(link.to)
-                      ? scrolled
-                        ? 'bg-casatic-50 text-casatic-700'
-                        : 'bg-white/15 text-white'
-                      : scrolled
-                        ? 'text-surface-600 hover:bg-surface-100 hover:text-surface-900'
-                        : 'text-white/80 hover:bg-white/10 hover:text-white'
+                      ? 'bg-casatic-50 text-casatic-700'
+                      : 'text-surface-600 hover:bg-surface-100 hover:text-surface-900'
                   }`}
                 >
                   <link.icon size={15} />
@@ -84,11 +67,7 @@ export default function PublicLayout() {
             <div className="flex items-center gap-2">
               <Link
                 to="/login"
-                className={`hidden md:inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 ${
-                  scrolled
-                    ? 'bg-casatic-600 text-white hover:bg-casatic-700 shadow-md hover:shadow-lg'
-                    : 'bg-white/15 text-white border border-white/30 hover:bg-white/25 backdrop-blur-sm'
-                }`}
+                className="hidden md:inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold bg-casatic-600 text-white hover:bg-casatic-700 shadow-md hover:shadow-lg transition-all duration-200"
               >
                 <LogIn size={15} />
                 Acceso Socios
@@ -96,9 +75,7 @@ export default function PublicLayout() {
 
               <button
                 onClick={() => setMobileOpen(!mobileOpen)}
-                className={`md:hidden p-2 rounded-xl transition-colors ${
-                  scrolled ? 'text-surface-700 hover:bg-surface-100' : 'text-white hover:bg-white/10'
-                }`}
+                className="md:hidden p-2 rounded-xl text-surface-700 hover:bg-surface-100 transition-colors"
                 aria-label="Abrir menú"
               >
                 {mobileOpen ? <X size={22} /> : <Menu size={22} />}
