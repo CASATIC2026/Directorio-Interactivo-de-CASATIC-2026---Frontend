@@ -649,10 +649,12 @@ export default function FacturacionPage() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-        {filtered.map(factura => (
-          <MemoFacturaCard key={factura.id} factura={factura} onEdit={setEditing} isAdmin={isAdmin} />
-        ))}
+      <div className="max-h-[72vh] overflow-y-auto pr-1 rounded-xl">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 pb-2">
+          {filtered.map(factura => (
+            <MemoFacturaCard key={factura.id} factura={factura} onEdit={setEditing} isAdmin={isAdmin} />
+          ))}
+        </div>
       </div>
 
       {filtered.length === 0 && (

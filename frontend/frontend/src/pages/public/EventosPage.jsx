@@ -5,6 +5,7 @@ import {
   Calendar, MapPin, Clock, Zap, Search,
   Users, Video, Globe, ChevronRight, Image as ImageIcon
 } from 'lucide-react';
+import casaticLogo from '../../img/Reverse - v2@4x.png';
 
 function formatDate(iso) {
   const date = new Date(iso);
@@ -267,19 +268,25 @@ export default function EventosPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-surface-50 via-white to-casatic-50">
       {/* Hero */}
-      <div className="bg-gradient-to-r from-casatic-600 to-casatic-700 text-white py-12 sm:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-4xl sm:text-5xl font-bold mb-4">
-              Eventos de CASATIC
-            </h1>
-            <p className="text-lg text-casatic-100 max-w-2xl mx-auto">
-              Descubre las próximas conferencias, talleres y eventos de networking
-              organizados por nuestros socios
-            </p>
-          </div>
+      <section className="relative overflow-hidden bg-gradient-to-br from-casatic-700 via-casatic-800 to-surface-900 py-16 sm:py-20">
+        <div className="absolute inset-0 bg-grid opacity-10 pointer-events-none" />
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-casatic-500/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-accent-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <img src={casaticLogo} alt="CASATIC" className="h-10 w-auto object-contain mb-5 mx-auto animate-fade-in" />
+          <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-casatic-300 bg-white/10 px-3 py-1.5 rounded-full mb-5 animate-fade-in-up">
+            <span className="w-1.5 h-1.5 rounded-full bg-accent-400 animate-pulse-soft" />
+            Calendario de Eventos 2026
+          </span>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4 animate-fade-in-up">
+            Eventos de{' '}
+            <span className="text-gradient-accent">CASATIC</span>
+          </h1>
+          <p className="text-base sm:text-lg text-casatic-200 leading-relaxed max-w-xl mx-auto animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+            Descubre las próximas conferencias, talleres y eventos de networking organizados por nuestros socios
+          </p>
         </div>
-      </div>
+      </section>
 
       {/* Controles */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

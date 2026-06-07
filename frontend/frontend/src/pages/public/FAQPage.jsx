@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ChevronDown, HelpCircle, Search } from 'lucide-react';
+import casaticLogo from '../../img/Reverse - v2@4x.png';
 
 const FAQS = [
   {
@@ -118,22 +119,25 @@ export default function FAQPage() {
   return (
     <div className="bg-mesh min-h-screen pb-16">
       {/* ── Banner ──────────────────────────────────────── */}
-      <div className="bg-gradient-to-br from-casatic-700 via-casatic-800 to-surface-900 text-white py-14 sm:py-20 relative overflow-hidden">
+      <section className="relative overflow-hidden bg-gradient-to-br from-casatic-700 via-casatic-800 to-surface-900 py-16 sm:py-20">
         <div className="absolute inset-0 bg-grid opacity-10 pointer-events-none" />
         <div className="absolute -top-40 -right-40 w-96 h-96 bg-casatic-500/20 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-accent-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="relative max-w-3xl mx-auto px-4 sm:px-6 text-center">
-          <div className="inline-flex items-center justify-center w-14 h-14 bg-white/10 rounded-2xl mb-4">
-            <HelpCircle size={28} className="text-casatic-200" />
-          </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <img src={casaticLogo} alt="CASATIC" className="h-10 w-auto object-contain mb-5 mx-auto animate-fade-in" />
+          <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-casatic-300 bg-white/10 px-3 py-1.5 rounded-full mb-5 animate-fade-in-up">
+            <span className="w-1.5 h-1.5 rounded-full bg-accent-400 animate-pulse-soft" />
             Preguntas Frecuentes
+          </span>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4 animate-fade-in-up">
+            Resolvemos tus{' '}
+            <span className="text-gradient-accent">Dudas</span>
           </h1>
-          <p className="text-casatic-200 text-base sm:text-lg">
+          <p className="text-base sm:text-lg text-casatic-200 leading-relaxed max-w-xl mx-auto animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
             Encuentre respuestas a las dudas más comunes sobre CASATIC y el directorio.
           </p>
         </div>
-      </div>
+      </section>
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 relative z-10">
         {/* ── Buscador ────────────────────────────────── */}
         <div className="card-base p-4 mb-8 flex items-center gap-3">
