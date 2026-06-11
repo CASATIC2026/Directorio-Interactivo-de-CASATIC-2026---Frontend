@@ -1,41 +1,50 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import api from '../../api/client';
 import { resolveAssetUrl } from '../../utils/assetUrl';
 import {
   Calendar, MapPin, Clock, Zap, Search,
-  Users, Video, Globe, ChevronRight, Image as ImageIcon
+  Users, Video, Globe, ChevronRight, Image as ImageIcon, X
 } from 'lucide-react';
 import casaticLogo from '../../img/Reverse - v2@4x.png';
 
+/* ── Label maps (enum string → display) ────────────── */
+const TIPO_LABELS = {
+  Conferencia:  'Conferencia',
+  Capacitacion: 'Capacitación',
+  Webinar:      'Webinar',
+  Networking:   'Networking',
+  Feria:        'Feria',
+  Taller:       'Taller',
+  Seminario:    'Seminario',
+  Expo:         'Expo',
+  Lanzamiento:  'Lanzamiento',
+  Reunion:      'Reunión',
+};
+
+const MODALIDAD_LABELS = {
+  Presencial: 'Presencial',
+  Virtual:    'Virtual',
+  Hibrido:    'Híbrida',
+};
+
 function formatDate(iso) {
-  const date = new Date(iso);
-  return date.toLocaleDateString('es-SV', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
+  return new Date(iso).toLocaleDateString('es-SV', {
+    year: 'numeric', month: 'long', day: 'numeric',
+    hour: '2-digit', minute: '2-digit',
   });
 }
 
 function getModalidadIcon(modalidad) {
-  switch (modalidad) {
-    case 'Presencial':
-      return <Users size={16} />;
-    case 'Virtual':
-      return <Video size={16} />;
-    case 'Híbrida':
-      return <Globe size={16} />;
-    default:
-      return <Zap size={16} />;
-  }
+  if (modalidad === 'Virtual')    return <Video size={16} />;
+  if (modalidad === 'Hibrido')    return <Globe size={16} />;
+  if (modalidad === 'Presencial') return <Users size={16} />;
+  return <Zap size={16} />;
 }
 
 function EventoCard({ evento }) {
   const fechaInicio = new Date(evento.fechaInicio);
-  const ahora = new Date();
-  const proximo = fechaInicio > ahora;
-  const imagenUrl = resolveAssetUrl(evento.imagenUrl);
+  const proximo     = fechaInicio > new Date();
+  const imagenUrl   = resolveAssetUrl(evento.imagenUrl);
 
   return (
     <div className="group h-full bg-white rounded-xl shadow-card border border-surface-100 overflow-hidden hover:shadow-elevated transition-all duration-300 hover:-translate-y-1 flex flex-col">
@@ -54,47 +63,32 @@ function EventoCard({ evento }) {
         )}
       </div>
 
-      {/* Contenido */}
       <div className="p-5 flex flex-1 flex-col">
-        {/* Badge de estado */}
+        {/* Estado + Tipo */}
         <div className="flex items-start justify-between mb-3 gap-2">
           <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold ${
-            proximo
-              ? 'bg-green-100 text-green-700'
-              : 'bg-gray-100 text-gray-600'
+            proximo ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'
           }`}>
             <Zap size={12} />
             {proximo ? 'Próximo' : 'Finalizado'}
           </span>
           <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-casatic-100 text-casatic-700">
-            {evento.tipo}
+            {TIPO_LABELS[evento.tipo] || evento.tipo}
           </span>
         </div>
 
-        {/* Título */}
-        <h3 className="text-lg font-bold text-surface-900 mb-2 line-clamp-2">
-          {evento.titulo}
-        </h3>
+        <h3 className="text-lg font-bold text-surface-900 mb-2 line-clamp-2">{evento.titulo}</h3>
+        <p  className="text-sm text-surface-600 mb-4 line-clamp-2">{evento.descripcion}</p>
 
-        {/* Descripción */}
-        <p className="text-sm text-surface-600 mb-4 line-clamp-2">
-          {evento.descripcion}
-        </p>
-
-        {/* Meta información */}
         <div className="space-y-2 mb-4 text-sm">
           <div className="flex items-center gap-2 text-surface-600">
             <Calendar size={14} className="text-casatic-600 flex-shrink-0" />
             <span>{formatDate(evento.fechaInicio)}</span>
           </div>
-
           <div className="flex items-center gap-2 text-surface-600">
-            <div className="flex items-center gap-1 text-casatic-600">
-              {getModalidadIcon(evento.modalidad)}
-            </div>
-            <span>{evento.modalidad}</span>
+            <span className="text-casatic-600">{getModalidadIcon(evento.modalidad)}</span>
+            <span>{MODALIDAD_LABELS[evento.modalidad] || evento.modalidad}</span>
           </div>
-
           {evento.lugar && (
             <div className="flex items-center gap-2 text-surface-600">
               <MapPin size={14} className="text-casatic-600 flex-shrink-0" />
@@ -103,7 +97,6 @@ function EventoCard({ evento }) {
           )}
         </div>
 
-        {/* Socio */}
         {evento.socioNombre && (
           <div className="pt-3 border-t border-surface-100">
             <p className="text-xs text-surface-500 mb-1">Organizado por:</p>
@@ -111,10 +104,8 @@ function EventoCard({ evento }) {
           </div>
         )}
 
-        {/* Botón */}
         <button className="btn-secondary w-full mt-auto justify-center">
-          Ver detalles
-          <ChevronRight size={16} />
+          Ver detalles <ChevronRight size={16} />
         </button>
       </div>
     </div>
@@ -134,14 +125,9 @@ function EventoDetailModal({ evento, onClose }) {
         className="bg-white rounded-2xl shadow-elevated w-full max-w-2xl max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Imagen */}
         <div className="aspect-[16/9] bg-gradient-to-br from-casatic-100 to-casatic-50 overflow-hidden">
           {imagenUrl ? (
-            <img
-              src={imagenUrl}
-              alt={evento.titulo}
-              className="w-full h-full object-cover"
-            />
+            <img src={imagenUrl} alt={evento.titulo} className="w-full h-full object-cover" />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-casatic-300">
               <ImageIcon size={56} strokeWidth={1.5} />
@@ -149,81 +135,56 @@ function EventoDetailModal({ evento, onClose }) {
           )}
         </div>
 
-        {/* Contenido */}
         <div className="p-6 sm:p-8">
-          {/* Badges */}
           <div className="flex gap-2 mb-4 flex-wrap">
             <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-casatic-100 text-casatic-700">
-              {evento.tipo}
+              {TIPO_LABELS[evento.tipo] || evento.tipo}
             </span>
             <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
               {getModalidadIcon(evento.modalidad)}
-              {evento.modalidad}
+              {MODALIDAD_LABELS[evento.modalidad] || evento.modalidad}
             </span>
           </div>
 
-          {/* Título */}
-          <h2 className="text-3xl font-bold text-surface-900 mb-2">
-            {evento.titulo}
-          </h2>
+          <h2 className="text-3xl font-bold text-surface-900 mb-2">{evento.titulo}</h2>
 
-          {/* Socio */}
           {evento.socioNombre && (
             <p className="text-sm text-surface-600 mb-6">
               Organizado por <span className="font-semibold text-casatic-600">{evento.socioNombre}</span>
             </p>
           )}
 
-          {/* Detalles */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6 pb-6 border-b border-surface-100">
             <div>
               <p className="text-sm font-semibold text-surface-500 mb-2">
-                <Calendar className="inline mr-1" size={14} />
-                Fecha de Inicio
+                <Calendar className="inline mr-1" size={14} /> Fecha de Inicio
               </p>
-              <p className="text-lg font-semibold text-surface-900">
-                {formatDate(evento.fechaInicio)}
-              </p>
+              <p className="text-lg font-semibold text-surface-900">{formatDate(evento.fechaInicio)}</p>
             </div>
-
             {evento.fechaFin && (
               <div>
                 <p className="text-sm font-semibold text-surface-500 mb-2">
-                  <Clock className="inline mr-1" size={14} />
-                  Fecha de Fin
+                  <Clock className="inline mr-1" size={14} /> Fecha de Fin
                 </p>
-                <p className="text-lg font-semibold text-surface-900">
-                  {formatDate(evento.fechaFin)}
-                </p>
+                <p className="text-lg font-semibold text-surface-900">{formatDate(evento.fechaFin)}</p>
               </div>
             )}
-
             {evento.lugar && (
               <div className="sm:col-span-2">
                 <p className="text-sm font-semibold text-surface-500 mb-2">
-                  <MapPin className="inline mr-1" size={14} />
-                  Ubicación
+                  <MapPin className="inline mr-1" size={14} /> Ubicación
                 </p>
                 <p className="text-lg text-surface-900">{evento.lugar}</p>
               </div>
             )}
           </div>
 
-          {/* Descripción */}
           <div>
             <h3 className="font-bold text-surface-900 mb-3">Descripción del Evento</h3>
-            <p className="text-surface-700 leading-relaxed whitespace-pre-line">
-              {evento.descripcion}
-            </p>
+            <p className="text-surface-700 leading-relaxed whitespace-pre-line">{evento.descripcion}</p>
           </div>
 
-          {/* Botón de cierre */}
-          <button
-            onClick={onClose}
-            className="btn-secondary w-full mt-6"
-          >
-            Cerrar
-          </button>
+          <button onClick={onClose} className="btn-secondary w-full mt-6">Cerrar</button>
         </div>
       </div>
     </div>
@@ -231,16 +192,14 @@ function EventoDetailModal({ evento, onClose }) {
 }
 
 export default function EventosPage() {
-  const [eventos, setEventos] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filtroTipo, setFiltroTipo] = useState('todos');
-  const [filtroModalidad, setFiltroModalidad] = useState('todos');
-  const [selectedEvento, setSelectedEvento] = useState(null);
+  const [eventos,          setEventos]          = useState([]);
+  const [loading,          setLoading]           = useState(true);
+  const [searchTerm,       setSearchTerm]        = useState('');
+  const [filtroTipo,       setFiltroTipo]        = useState('todos');
+  const [filtroModalidad,  setFiltroModalidad]   = useState('todos');
+  const [selectedEvento,   setSelectedEvento]    = useState(null);
 
-  useEffect(() => {
-    loadEventos();
-  }, []);
+  useEffect(() => { loadEventos(); }, []);
 
   const loadEventos = async () => {
     try {
@@ -254,16 +213,25 @@ export default function EventosPage() {
     }
   };
 
-  const tiposUnicos = ['Conferencia', 'Taller', 'Networking', 'Seminario', 'Webinar'];
-  const modalidadesUnicas = ['Presencial', 'Virtual', 'Híbrida'];
+  /* Tipos y modalidades que realmente existen en los datos del backend */
+  const tiposDisponibles = useMemo(
+    () => [...new Set(eventos.map(e => e.tipo))].sort(),
+    [eventos]
+  );
+  const modalidadesDisponibles = useMemo(
+    () => [...new Set(eventos.map(e => e.modalidad))],
+    [eventos]
+  );
 
-  const filteredEventos = eventos.filter(e => {
-    const matchSearch = e.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                        e.descripcion.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchTipo = filtroTipo === 'todos' || e.tipo === filtroTipo;
+  const filteredEventos = useMemo(() => eventos.filter(e => {
+    const q = searchTerm.toLowerCase();
+    const matchSearch = !q ||
+      e.titulo.toLowerCase().includes(q) ||
+      e.descripcion.toLowerCase().includes(q);
+    const matchTipo      = filtroTipo      === 'todos' || e.tipo      === filtroTipo;
     const matchModalidad = filtroModalidad === 'todos' || e.modalidad === filtroModalidad;
     return matchSearch && matchTipo && matchModalidad;
-  });
+  }), [eventos, searchTerm, filtroTipo, filtroModalidad]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-surface-50 via-white to-casatic-50">
@@ -279,8 +247,7 @@ export default function EventosPage() {
             Calendario de Eventos 2026
           </span>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4 animate-fade-in-up">
-            Eventos de{' '}
-            <span className="text-gradient-accent">CASATIC</span>
+            Eventos de <span className="text-gradient-accent">CASATIC</span>
           </h1>
           <p className="text-base sm:text-lg text-casatic-200 leading-relaxed max-w-xl mx-auto animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
             Descubre las próximas conferencias, talleres y eventos de networking organizados por nuestros socios
@@ -288,10 +255,9 @@ export default function EventosPage() {
         </div>
       </section>
 
-      {/* Controles */}
+      {/* Filtros */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="bg-white rounded-xl shadow-card p-6 border border-surface-100 space-y-4">
-          {/* Búsqueda */}
           <div className="relative">
             <Search size={18} className="absolute left-3 top-3 text-surface-400" />
             <input
@@ -303,45 +269,48 @@ export default function EventosPage() {
             />
           </div>
 
-          {/* Filtros */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-semibold text-surface-700 mb-2">
-                Tipo de Evento
-              </label>
+              <label className="block text-sm font-semibold text-surface-700 mb-2">Tipo de Evento</label>
               <select
                 value={filtroTipo}
                 onChange={(e) => setFiltroTipo(e.target.value)}
                 className="input-field w-full"
               >
                 <option value="todos">Todos los tipos</option>
-                {tiposUnicos.map(tipo => (
-                  <option key={tipo} value={tipo}>{tipo}</option>
+                {tiposDisponibles.map(tipo => (
+                  <option key={tipo} value={tipo}>{TIPO_LABELS[tipo] || tipo}</option>
                 ))}
               </select>
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-surface-700 mb-2">
-                Modalidad
-              </label>
+              <label className="block text-sm font-semibold text-surface-700 mb-2">Modalidad</label>
               <select
                 value={filtroModalidad}
                 onChange={(e) => setFiltroModalidad(e.target.value)}
                 className="input-field w-full"
               >
                 <option value="todos">Todas las modalidades</option>
-                {modalidadesUnicas.map(modalidad => (
-                  <option key={modalidad} value={modalidad}>{modalidad}</option>
+                {modalidadesDisponibles.map(mod => (
+                  <option key={mod} value={mod}>{MODALIDAD_LABELS[mod] || mod}</option>
                 ))}
               </select>
             </div>
-
           </div>
+
+          {(filtroTipo !== 'todos' || filtroModalidad !== 'todos' || searchTerm) && (
+            <button
+              onClick={() => { setFiltroTipo('todos'); setFiltroModalidad('todos'); setSearchTerm(''); }}
+              className="text-sm text-casatic-600 hover:underline flex items-center gap-1"
+            >
+              <X size={14} /> Limpiar filtros
+            </button>
+          )}
         </div>
       </div>
 
-      {/* Eventos Grid */}
+      {/* Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         {loading ? (
           <div className="flex justify-center py-12">
@@ -350,11 +319,11 @@ export default function EventosPage() {
         ) : filteredEventos.length === 0 ? (
           <div className="text-center py-12">
             <Calendar size={48} className="mx-auto mb-4 text-surface-300" />
-            <h3 className="text-xl font-bold text-surface-700 mb-2">
-              No se encontraron eventos
-            </h3>
+            <h3 className="text-xl font-bold text-surface-700 mb-2">No se encontraron eventos</h3>
             <p className="text-surface-600">
-              Intenta con otros términos de búsqueda o filtros
+              {eventos.length === 0
+                ? 'Próximamente habrá eventos disponibles.'
+                : 'Intenta con otros términos de búsqueda o filtros.'}
             </p>
           </div>
         ) : (
@@ -364,11 +333,7 @@ export default function EventosPage() {
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredEventos.map(evento => (
-                <div
-                  key={evento.id}
-                  onClick={() => setSelectedEvento(evento)}
-                  className="cursor-pointer"
-                >
+                <div key={evento.id} onClick={() => setSelectedEvento(evento)} className="cursor-pointer">
                   <EventoCard evento={evento} />
                 </div>
               ))}
@@ -377,11 +342,7 @@ export default function EventosPage() {
         )}
       </div>
 
-      {/* Modal de detalle */}
-      <EventoDetailModal
-        evento={selectedEvento}
-        onClose={() => setSelectedEvento(null)}
-      />
+      <EventoDetailModal evento={selectedEvento} onClose={() => setSelectedEvento(null)} />
     </div>
   );
 }
