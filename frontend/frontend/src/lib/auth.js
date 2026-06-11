@@ -3,6 +3,7 @@ const USER_KEY = 'casatic_user'
 
 export function saveSession(data) {
 	const user = {
+		id: data.id,
 		email: data.email,
 		rol: data.rol,
 		primerLogin: data.primerLogin,

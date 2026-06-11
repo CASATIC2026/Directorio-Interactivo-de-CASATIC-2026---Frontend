@@ -3,7 +3,8 @@ import { useAuth } from '../../context/AuthContext';
 import api from '../../api/client';
 import {
   Mail, Search, CalendarDays, Building2, RefreshCw,
-  Inbox, ChevronDown, ChevronUp, Eye, X, MailOpen, MailCheck
+  Inbox, ChevronDown, ChevronUp, Eye, X, MailOpen, MailCheck,
+  Users, MessageSquare
 } from 'lucide-react';
 
 function formatDate(iso) {
@@ -25,7 +26,7 @@ function RowSkeleton() {
   );
 }
 
-function DetailModal({ item, onClose }) {
+function DetailModal({ item, onClose, isGeneral }) {
   if (!item) return null;
   return (
     <div
@@ -43,10 +44,18 @@ function DetailModal({ item, onClose }) {
           </button>
         </div>
         <div className="space-y-3 text-sm">
-          <div className="flex gap-2">
-            <span className="font-semibold text-surface-500 w-28 flex-shrink-0">Empresa:</span>
-            <span className="text-surface-900">{item.nombreEmpresa || '—'}</span>
-          </div>
+          {!isGeneral && (
+            <div className="flex gap-2">
+              <span className="font-semibold text-surface-500 w-28 flex-shrink-0">Empresa:</span>
+              <span className="text-surface-900">{item.nombreEmpresa || '—'}</span>
+            </div>
+          )}
+          {isGeneral && item.asunto && (
+            <div className="flex gap-2">
+              <span className="font-semibold text-surface-500 w-28 flex-shrink-0">Asunto:</span>
+              <span className="text-surface-900">{item.asunto}</span>
+            </div>
+          )}
           <div className="flex gap-2">
             <span className="font-semibold text-surface-500 w-28 flex-shrink-0">Remitente:</span>
             <span className="text-surface-900">{item.nombre}</span>
@@ -68,7 +77,7 @@ function DetailModal({ item, onClose }) {
         </div>
         <div className="flex justify-end gap-3 mt-6">
           <a
-            href={`mailto:${item.correo}?subject=Re: Consulta CASATIC`}
+            href={`mailto:${item.correo}?subject=Re: ${item.asunto || 'Consulta CASATIC'}`}
             className="btn-primary btn-sm"
           >
             <Mail size={14} /> Responder
@@ -84,6 +93,8 @@ const SORT_FIELDS = ['fecha', 'nombre', 'nombreEmpresa'];
 
 export default function FormulariosAdminPage() {
   const { user } = useAuth();
+  const isAdmin = user?.rol === 'Admin';
+  const [tab, setTab] = useState('socios'); // 'socios' | 'general'
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -92,25 +103,21 @@ export default function FormulariosAdminPage() {
 
   const toggleLeido = async (item) => {
     const nuevoEstado = !item.leido;
-    // Actualizar optimista
     setItems((prev) => prev.map((f) => f.id === item.id ? { ...f, leido: nuevoEstado } : f));
     try {
       await api.patch(`/formulariocontacto/${item.id}/leido`, nuevoEstado, {
         headers: { 'Content-Type': 'application/json' },
       });
     } catch {
-      // Revertir si falla
       setItems((prev) => prev.map((f) => f.id === item.id ? { ...f, leido: item.leido } : f));
     }
   };
 
   const openDetail = async (item) => {
     setSelected(item);
-    // Si no estaba leído, marcarlo automáticamente al abrir
     if (!item.leido) await toggleLeido(item);
   };
 
-  // Date range: last 30 days by default
   const [desde, setDesde] = useState(() => {
     const d = new Date();
     d.setMonth(d.getMonth() - 1);
@@ -120,11 +127,15 @@ export default function FormulariosAdminPage() {
 
   const load = () => {
     setLoading(true);
-    // Si es Socio, solo obtener sus formularios; si es Admin, obtener todos
-    const endpoint = user?.rol === 'Socio' 
-      ? `/formulariocontacto/mi-socio`
-      : `/formulariocontacto`;
-      
+    let endpoint;
+    if (!isAdmin) {
+      endpoint = '/formulariocontacto/mi-socio';
+    } else if (tab === 'general') {
+      endpoint = '/formulariocontacto/general';
+    } else {
+      endpoint = '/formulariocontacto';
+    }
+
     api
       .get(endpoint, { params: { desde: `${desde}T00:00:00`, hasta: `${hasta}T23:59:59` } })
       .then((res) => setItems(res.data ?? []))
@@ -132,7 +143,7 @@ export default function FormulariosAdminPage() {
       .finally(() => setLoading(false));
   };
 
-  useEffect(() => { load(); }, [desde, hasta, user?.rol]);
+  useEffect(() => { load(); }, [desde, hasta, user?.rol, tab]);
 
   const toggleSort = (field) => {
     setSort((prev) =>
@@ -140,15 +151,19 @@ export default function FormulariosAdminPage() {
     );
   };
 
+  const isGeneral = tab === 'general';
+
   const filtered = items
     .filter((f) => {
       const q = search.toLowerCase();
-      const companyName = (f.nombreEmpresa ?? f.NombreEmpresa ?? '').toLowerCase();
+      const companyOrSubject = isGeneral
+        ? (f.asunto ?? '').toLowerCase()
+        : (f.nombreEmpresa ?? f.NombreEmpresa ?? '').toLowerCase();
       return (
         !q ||
         f.nombre?.toLowerCase().includes(q) ||
         f.correo?.toLowerCase().includes(q) ||
-        companyName.includes(q) ||
+        companyOrSubject.includes(q) ||
         f.mensaje?.toLowerCase().includes(q)
       );
     })
@@ -165,38 +180,68 @@ export default function FormulariosAdminPage() {
     return sort.dir === 'asc' ? <ChevronUp size={13} /> : <ChevronDown size={13} />;
   };
 
+  const pageTitle = !isAdmin
+    ? 'Mensajes Recibidos'
+    : tab === 'general'
+      ? 'Contacto CASATIC'
+      : 'Mensajes a Socios';
+
+  const pageDesc = !isAdmin
+    ? 'Mensajes de contacto dirigidos a tu empresa'
+    : tab === 'general'
+      ? 'Mensajes enviados al formulario general de CASATIC'
+      : 'Mensajes de contacto recibidos por los socios del directorio';
+
   return (
     <div className="space-y-6">
       {/* ── Header ──────────────────────────────────────── */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-surface-900">
-            {user?.rol === 'Socio' ? 'Mensajes Recibidos' : 'Formularios de Contacto'}
-          </h1>
-          <p className="text-sm text-surface-500 mt-0.5">
-            {user?.rol === 'Socio' 
-              ? 'Mensajes de contacto dirigidos a tu empresa'
-              : 'Mensajes recibidos a través del directorio'}
-          </p>
+          <h1 className="text-2xl font-bold text-surface-900">{pageTitle}</h1>
+          <p className="text-sm text-surface-500 mt-0.5">{pageDesc}</p>
         </div>
         <button onClick={load} className="btn-secondary btn-sm self-start sm:self-auto">
           <RefreshCw size={15} className={loading ? 'animate-spin' : ''} /> Actualizar
         </button>
       </div>
 
+      {/* ── Tabs (solo Admin) ────────────────────────────── */}
+      {isAdmin && (
+        <div className="flex gap-2 border-b border-surface-100">
+          <button
+            onClick={() => setTab('socios')}
+            className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
+              tab === 'socios'
+                ? 'border-casatic-600 text-casatic-600'
+                : 'border-transparent text-surface-500 hover:text-surface-700'
+            }`}
+          >
+            <Users size={15} /> Mensajes a Socios
+          </button>
+          <button
+            onClick={() => setTab('general')}
+            className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
+              tab === 'general'
+                ? 'border-casatic-600 text-casatic-600'
+                : 'border-transparent text-surface-500 hover:text-surface-700'
+            }`}
+          >
+            <MessageSquare size={15} /> Contacto CASATIC
+          </button>
+        </div>
+      )}
+
       {/* ── Filtros ─────────────────────────────────────── */}
       <div className="card-base p-4 flex flex-wrap gap-3">
-        {/* Buscar texto */}
         <div className="flex-1 min-w-[200px] relative">
           <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-surface-400" />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Buscar por nombre, correo, empresa…"
+            placeholder={isGeneral ? 'Buscar por nombre, correo, asunto…' : 'Buscar por nombre, correo, empresa…'}
             className="input-field pl-9 text-sm"
           />
         </div>
-        {/* Rango fechas */}
         <div className="flex items-center gap-2 text-sm flex-shrink-0">
           <CalendarDays size={15} className="text-surface-400" />
           <input type="date" value={desde} onChange={(e) => setDesde(e.target.value)} className="input-field py-1.5 text-sm" />
@@ -214,7 +259,7 @@ export default function FormulariosAdminPage() {
               <tr className="border-b border-surface-100 bg-surface-50">
                 {[
                   { field: 'fecha', label: 'Fecha' },
-                  { field: 'nombreEmpresa', label: 'Empresa' },
+                  { field: isGeneral ? 'asunto' : 'nombreEmpresa', label: isGeneral ? 'Asunto' : 'Empresa' },
                   { field: 'nombre', label: 'Remitente' },
                   { field: 'correo', label: 'Correo' },
                 ].map(({ field, label }) => (
@@ -238,11 +283,11 @@ export default function FormulariosAdminPage() {
                 [...Array(6)].map((_, i) => <RowSkeleton key={i} />)
               ) : filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="text-center py-16 text-surface-400">
+                  <td colSpan={7} className="text-center py-16 text-surface-400">
                     <div className="flex flex-col items-center gap-3">
                       <Inbox size={32} className="text-surface-300" />
                       <span className="text-sm">
-                        {search ? 'No hay resultados para la búsqueda' : 'No hay formularios en este período'}
+                        {search ? 'No hay resultados para la búsqueda' : 'No hay mensajes en este período'}
                       </span>
                     </div>
                   </td>
@@ -252,10 +297,14 @@ export default function FormulariosAdminPage() {
                   <tr key={item.id} className="hover:bg-surface-50 transition-colors group">
                     <td className="px-4 py-3 whitespace-nowrap text-surface-500">{formatDate(item.fecha)}</td>
                     <td className="px-4 py-3">
-                      <span className="inline-flex items-center gap-1.5 text-surface-700">
-                        <Building2 size={13} className="text-surface-400" />
-                        {item.nombreEmpresa || <span className="italic text-surface-400">Sin empresa</span>}
-                      </span>
+                      {isGeneral ? (
+                        <span className="text-surface-700">{item.asunto || <span className="italic text-surface-400">Sin asunto</span>}</span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1.5 text-surface-700">
+                          <Building2 size={13} className="text-surface-400" />
+                          {item.nombreEmpresa || <span className="italic text-surface-400">Sin empresa</span>}
+                        </span>
+                      )}
                     </td>
                     <td className="px-4 py-3 font-medium text-surface-900">{item.nombre}</td>
                     <td className="px-4 py-3">
@@ -303,7 +352,7 @@ export default function FormulariosAdminPage() {
       </div>
 
       {/* ── Modal detalle ───────────────────────────────── */}
-      <DetailModal item={selected} onClose={() => setSelected(null)} />
+      <DetailModal item={selected} onClose={() => setSelected(null)} isGeneral={isGeneral} />
     </div>
   );
 }
